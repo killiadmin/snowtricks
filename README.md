@@ -16,3 +16,9 @@ Snowtricks is a community site presenting tricks and various techniques around s
 docker compose up-d
 symfony serve-d
 ```
+
+### Launch unit tests
+
+```bash
+php bin/phpunit --testdox
+```
