@@ -42,7 +42,7 @@ class Figure
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $video_picture;
+    private $video_figure;
 
     /**
      * @ORM\Column(type="date")
@@ -118,14 +118,14 @@ class Figure
         return $this;
     }
 
-    public function getVideoPicture(): ?string
+    public function getVideoFigure(): ?string
     {
-        return $this->video_picture;
+        return $this->video_figure;
     }
 
-    public function setVideoPicture(string $video_picture): self
+    public function setVideoFigure(string $video_figure): self
     {
-        $this->video_picture = $video_picture;
+        $this->video_figure = $video_figure;
 
         return $this;
     }
