@@ -15,6 +15,10 @@
     {% endblock %}
 </head>
 <body>
-{% block body %}{% endblock %}
+    {% include 'layouts/nav.html.twig' %}
+    {% block body %}{% endblock %}
+    {% include 'layouts/footer.html.twig' %}
+
+    <script src="https://kit.fontawesome.com/18e2e0bb4c.js" crossorigin="anonymous"></script>
 </body>
 </html>

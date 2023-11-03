@@ -1,16 +1,7 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello HomeController!{% endblock %}
+{#{% block title %}Hello HomeController!{% endblock %}#}
 
 {% block body %}
-    <div class="container-fluid p-0 bg-danger">
-        {#<div class="jumbotron jumbotron-fluid text-center text-dark d-flex align-items-center" style="background-image: url(/img/snowboard-7000597_1920.jpg); background-size: cover; background-position: center; height: 90vh;">#}
-            <div class="jumbotron jumbotron-fluid text-center text-dark d-flex align-items-center">
-            <div class="container">
-                <h1 class="display-4 mx-auto" style="text-shadow: 1px 1px 0 white, -1px -1px 0 white, 1px -1px 0 white, -1px 1px 0 white;">Passez au niveau supérieur avec Snowtricks</h1>
-                {#<p class="lead">Découvrez ce que nous avons à offrir.</p>
-            <a class="btn btn-primary btn-lg" href="#">En savoir plus</a>#}
-            </div>
-        </div>
-    </div>
+    {% include 'home/welcome.html.twig' %}
 {% endblock %}

@@ -9,10 +9,15 @@ Snowtricks is a community site presenting tricks and various techniques around s
     * Symfony CLI
     * Docker
     * Docker-compose
+    * NodeJs
+    * Npm
 
 ### Launch the development environment
 
 ```bash
+composer install
+npm install
+npm run build
 docker compose up-d
 symfony serve-d
 ```
