@@ -21,6 +21,18 @@ class FigureRepository extends ServiceEntityRepository
         parent::__construct($registry, Figure::class);
     }
 
+    /**
+     * @return Figure[] Returns an array of Figure objects
+     */
+
+    public function selectAllFigures()
+    {
+        return $this->createQueryBuilder('f')
+            ->orderBy('f.id', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
+
     public function add(Figure $entity, bool $flush = false): void
     {
         $this->getEntityManager()->persist($entity);

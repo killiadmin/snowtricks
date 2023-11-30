@@ -22,6 +22,12 @@ docker compose up-d
 symfony serve-d
 ```
 
+### Add tests datas
+
+```bash
+symfony console doctrine:fixtures:load
+```
+
 ### Launch unit tests
 
 ```bash
