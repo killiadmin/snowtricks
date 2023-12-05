@@ -22,15 +22,18 @@ class FigureRepository extends ServiceEntityRepository
     }
 
     /**
-     * @return Figure[] Returns an array of Figure objects
+     * @return Figure[] Returns an array of Figure objects in blocks of 15
      */
 
-    public function selectAllFigures()
+    public function selectAllFigures(int $page = 1, int $limit = 15)
     {
-        return $this->createQueryBuilder('f')
+        $query = $this->createQueryBuilder('f')
             ->orderBy('f.id', 'DESC')
-            ->getQuery()
-            ->getResult();
+            ->setFirstResult(($page - 1) * $limit)
+            ->setMaxResults($limit)
+            ->getQuery();
+
+        return $query->getResult();
     }
 
     public function add(Figure $entity, bool $flush = false): void
