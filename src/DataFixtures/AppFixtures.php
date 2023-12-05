@@ -43,13 +43,13 @@ class AppFixtures extends Fixture
         $manager->persist($user);
 
         //Create datas figures
-        for ($i=0; $i < 10; $i++){
+        for ($i=0; $i < 100; $i++){
             $figure = new Figure();
 
             $figure->setTitle($faker->words(3, true))
                 ->setContentFigure($faker->text(350))
                 ->setCategory('easy')
-                ->setPictureFigure($faker->imageUrl())
+                ->setPictureFigure('/img/figure-0001.jpeg')
                 ->setVideoFigure($faker->imageUrl())
                 ->setDateCreate($faker->dateTimeBetween('-6 month', 'now'))
                 ->setUserAssociated($user);
