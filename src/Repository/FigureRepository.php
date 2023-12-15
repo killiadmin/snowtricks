@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Figure;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -22,10 +23,11 @@ class FigureRepository extends ServiceEntityRepository
     }
 
     /**
+     * Function to return all figures in the database
      * @return Figure[] Returns an array of Figure objects in blocks of 15
      */
 
-    public function selectAllFigures(int $page = 1, int $limit = 15)
+    public function selectAllFigures(int $page, int $limit)
     {
         $query = $this->createQueryBuilder('f')
             ->orderBy('f.id', 'DESC')
@@ -34,6 +36,19 @@ class FigureRepository extends ServiceEntityRepository
             ->getQuery();
 
         return $query->getResult();
+    }
+
+    /**
+     * Function allowing you to select a figure by filtering by the slug
+     * @throws NonUniqueResultException
+     */
+    public function findOneBySlug(string $slug): ?Figure
+    {
+        return $this->createQueryBuilder('f')
+            ->where('f.slug = :slug')
+            ->setParameter('slug', $slug)
+            ->getQuery()
+            ->getOneOrNullResult();
     }
 
     public function add(Figure $entity, bool $flush = false): void

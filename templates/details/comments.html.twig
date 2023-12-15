@@ -1,0 +1,32 @@
+<section id="comments">
+    <hr>
+    <!--Leave a comment begin -->
+    <form id="commentForm" class="p-3 mx-auto" action="" method="post" style="max-width: 1000px">
+        <div class="form-group">
+            <label for="contentComment"></label>
+            <div class="row">
+                <div class="col-md-8">
+                    <textarea id="contentComment" name="contentComment" class="form-control"></textarea>
+                </div>
+                <div class="col-md-4 d-flex align-items-center justify-content-end">
+                    <button type="submit" class="btn btn-secondary">Leave a comment</button>
+                </div>
+            </div>
+        </div>
+    </form>
+    <!--Leave a comment ending -->
+    <hr>
+    <!--List Comments begin -->
+    <div id ="listCommments" class="container mt-3 d-flex flex-column align-items-center"></div>
+    <!--List Comments ending -->
+    <!-- Loadmore comment begin -->
+    <div id="loadComment" class="container p-5" style="display: flex; width: 20%; height: 11rem; cursor: pointer">
+        <div class="card-body d-flex align-items-center" style="border: outset;">
+            <div class="bloc_button-card m-auto">
+                Load more&nbsp;
+                <i class="fa-solid fa-arrow-pointer"></i>
+            </div>
+        </div>
+    </div>
+    <!-- Loadmore comment ending -->
+</section>

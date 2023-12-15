@@ -60,6 +60,16 @@ class Figure
      */
     private $comments;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $slug;
+
+    /**
+     * @ORM\Column(type="date", nullable=true)
+     */
+    private $date_update;
+
     public function __construct()
     {
         $this->comments = new ArrayCollection();
@@ -180,6 +190,30 @@ class Figure
                 $comment->setFigureAssociated(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(string $slug): self
+    {
+        $this->slug = $slug;
+
+        return $this;
+    }
+
+    public function getDateUpdate(): ?\DateTimeInterface
+    {
+        return $this->date_update;
+    }
+
+    public function setDateUpdate(?\DateTimeInterface $date_update): self
+    {
+        $this->date_update = $date_update;
 
         return $this;
     }

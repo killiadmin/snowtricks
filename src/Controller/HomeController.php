@@ -14,11 +14,12 @@ class HomeController extends AbstractController
     /**
      * @Route("/", name="app_home")
      */
-    public function index(FigureRepository $figureRepository): Response
+    public function index(): Response
     {
-        return $this->render('home/index.html.twig', [
+        /*return $this->render('home/index.html.twig', [
             'figures' => $figureRepository->selectAllFigures(),
-        ]);
+        ]);*/
+        return $this->render('home/index.html.twig');
     }
 
     /**
@@ -27,14 +28,16 @@ class HomeController extends AbstractController
     public function loadMore(FigureRepository $figureRepository, Request $request): JsonResponse
     {
         $page = $request->query->get('page', 1);
-        $figures = $figureRepository->selectAllFigures($page);
+        $limit = 15;
+        $figures = $figureRepository->selectAllFigures($page, $limit);
 
         // Transform data into associative array
         $data = [];
         foreach ($figures as $figure) {
             $data[] = [
                 'title' => $figure->getTitle(),
-                'picture' => $figure->getPictureFigure()
+                'picture' => $figure->getPictureFigure(),
+                'slug' => $figure->getSlug()
             ];
         }
 

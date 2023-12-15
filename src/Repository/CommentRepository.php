@@ -3,7 +3,9 @@
 namespace App\Repository;
 
 use App\Entity\Comment;
+use App\Entity\Figure;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -19,6 +21,28 @@ class CommentRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Comment::class);
+    }
+
+    /**
+     * @return Figure[] Returns an array of Figure objects in blocks of 15
+     * @throws \Exception
+     */
+
+    public function selectCommentsAssociated($figureSlug, $limit = 5, $offset = 0): array
+    {
+        $queryBuilder = $this->createQueryBuilder('c')
+            ->select('c', 'u')
+            ->leftJoin('c.user_associated', 'u')
+            ->leftJoin('c.figure_associated', 'f')
+            ->where('f.slug = :figureSlug')
+            ->setParameter('figureSlug', $figureSlug)
+            ->orderBy('c.date_create', 'DESC')
+            ->setFirstResult($offset)
+            ->setMaxResults($limit);
+
+        $paginator = new Paginator($queryBuilder);
+
+        return $paginator->getIterator()->getArrayCopy();
     }
 
     public function add(Comment $entity, bool $flush = false): void
