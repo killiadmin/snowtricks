@@ -26,7 +26,7 @@ function loadMore(node) {
                 loadSpinner.style.display = "flex";
             }
 
-            // Utilisez votre logique pour ajouter les nouvelles cartes
+            //Creation of new figure cards
             data.forEach((item) => {
                 setTimeout(node => {
                     // Created new card
@@ -60,7 +60,7 @@ function loadMore(node) {
                     cardBody.style.borderTop = "outset";
 
                     var titleLink = document.createElement("a");
-                    titleLink.href = "#";
+                    titleLink.href = "/tricks/details/" + item.slug;
 
                     var title = document.createElement("h5");
                     title.className = "card-title text-decoration-none text-black";
@@ -90,7 +90,7 @@ function loadMore(node) {
                     newCard.appendChild(cardBody);
 
                     // Add the new card to the container
-                    document.querySelector('.bloc_cards').appendChild(newCard);
+                    document.querySelector(".bloc_cards").appendChild(newCard);
                     loading = false;
 
                     setTimeout(() => {
@@ -118,5 +118,5 @@ window.addEventListener("scroll", function() {
 
 // When the Home page loads
 document.addEventListener("DOMContentLoaded", function() {
-    loadMore();
+    /*loadMore();*/
 });

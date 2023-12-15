@@ -1,0 +1,9 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Snowtricks {% endblock %}
+
+{% block body %}
+    {% include 'details/trick.html.twig' %}
+    {% include 'details/comments.html.twig' %}
+    <script src="{{ asset('../../js/comment.js') }}"></script>
+{% endblock %}

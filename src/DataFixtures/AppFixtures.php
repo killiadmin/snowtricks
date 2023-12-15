@@ -27,48 +27,76 @@ class AppFixtures extends Fixture
         // use the factory to create a Faker\Generator instance
         $faker = Factory::create('fr_FR');
 
-        $user = new User();
+        // Generate Users
+        for ($i = 0; $i < 50; $i++) {
+            $user = new User();
 
-        $user->setEmail('test@test.fr')
-            ->setRoles((array)$faker->boolean())
-            ->setNameIdentifier($faker->lastName())
-            ->setFirstnameIdentifier($faker->firstName())
-            ->setPseudo($faker->userName())
-            ->setActivated($faker->boolean())
-            ->setPictureIdentifier($faker->imageUrl());
+            $user->setEmail($faker->email)
+                ->setRoles((array)$faker->boolean())
+                ->setNameIdentifier($faker->lastName())
+                ->setFirstnameIdentifier($faker->firstName())
+                ->setPseudo($faker->userName())
+                ->setActivated($faker->boolean())
+                ->setPictureIdentifier($faker->imageUrl());
 
-        $password = $this->encoder->encodePassword($user, 'password');
-        $user->setPassword($password);
+            $password = $this->encoder->encodePassword($user, 'password');
+            $user->setPassword($password);
 
-        $manager->persist($user);
+            $manager->persist($user);
 
-        //Create datas figures
-        for ($i=0; $i < 100; $i++){
-            $figure = new Figure();
+            // Generate Figures for each User
+            for ($j = 0; $j < 2; $j++) {
+                $figure = new Figure();
 
-            $figure->setTitle($faker->words(3, true))
-                ->setContentFigure($faker->text(350))
-                ->setCategory('easy')
-                ->setPictureFigure('/img/figure-0001.jpeg')
-                ->setVideoFigure($faker->imageUrl())
-                ->setDateCreate($faker->dateTimeBetween('-6 month', 'now'))
-                ->setUserAssociated($user);
+                $title = $faker->words(3, true);
+
+                $figure->setTitle($title)
+                    ->setContentFigure($faker->text(3000))
+                    ->setCategory($faker->randomElement(['easy', 'medium', 'hard']))
+                    ->setPictureFigure('/img/figure-0001.jpeg')
+                    ->setVideoFigure($faker->imageUrl())
+                    ->setDateCreate($faker->dateTimeBetween('-6 month', 'now'))
+                    ->setUserAssociated($user)
+                    ->setSlug($this->generateSlug($title))
+                    ->setDateUpdate($faker->dateTimeBetween('-1 month', 'now'));
 
                 $manager->persist($figure);
-        }
 
-        //Create datas comments
-        for ($i=0; $i < 5; $i++){
-            $comment = new Comment();
+                // Generate Comments for each Figure
+                for ($k = 0; $k < 20; $k++) {
+                    $comment = new Comment();
 
-            $comment->setContentComment($faker->text(50))
-                ->setDateCreate($faker->dateTimeBetween('-6 month', 'now'))
-                ->setUserAssociated($user)
-                ->setFigureAssociated($figure);
+                    $comment->setContentComment($faker->text(50))
+                        ->setDateCreate($faker->dateTimeBetween('-6 month', 'now'));
 
-            $manager->persist($comment);
+                    $commentUser = $user;
+                    $comment->setUserAssociated($commentUser);
+
+                    $commentFigure = $figure;
+                    $comment->setFigureAssociated($commentFigure);
+
+                    $manager->persist($comment);
+                }
+            }
         }
 
         $manager->flush();
+    }
+
+
+    private function generateSlug($text): string
+    {
+        $text = preg_replace('~[^\pL\d]+~u', '-', $text);
+        $text = iconv('utf-8', 'us-ascii//TRANSLIT', $text);
+        $text = preg_replace('~[^-\w]+~', '', $text);
+        $text = trim($text, '-');
+        $text = preg_replace('~-+~', '-', $text);
+        $text = strtolower($text);
+
+        if (empty($text)) {
+            return 'n-a';
+        }
+
+        return $text;
     }
 }
