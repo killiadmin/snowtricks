@@ -1,0 +1,88 @@
+<div class="container mt-5" style="max-width: 850px;">
+    <h1 class="text-center">Create your new figure</h1>
+    <!-- Form for new figure begin -->
+        {{ form_start(form) }}
+        <div class="form-group p-3">
+            {{ form_row(form.title) }}
+        </div>
+        <div class="form-group p-3">
+            {{ form_row(form.contentFigure) }}
+        </div>
+        <div class="form-group p-3">
+            {{ form_row(form.category) }}
+        </div>
+
+        <div class="d-flex p-3 justify-content-center">
+            <input id="addMedia" class="p-3" type="button" value="Add media">
+        </div>
+
+        <div id="blocMedias">
+            <div id="blocVideos"></div>
+            <div id="blocImages"></div>
+        </div>
+
+        <div id="hiddenFormPicture" class="form-group p-3">
+            {{ form_row(form.pictureFigure, {'attr': {'id': 'pictureFigure_' ~ uniqueIdPicture}}) }}
+        </div>
+        <div id="hiddenFormVideo" class="form-group p-3">
+            {{ form_row(form.videoFigure, {'attr': {'id': 'videoFigure_' ~ uniqueIdVideo}}) }}
+        </div>
+        <div class="d-flex flex-row-reverse mt-3 p-3">
+            <button class="btn btn-secondary">
+                Create
+            </button>
+        </div>
+        {{ form_end(form) }}
+    <!-- Form for new figure ending -->
+</div>
+
+<!-- Ajoutez les classes Bootstrap à votre boîte de dialogue -->
+<div id="myModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-body">
+            <p>Choisissez une option :</p>
+            <button id="addImage" class="btnMedia">Ajouter une image</button>
+            <button id="addVideo" class="btnMedia">Ajouter une vidéo</button>
+        </div>
+    </div>
+</div>
+
+<style>
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 1;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0, 0, 0, 0.5);
+    }
+
+    .modal-content {
+        background-color: #fefefe;
+        margin: 15% auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 50%;
+        text-align: center;
+    }
+
+    .btnMedia {
+        margin: 5px;
+        padding: 10px;
+        cursor: pointer;
+    }
+
+    #hiddenFormVideo {
+        display: none;
+    }
+
+    #hiddenFormPicture{
+        display: none;
+    }
+</style>
+
+
+

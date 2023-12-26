@@ -44,7 +44,9 @@ function loadMore(node) {
                     imgCard.style.overflow = "hidden";
 
                     var img = document.createElement("img");
-                    img.src = item.picture;
+
+                    img.src = item.picture ?? "/img/figure-0001.jpeg";
+
                     img.className = "card-img-top";
                     img.alt = "figure snowboarding";
                     img.style.objectFit = "cover";
