@@ -1,4 +1,64 @@
-var modal = document.getElementById("myModal");
+var modal = document.getElementById("boxMedia");
+
+document.getElementById("addMedia").addEventListener("click", addComponentMedia);
+document.getElementById(("closeMedia")).addEventListener("click", closeComponentMedia);
+
+//Method add a bloc image
+document.getElementById("addImage").addEventListener("click", function() {
+    var hiddenFormPicture = document.getElementById("hiddenFormPicture");
+    var clonedFormPicture = hiddenFormPicture.cloneNode(true);
+
+    updateIds(clonedFormPicture);
+    document.getElementById("new_figure_medias").append(clonedFormPicture);
+
+    var btnDelete = document.createElement("button");
+    btnDelete.type = "button";
+    btnDelete.className = "btn btn-danger";
+    btnDelete.innerText = "X";
+    btnDelete.style.float = "right";
+
+    clonedFormPicture.append(btnDelete);
+
+    btnDelete.addEventListener("click", function(){
+        this.previousElementSibling.parentElement.remove();
+    })
+
+    modal.style.display = "none";
+});
+
+//Method add a bloc video
+document.getElementById("addVideo").addEventListener("click", function() {
+    var hiddenFormVideo = document.getElementById("hiddenFormVideo");
+    var clonedFormVideo = hiddenFormVideo.cloneNode(true);
+    clonedFormVideo.style.display = "block";
+    updateIds(clonedFormVideo);
+
+    document.getElementById("new_figure_medias").append(clonedFormVideo);
+
+    var btnDelete = document.createElement("button");
+    btnDelete.type = "button";
+    btnDelete.className = "btn btn-danger";
+    btnDelete.innerText = "X";
+    btnDelete.style.float = "right";
+
+    clonedFormVideo.append(btnDelete);
+
+    btnDelete.addEventListener("click", function(){
+        this.previousElementSibling.parentElement.remove();
+    })
+
+    modal.style.display = "none";
+});
+
+// Insert a button create after media element
+
+document.getElementById("createFigureBtn").addEventListener("click", function() {
+    document.getElementById("formFigure").submit();
+    document.getElementById("formMedia").submit();
+});
+
+
+//****************************************FUNCTIONS*******************************************************************\\
 
 function updateIds(element) {
     if (element.id) {
@@ -11,30 +71,10 @@ function updateIds(element) {
     }
 }
 
-document.getElementById("addMedia").addEventListener("click", addComponentMedia);
-
-document.getElementById("addImage").addEventListener("click", function() {
-    var hiddenFormPicture = document.getElementById("hiddenFormPicture");
-    var clonedFormPicture = hiddenFormPicture.cloneNode(true);
-
-    updateIds(clonedFormPicture);
-    document.getElementById("blocImages").appendChild(clonedFormPicture);
-
-    modal.style.display = "none";
-});
-
-document.getElementById("addVideo").addEventListener("click", function() {
-    var hiddenFormVideo = document.getElementById("hiddenFormVideo");
-    var clonedFormVideo = hiddenFormVideo.cloneNode(true);
-
-    clonedFormVideo.style.display = "block";
-    updateIds(clonedFormVideo);
-
-    document.getElementById("blocVideos").appendChild(clonedFormVideo);
-
-    modal.style.display = "none";
-});
-
 function addComponentMedia() {
     modal.style.display = "block";
+}
+
+function closeComponentMedia() {
+    modal.style.display = "none";
 }

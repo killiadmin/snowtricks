@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Figure;
 use App\Entity\Media;
+use App\Form\MediaType;
 use App\Form\NewFigureType;
 use Proxies\__CG__\App\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -19,23 +20,26 @@ class NewController extends AbstractController
      */
     public function index(Request $request): Response
     {
-        $uniqueIdVideo = uniqid('videoFigure_', true);
-        $uniqueIdPicture = uniqid('pictureFigure_', true);
+        $uniqueIdVideo = uniqid('medVideo_', true);
+        $uniqueIdPicture = uniqid('medPicture_', true);
 
         $figure = new Figure();
+        $form = $this->createForm(NewFigureType::class, $figure);
+        $form->handleRequest($request);
 
-        $form = $this->createForm(NewFigureType::class, $figure, [
+        $media = new Media();
+        $formMedia = $this->createForm(MediaType::class, $media, [
             'uniqueIdVideo' => $uniqueIdVideo,
             'uniqueIdPicture' => $uniqueIdPicture
         ]);
-        $form->handleRequest($request);
+        $formMedia->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $category = $form->get('category')->getData();
+        if ($form->isSubmitted() && $form->isValid() && $formMedia->isSubmitted() && $formMedia->isValid()) {
             $title = $form->get('title')->getData();
-            $linksVideos = $form->get('videoFigure')->getData();
-            $pictureFigure = $form->get('pictureFigure')->getData();
+            $category = $form->get('category')->getData();
             $contentFigure = $form->get('contentFigure')->getData();
+            $linksVideos = $formMedia->get('med_video')->getData();
+            $pictureFigure = $formMedia->get('med_image')->getData();
 
             if (null === $title) {
                 throw new \RuntimeException('Title is required.');
@@ -77,7 +81,7 @@ class NewController extends AbstractController
             $figure->setUserAssociated($associatedUser);
 
             //Loop in this videos
-            if (!empty($linksVideos)){
+            if (!empty($linksVideos)) {
                 foreach ($linksVideos as $linkVideo) {
                     $mediaVideo = new Media();
                     $mediaVideo->setMedVideo($linkVideo);
@@ -88,7 +92,7 @@ class NewController extends AbstractController
             }
 
             //Loop in this images
-            if ($pictureFigure instanceof UploadedFile){
+            if ($pictureFigure instanceof UploadedFile) {
                 foreach ($pictureFigure as $picture) {
                     $mediaPicture = new Media();
                     $mediaPicture->setMedImage($picture);
@@ -103,9 +107,15 @@ class NewController extends AbstractController
 
             return $this->redirectToRoute('app_home');
         }
+        // Display error in file
+        /*} else {
+            $error = 'Une erreur c\'est produite sur la '. $request;
+            file_put_contents(__DIR__.'/$test.txt', '$ERROR :'.print_r($error, true).PHP_EOL,FILE_APPEND);
+        }*/
 
         return $this->render('new/index.html.twig', [
             'form' => $form->createView(),
+            'formMedia' => $formMedia->createView(),
             'uniqueIdVideo' => $uniqueIdVideo,
             'uniqueIdPicture' => $uniqueIdPicture
         ]);
