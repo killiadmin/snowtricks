@@ -48,12 +48,14 @@ class NewFigureType extends AbstractType
                 'required' => true
             ])
             ->add('medias', CollectionType::class, [
+                'label' => false,
                 'entry_type' => MediaType::class,
-                'label' => 'Medias',
                 'allow_add' => true,
                 'allow_delete' => true,
                 'entry_options' => [ 'label' => false ],
-                'by_reference' => false
+                'by_reference' => false,
+                'prototype' => true,
+                'prototype_name' => '__media__',
             ]);
     }
 

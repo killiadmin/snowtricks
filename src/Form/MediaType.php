@@ -15,11 +15,10 @@ class MediaType extends AbstractType
     {
         $builder
             ->add('med_video', TextType::class, [
-                'label' => 'Links videos',
+                'label' => 'Link vidéo',
                 'required' => false,
                 'attr' => [
-                    'class' => 'form-control',
-                    'id' => $options['uniqueIdVideo']
+                    'class' => 'form-control'
                 ]
             ])
             ->add('med_image', FileType::class, [
@@ -27,8 +26,7 @@ class MediaType extends AbstractType
                 'multiple' => false,
                 'required' => false,
                 'attr' => [
-                    'class' => 'form-control',
-                    'id' => $options['uniqueIdPicture']
+                    'class' => 'form-control'
                 ]
             ]);
     }
@@ -37,8 +35,6 @@ class MediaType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Media::class,
-            'uniqueIdVideo' => null,
-            'uniqueIdPicture' => null
         ]);
     }
 }

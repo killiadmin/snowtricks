@@ -12,29 +12,16 @@
     <div class="form-group p-3">
         {{ form_row(form.category) }}
     </div>
-
     <div class="d-flex p-3 justify-content-center">
         <input id="addMedia" class="p-3" type="button" value="Add media">
     </div>
-        <!-- Form for new media begin -->
-    {{ form_start(formMedia, {'attr': {'id': 'formMedia'}}) }}
-        <div id="hiddenFormVideo" class="form-group p-3">
-            {{ form_row(formMedia.med_video, {
-                'attr': {
-                    'id': uniqueIdVideo
-                }
-            }) }}
-        </div>
-        <div id="hiddenFormPicture" class="form-group p-3">
-            {{ form_row(formMedia.med_image, {
-                'attr': {
-                    'id': uniqueIdPicture
-                }
-            }) }}
-        </div>
-        {{ form_end(formMedia) }}
-
-    <!-- Form for new media ending -->
+    <div id="medias" class="mt-2 p-3" data-prototype="{{ form_widget(form.medias.vars.prototype)|e('html_attr') }}">
+        {% for mediaForm in form.medias %}
+            <div class="media">
+                {{ form_row(mediaForm) }}
+            </div>
+        {% endfor %}
+    </div>
     {{ form_end(form) }}
     <!-- Form for new figure ending -->
     <!-- Submit form figure -->
