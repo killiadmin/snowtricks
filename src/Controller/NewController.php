@@ -24,44 +24,7 @@ class NewController extends AbstractController
         $form = $this->createForm(NewFigureType::class, $figure);
         $form->handleRequest($request);
 
-        $media = new Media();
-        $formMedia = $this->createForm(MediaType::class, $media);
-        $formMedia->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-
-            $title = $form->get('title')->getData();
-            /*$title = $form->getData();*/
-            $category = $form->get('category')->getData();
-            $contentFigure = $form->get('contentFigure')->getData();
-            /*$linksVideos = $formMedia->get('med_video')->getData();*/
-            /*$linksVideos = $formMedia->getData();*/
-            $pictureFigure = $formMedia->get('med_image')->getData();
-
-            $testMedVideo = $form->getData();
-            $videos = [];
-            foreach ($testMedVideo->getMedias() as $media) {
-                $videos[] = $media->getMedVideo();
-            }
-
-            file_put_contents(__DIR__ . '/$test.txt', '$mesLiensVideos :' . print_r($testMedVideo, true) . PHP_EOL, FILE_APPEND);
-            /*file_put_contents(__DIR__ . '/$test.txt', '$title :' . print_r($title, true) . PHP_EOL, FILE_APPEND);
-            file_put_contents(__DIR__ . '/$test.txt', '$contentFigure :' . print_r($contentFigure, true) . PHP_EOL, FILE_APPEND);
-            file_put_contents(__DIR__ . '/$test.txt', '$category :' . print_r($category, true) . PHP_EOL, FILE_APPEND);*/
-
-            die();
-
-            if (null === $title) {
-                throw new \RuntimeException('Title is required.');
-            }
-
-            if (null === $contentFigure) {
-                throw new \RuntimeException('The "content_figure" field is required.');
-            }
-
-            if (null === $category) {
-                throw new \RuntimeException('The "category" field is required.');
-            }
-
             // EntityManager
             $entityManager = $this->getDoctrine()->getManager();
 
@@ -69,7 +32,7 @@ class NewController extends AbstractController
             $timeStamp = new \DateTime();
 
             // Generate a slug
-            $slug = $this->generateSlug($title);
+            $slug = $this->generateSlug($figure->getTitle());
 
             // ID user associated
             $associatedUserId = 1;
@@ -82,33 +45,15 @@ class NewController extends AbstractController
                 throw new \RuntimeException('User not found ' . $associatedUserId);
             }
 
-            $figure->setTitle($title);
-            $figure->setCategory($category);
-            $figure->setContentFigure($contentFigure);
             $figure->setDateCreate($timeStamp);
             $figure->setSlug($slug);
             $figure->setUserAssociated($associatedUser);
 
-            //Loop in this videos
-            if (!empty($linksVideos)) {
-                foreach ($linksVideos as $linkVideo) {
-                    $mediaVideo = new Media();
-                    $mediaVideo->setMedVideo($linkVideo);
-                    $mediaVideo->setMedType('video');
-                    $mediaVideo->setMedFigureAssociated($figure);
-                    $entityManager->persist($mediaVideo);
-                }
-            }
-
-            //Loop in this images
-            if ($pictureFigure instanceof UploadedFile) {
-                foreach ($pictureFigure as $picture) {
-                    $mediaPicture = new Media();
-                    $mediaPicture->setMedImage($picture);
-                    $mediaPicture->setMedType('image');
-                    $mediaPicture->setMedFigureAssociated($figure);
-                    $entityManager->persist($mediaPicture);
-                }
+            foreach ($figure->getMedias() as $media) {
+                $media->setMedType('video');
+                $media->setMedFigureAssociated($figure);
+                $media->setMedVideo($this->getIdsVideos($media->getMedVideo()));
+                $entityManager->persist($media);
             }
 
             $entityManager->persist($figure);
@@ -119,11 +64,11 @@ class NewController extends AbstractController
 
         return $this->render('new/index.html.twig', [
             'form' => $form->createView(),
-            'formMedia' => $formMedia->createView()
         ]);
     }
 
     /**
+     * Generate a slug with a title
      * @param $title
      * @return string
      */
@@ -141,5 +86,26 @@ class NewController extends AbstractController
         }
 
         return $title;
+    }
+
+    /**
+     * Retrieves the video ID from the given URL.
+     *
+     * @param string $url The URL of the video.
+     * @return string|null The video ID if found in the URL, null otherwise.
+     */
+    private function getIdsVideos(string $url): ?string
+    {
+        $parts = parse_url($url);
+
+        if (isset($parts['query'])) {
+            parse_str($parts['query'], $qs);
+
+            if (isset($qs['v'])) {
+                return $qs['v'];
+            }
+        }
+
+        return null;
     }
 }

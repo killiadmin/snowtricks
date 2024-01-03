@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Repository\CommentRepository;
 use App\Repository\FigureRepository;
+use App\Repository\MediaRepository;
 use Doctrine\ORM\NonUniqueResultException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -21,23 +22,21 @@ class DetailsController extends AbstractController
     {
         $figure = $figureRepository->findOneBySlug($slug);
 
-        //Method for upload video youtube
-        $youtubeUrl = "https://www.youtube.com/watch?v=oI-umOzNBME";
-        $parsedUrl = parse_url($youtubeUrl);
-        // Extract query parameters
-        parse_str($parsedUrl['query'], $query);
-        // Retrieve Read ID
-        $youtubeId = $query['v'];
-
         if (!$figure) {
-            throw $this->createNotFoundException('Figure not found');
+            throw $this->createNotFoundException('Figure not found.');
+        }
+
+        $medias = $figure->getMedias();
+
+        if($medias->isEmpty()){
+            $medias = null;
         }
 
         return $this->render('details/index.html.twig', [
             'controller_name' => 'DetailsController',
             'slug' => $slug,
             'figure' => $figure,
-            'youtubeId' => $youtubeId
+            'medias' => $medias
         ]);
     }
 

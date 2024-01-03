@@ -100,8 +100,6 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 });
 
-
-
 // Submit Form for a created a new figure
 
 document.getElementById("createFigureBtn").addEventListener("click", function() {

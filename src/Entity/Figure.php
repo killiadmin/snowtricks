@@ -71,7 +71,7 @@ class Figure
     private $date_update;
 
     /**
-     * @ORM\OneToMany(targetEntity=Media::class, mappedBy="med_figure_associated")
+     * @ORM\OneToMany(targetEntity=Media::class, mappedBy="med_figure_associated", cascade={"persist"})
      */
     private $medias;
 
