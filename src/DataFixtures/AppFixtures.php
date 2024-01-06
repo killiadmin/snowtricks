@@ -53,7 +53,7 @@ class AppFixtures extends Fixture
                 $figure->setTitle($title)
                     ->setContentFigure($faker->text(3000))
                     ->setCategory($faker->randomElement(['easy', 'medium', 'hard']))
-                    ->setPictureFigure('/img/figure-0001.jpeg')
+                    /*->setPictureFigure('/img/figure-0001.jpeg')*/
                     ->setVideoFigure($faker->imageUrl())
                     ->setDateCreate($faker->dateTimeBetween('-6 month', 'now'))
                     ->setUserAssociated($user)
@@ -82,7 +82,6 @@ class AppFixtures extends Fixture
 
         $manager->flush();
     }
-
 
     private function generateSlug($text): string
     {

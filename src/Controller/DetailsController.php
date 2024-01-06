@@ -4,15 +4,25 @@ namespace App\Controller;
 
 use App\Repository\CommentRepository;
 use App\Repository\FigureRepository;
+use App\Repository\MediaRepository;
+use App\Service\PictureService;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\NonUniqueResultException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
 class DetailsController extends AbstractController
 {
+    private PictureService $pictureService;
+
+    public function __construct(PictureService $pictureService) {
+        $this->pictureService = $pictureService;
+    }
+
     /**
      * @Route("/tricks/details/{slug}", name="app_details")
      * @throws NonUniqueResultException
@@ -21,23 +31,63 @@ class DetailsController extends AbstractController
     {
         $figure = $figureRepository->findOneBySlug($slug);
 
-        //Method for upload video youtube
-        $youtubeUrl = "https://www.youtube.com/watch?v=oI-umOzNBME";
-        $parsedUrl = parse_url($youtubeUrl);
-        // Extract query parameters
-        parse_str($parsedUrl['query'], $query);
-        // Retrieve Read ID
-        $youtubeId = $query['v'];
-
         if (!$figure) {
-            throw $this->createNotFoundException('Figure not found');
+            throw $this->createNotFoundException('Figure not found.');
+        }
+
+        $medias = $figure->getMedias();
+
+        if($medias->isEmpty()){
+            $medias = null;
         }
 
         return $this->render('details/index.html.twig', [
             'controller_name' => 'DetailsController',
             'slug' => $slug,
             'figure' => $figure,
-            'youtubeId' => $youtubeId
+            'medias' => $medias
+        ]);
+    }
+
+    /**
+     * @Route("/tricks/details/{slug}/delete", name="app_delete_figure", methods={"DELETE"})
+     *
+     * Function allowing to delete a figure by its slug
+     *
+     * @param string $slug The slug of the figure to be deleted
+     * @param FigureRepository $figureRepository The repository for fetching the figure
+     * @param EntityManagerInterface $em The entity manager for managing the deletion
+     *
+     * @return Response
+     * @throws NotFoundHttpException|NonUniqueResultException If the figure is not found
+     *
+     */
+    public function deleteFigure(string $slug, FigureRepository $figureRepository, EntityManagerInterface $em): Response
+    {
+        // Find figure by slug
+        $figure = $figureRepository->findOneBySlug($slug);
+
+        // If the figure does not exist, create an exception
+        if (!$figure) {
+            throw $this->createNotFoundException('The figure does not exist');
+        }
+
+        $medias = $figure->getMedias();
+
+        foreach ($medias as $media) {
+            if ($media->getMedType() === 'image') {
+                $this->pictureService->delete($media->getMedImage(), 'uploads');
+            }
+
+            $em->remove($media);
+        }
+
+        // Delete figure
+        $em->remove($figure);
+        $em->flush();
+
+        return new JsonResponse([
+            'redirect' => $this->generateUrl('app_home')
         ]);
     }
 

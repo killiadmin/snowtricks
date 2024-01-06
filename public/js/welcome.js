@@ -3,11 +3,49 @@ var page = 1;
 // Variable to track loading status
 var loading = false;
 
+var blocCards = document.querySelector(".bloc_cards");
+var loadSpinner = document.getElementById("load_spinner");
 
 /**
- * Loading data asynchronous when user scrolls down
+ * Deletes a figure with the given slug by sending a DELETE request to the server.
+ *
+ * @param {string} slug - The slug of the figure to be deleted.
+ * @return {Promise} - A promise that resolves to the JSON response from the server.
+ *                    If there is an error, the promise is rejected with an error object.
  */
-function loadMore(node) {
+function deleteFigureWithTrash(slug)
+{
+    fetch('/tricks/details/' + slug + '/delete', {
+        method: 'DELETE',
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            return response.json();
+        })
+        .then(() => {
+            var card = document.getElementById("card-" + slug);
+            if (card) {
+                card.parentNode.removeChild(card);
+            }
+        })
+        .catch(error => {
+            console.error('There was a problem with the fetch operation:', error);
+        });
+}
+
+/**
+ * Loading more data asynchronously when the user scrolls down.
+ *
+ *
+ * @return {void}
+ */
+function loadMore()
+{
+    var flagEmptyData = document.getElementById("flagEmptyData");
+
     // Check if loading is in progress, if yes, return
     if (loading) {
         return;
@@ -20,10 +58,18 @@ function loadMore(node) {
     fetch(`/load-more?page=${page}`)
         .then(response => response.json())
         .then(data => {
-            var loadSpinner = document.getElementById("load_spinner");
-
             if (loadSpinner) {
                 loadSpinner.style.display = "flex";
+            }
+
+            if (data.length > 0){
+                if(flagEmptyData) {
+                    flagEmptyData.remove();
+                }
+            } else {
+                if(flagEmptyData) {
+                    flagEmptyData.style.display = "block";
+                }
             }
 
             //Creation of new figure cards
@@ -34,6 +80,7 @@ function loadMore(node) {
                     newCard.className = "card";
                     newCard.style.width = "17rem";
                     newCard.style.height = "11rem";
+                    newCard.id = "card-" + item.slug;
 
                     // Add the image part of the card
                     var imgCard = document.createElement("div");
@@ -44,7 +91,9 @@ function loadMore(node) {
                     imgCard.style.overflow = "hidden";
 
                     var img = document.createElement("img");
-                    img.src = item.picture;
+
+                    img.src = item.picture ?? "/img/figure-0001.jpeg";
+
                     img.className = "card-img-top";
                     img.alt = "figure snowboarding";
                     img.style.objectFit = "cover";
@@ -78,8 +127,11 @@ function loadMore(node) {
                     pencilIcon.innerHTML = '<i class="fa-solid fa-pencil text-black"></i>';
 
                     var trashIcon = document.createElement("a");
-                    trashIcon.href = "#";
                     trashIcon.innerHTML = '<i class="fa-solid fa-trash-can text-black"></i>'
+                    trashIcon.style.cursor = "pointer";
+                    trashIcon.addEventListener('click', function (event) {
+                        deleteFigureWithTrash(item.slug)
+                    });
 
                     buttonCard.appendChild(pencilIcon);
                     buttonCard.appendChild(trashIcon);
@@ -90,7 +142,7 @@ function loadMore(node) {
                     newCard.appendChild(cardBody);
 
                     // Add the new card to the container
-                    document.querySelector(".bloc_cards").appendChild(newCard);
+                    blocCards.appendChild(newCard);
                     loading = false;
 
                     setTimeout(() => {
@@ -102,10 +154,17 @@ function loadMore(node) {
                 }, 2000);
             });
             page++;
+            loading = false;
+            if (loadSpinner) {
+                loadSpinner.style.display = "none";
+            }
         })
         .catch(error => {
             console.error("Error:", error);
             loading = false;
+            if (loadSpinner) {
+                loadSpinner.style.display = "none";
+            }
         });
 }
 
@@ -114,9 +173,4 @@ window.addEventListener("scroll", function() {
     if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 100) {
         loadMore();
     }
-});
-
-// When the Home page loads
-document.addEventListener("DOMContentLoaded", function() {
-    /*loadMore();*/
 });

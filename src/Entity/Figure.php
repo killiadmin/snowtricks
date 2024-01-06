@@ -70,9 +70,15 @@ class Figure
      */
     private $date_update;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Media::class, mappedBy="med_figure_associated", cascade={"persist"})
+     */
+    private $medias;
+
     public function __construct()
     {
         $this->comments = new ArrayCollection();
+        $this->medias = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -116,12 +122,12 @@ class Figure
         return $this;
     }
 
-    public function getPictureFigure(): ?string
+    public function getPictureFigure(): ?array
     {
         return $this->picture_figure;
     }
 
-    public function setPictureFigure(string $picture_figure): self
+    public function setPictureFigure(array $picture_figure): self
     {
         $this->picture_figure = $picture_figure;
 
@@ -214,6 +220,36 @@ class Figure
     public function setDateUpdate(?\DateTimeInterface $date_update): self
     {
         $this->date_update = $date_update;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Media>
+     */
+    public function getMedias(): Collection
+    {
+        return $this->medias;
+    }
+
+    public function addMedia(Media $media): self
+    {
+        if (!$this->medias->contains($media)) {
+            $this->medias[] = $media;
+            $media->setMedFigureAssociated($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMedia(Media $media): self
+    {
+        if ($this->medias->removeElement($media)) {
+            // set the owning side to null (unless already changed)
+            if ($media->getMedFigureAssociated() === $this) {
+                $media->setMedFigureAssociated(null);
+            }
+        }
 
         return $this;
     }

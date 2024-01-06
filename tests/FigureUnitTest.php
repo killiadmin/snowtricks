@@ -12,7 +12,7 @@ class FigureUnitTest extends TestCase
         $figure->setTitle('title')
             ->setContentFigure('content')
             ->setCategory('category')
-            ->setPictureFigure('picture_figure');
+            ->setPictureFigure((array)'picture_figure');
 
         $this->assertTrue($figure->getTitle() === 'title');
         $this->assertTrue($figure->getContentFigure() === 'content');
@@ -28,7 +28,7 @@ class FigureUnitTest extends TestCase
             $figure->setTitle('title')
                 ->setContentFigure('content')
                 ->setCategory('category')
-                ->setPictureFigure('picture_figure');
+                ->setPictureFigure((array)'picture_figure');
 
             $this->assertFalse($figure->getTitle() === 'false');
             $this->assertFalse($figure->getContentFigure() === 'false');
