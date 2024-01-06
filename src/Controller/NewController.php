@@ -10,10 +10,12 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
 
 class NewController extends AbstractController
 {
     /**
+     * @Route("/tricks/new", name = "app_new")
      * Handles the submission of the new figure form.
      *
      * @param Request $request The request object.
@@ -111,11 +113,13 @@ class NewController extends AbstractController
         $title = preg_replace('~-+~', '-', $title);
         $title = strtolower($title);
 
+        $id = uniqid('', true);
+
         if (empty($title)) {
             return 'n-a';
         }
 
-        return $title;
+        return $title . '-' . $id;
     }
 
     /**

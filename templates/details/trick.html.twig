@@ -5,13 +5,18 @@
             <a href="#" class="text-decoration-none">
                 <i class="fa-solid fa-pencil text-black"></i>&nbsp;
             </a>
-            <a href="#" class="text-decoration-none">
+            <a href="#" id="btnDelete" class="text-decoration-none">
                 &nbsp;<i class="fa-solid fa-trash-can text-black"></i>
             </a>
         </div>
     </div>
     <div class="jumbotron jumbotron-fluid text-center text-dark d-flex align-items-center"
-         style="background-image: url({{ medias[0].getMedImage ? ('/img/uploads/' ~ medias[0].getMedImage) : ('/img/snowboard-7000597_1920.jpg') }});
+         style="background-image:
+         {% if medias is defined and medias[0] is defined and medias[0].getMedImage is not empty %}
+                 url({{ '/img/uploads/' ~ medias[0].getMedImage }});
+         {% else %}
+                 url({{ '/img/snowboard-7000597_1920.jpg' }});
+         {% endif %}
                  background-size: cover;
                  background-position: center;
                  height: 90vh;">
@@ -23,14 +28,13 @@
 </div>
 <!-- Bloc title ending -->
 <!-- Bloc media begin -->
-<div class="container mt-3 mb-3 p-3" style="max-width: 1400px; border: 1px solid black">
+<div class="container mt-3 mb-3 p-3" style="max-width: 1400px;">
     <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-6 g-3 d-flex justify-content-around gap-3">
-        {% dump("Test debug output") %}
         {% if medias is not null %}
             {% for media in medias %}
                 {% if media.getMedVideo() is not null %}
                     <div class="bloc_media card p-0"
-                         style="border: 1px solid red; width: 180px; height: 120px; overflow: hidden;">
+                         style="width: 180px; height: 120px; overflow: hidden;">
                         <iframe width="100%" height="100%" src="https://www.youtube.com/embed/{{ media.getMedVideo() }}"
                                 allowfullscreen></iframe>
                     </div>
@@ -38,18 +42,24 @@
 
                 {% if media.getMedImage() is not null %}
                     <div class="bloc_media card p-0"
-                         style="border: 1px solid red; width: 180px; height: 120px; overflow: hidden;">
+                         style="width: 180px; height: 120px; overflow: hidden;">
                         <img src="/img/uploads/mini/300x300-{{ media.getMedImage }}" alt="image snowboarding"
                              style="width: 100%; height: 100%; object-fit: cover;">
                     </div>
                 {% endif %}
             {% endfor %}
+        {% else %}
+            <div class="d-flex flex-column align-items-center">
+                <span>No media is associated</span>
+                &nbsp;
+                <i class="fa-solid fa-video-slash"></i>
+            </div>
         {% endif %}
     </div>
 </div>
 <!-- Bloc media ending -->
 <!-- Bloc description begin -->
-<article class="d-flex flex-column align-items-center m-3">
+<article class="d-flex flex-column align-items-center m-3 border">
     <p class="m-3 p-3" style="max-width: 1200px;">
         {{ figure.getContentFigure() }}
     </p>
@@ -80,3 +90,33 @@
     </div>
 </div>
 <!-- Bloc description ending -->
+<!-- Box for add medias -->
+<div id="boxDelete" class="modal d-none">
+    <div class="modal-content bg-white w-25 border text-center p-3" style="margin: 15% auto">
+        <div class="modal-body">
+            <p>Do you want to delete this figure ? </p>
+            <button id="closeBoxDelete" class="btnDelete">Leave</button>
+            <button id="deleteFigure" class="btnDelete bg-success text-white">Confirm</button>
+        </div>
+    </div>
+</div>
+
+<style>
+    .modal {
+        position: fixed;
+        z-index: 1;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0, 0, 0, 0.5);
+    }
+
+    .btnDelete {
+        margin: 5px;
+        padding: 10px;
+        cursor: pointer;
+    }
+</style>
+

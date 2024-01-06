@@ -115,7 +115,7 @@ class PictureService
      * @param int|null $height The height of the miniature image (defaults to 250).
      * @return bool True if the file and the miniature image (if it exists) were successfully deleted, false otherwise.
      */
-    public function delete(string $fichier, ?string $folder = '', ?int $width = 250, ?int $height = 250): bool
+    public function delete(string $fichier, ?string $folder = '', ?int $width = 300, ?int $height = 300): bool
     {
         if($fichier !== 'default.webp'){
             $success = false;
