@@ -36,7 +36,7 @@ class CommentRepository extends ServiceEntityRepository
             ->leftJoin('c.figure_associated', 'f')
             ->where('f.slug = :figureSlug')
             ->setParameter('figureSlug', $figureSlug)
-            ->orderBy('c.date_create', 'DESC')
+            ->orderBy('c.id', 'DESC')
             ->setFirstResult($offset)
             ->setMaxResults($limit);
 

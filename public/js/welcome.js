@@ -69,6 +69,7 @@ function loadMore()
             } else {
                 if(flagEmptyData) {
                     flagEmptyData.style.display = "block";
+                    loadSpinner.style.display = "none";
                 }
             }
 
@@ -155,9 +156,9 @@ function loadMore()
             });
             page++;
             loading = false;
-            if (loadSpinner) {
-                loadSpinner.style.display = "none";
-            }
+
+
+
         })
         .catch(error => {
             console.error("Error:", error);
