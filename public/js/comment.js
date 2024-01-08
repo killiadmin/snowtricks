@@ -1,7 +1,13 @@
 var page = 1;
 var loading = false;
 
-function loadMoreComments() {
+/**
+ * Loads more comments for a given slug and page number.
+ *
+ * @return {void}
+ */
+function loadMoreComments()
+{
     if (loading) {
         return;
     }
@@ -14,6 +20,9 @@ function loadMoreComments() {
     fetch(`/load-more-comments/${slug}?page=${page}`)
         .then(response => response.json())
         .then(data => {
+            if (data.comments.length === 0) {
+                loadMoreButton.style.display = "none";
+            }
             // Loop through the comments and create HTML elements for each
             data.comments.forEach(comment => {
                 // Create new comment container
@@ -85,7 +94,3 @@ function loadMoreComments() {
 
 var loadMoreButton = document.getElementById("loadComment");
 loadMoreButton.addEventListener("click", loadMoreComments);
-
-/*document.addEventListener("DOMContentLoaded", function() {
-    loadMoreComments();
-});*/

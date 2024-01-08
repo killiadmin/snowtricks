@@ -1,23 +1,25 @@
 <section id="comments">
     <hr>
+    <h3 class="d-flex justify-content-center">Leave a comment</h3>
     <!--Leave a comment begin -->
-    <form id="commentForm" class="p-3 mx-auto" action="" method="post" style="max-width: 1000px">
-        <div class="form-group">
-            <label for="contentComment"></label>
-            <div class="row">
-                <div class="col-md-8">
-                    <textarea id="contentComment" name="contentComment" class="form-control"></textarea>
+    <div class="p-3 mx-auto d-flex justify-content-center" style="max-width: 1000px;">
+        <div class="form-group w-100">
+            <div class="col-md-8 w-100">
+                {{ form_start(formComment, { 'attr': { 'id': 'formCommentAnchor', 'class': 'd-flex align-items-center gap-1' } }) }}
+                <div class="mr-auto w-100">
+                    {{ form_row(formComment.content_comment) }}
                 </div>
-                <div class="col-md-4 d-flex align-items-center justify-content-end">
-                    <button type="submit" class="btn btn-secondary">Leave a comment</button>
-                </div>
+                <button type="submit" class="btn btn-secondary">
+                    Send
+                </button>
+                {{ form_end(formComment) }}
             </div>
         </div>
-    </form>
+    </div>
     <!--Leave a comment ending -->
     <hr>
     <!--List Comments begin -->
-    <div id ="listCommments" class="container mt-3 d-flex flex-column align-items-center"></div>
+    <div id="listCommments" class="container mt-3 d-flex flex-column align-items-center"></div>
     <!--List Comments ending -->
     <!-- Loadmore comment begin -->
     <div id="loadComment" class="container p-5" style="display: flex; width: 20%; height: 11rem; cursor: pointer">

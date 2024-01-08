@@ -2,6 +2,9 @@
 
 namespace App\Controller;
 
+use App\Entity\Comment;
+use App\Entity\User;
+use App\Form\CommentType;
 use App\Repository\CommentRepository;
 use App\Repository\FigureRepository;
 use App\Repository\MediaRepository;
@@ -27,7 +30,7 @@ class DetailsController extends AbstractController
      * @Route("/tricks/details/{slug}", name="app_details")
      * @throws NonUniqueResultException
      */
-    public function index(string $slug, FigureRepository $figureRepository): Response
+    public function index(Request $request, string $slug, FigureRepository $figureRepository): Response
     {
         $figure = $figureRepository->findOneBySlug($slug);
 
@@ -37,15 +40,38 @@ class DetailsController extends AbstractController
 
         $medias = $figure->getMedias();
 
-        if($medias->isEmpty()){
+        if ($medias->isEmpty()) {
             $medias = null;
+        }
+
+        $comment = new Comment();
+        $postComment = $this->createForm(CommentType::class, $comment);
+        $postComment->handleRequest($request);
+
+        if ($postComment->isSubmitted() && $postComment->isValid()) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $associatedUserId = 1;
+
+            // Implant idUserAssociated
+            $associatedUser = $entityManager->getRepository(User::class)->find($associatedUserId);
+
+            /*$comment->setUserAssociated($this->getUser());*/
+            $comment->setUserAssociated($associatedUser);
+            $comment->setFigureAssociated($figure);
+            $comment->setDateCreate(new \DateTime());
+
+            $entityManager->persist($comment);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('app_details', ['slug' => $slug, '_fragment' => 'loadComment']);
         }
 
         return $this->render('details/index.html.twig', [
             'controller_name' => 'DetailsController',
             'slug' => $slug,
             'figure' => $figure,
-            'medias' => $medias
+            'medias' => $medias,
+            'formComment' => $postComment->createView(),
         ]);
     }
 
