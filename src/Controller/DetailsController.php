@@ -5,10 +5,12 @@ namespace App\Controller;
 use App\Entity\Comment;
 use App\Entity\User;
 use App\Form\CommentType;
+use App\Form\NewFigureType;
 use App\Repository\CommentRepository;
 use App\Repository\FigureRepository;
 use App\Repository\MediaRepository;
 use App\Service\PictureService;
+use App\Service\SlugService;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\NonUniqueResultException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -22,15 +24,18 @@ class DetailsController extends AbstractController
 {
     private PictureService $pictureService;
 
-    public function __construct(PictureService $pictureService) {
+    private SlugService $slugService;
+
+    public function __construct(PictureService $pictureService, SlugService $slugService) {
         $this->pictureService = $pictureService;
+        $this->slugService = $slugService;
     }
 
     /**
-     * @Route("/tricks/details/{slug}", name="app_details")
+     * @Route("/tricks/details/{slug}", name="app_details", methods={"GET","POST"})
      * @throws NonUniqueResultException
      */
-    public function index(Request $request, string $slug, FigureRepository $figureRepository): Response
+    public function index(Request $request, string $slug, FigureRepository $figureRepository, EntityManagerInterface $manager): Response
     {
         $figure = $figureRepository->findOneBySlug($slug);
 
@@ -44,6 +49,20 @@ class DetailsController extends AbstractController
             $medias = null;
         }
 
+        // Editing Form Figure
+        $figureForm = $this->createForm(NewFigureType::class, $figure);
+        $figureForm->handleRequest($request);
+
+        if ($figureForm->isSubmitted() && $figureForm->isValid()) {
+            $title = $figureForm->get('title')->getData();
+            $figure->setSlug($this->slugService->generateSlug($title));
+
+            $manager->flush();
+
+            return $this->redirectToRoute('app_details', ['slug' => $figure->getSlug()]);
+        }
+
+        // Section Comments
         $comment = new Comment();
         $postComment = $this->createForm(CommentType::class, $comment);
         $postComment->handleRequest($request);
@@ -66,12 +85,14 @@ class DetailsController extends AbstractController
             return $this->redirectToRoute('app_details', ['slug' => $slug, '_fragment' => 'loadComment']);
         }
 
+        // Return render
         return $this->render('details/index.html.twig', [
             'controller_name' => 'DetailsController',
             'slug' => $slug,
             'figure' => $figure,
             'medias' => $medias,
             'formComment' => $postComment->createView(),
+            'figureForm' => $figureForm->createView(),
         ]);
     }
 

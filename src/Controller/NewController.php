@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Figure;
 use App\Form\NewFigureType;
 use App\Service\PictureService;
+use App\Service\SlugService;
 use Proxies\__CG__\App\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -14,6 +15,13 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class NewController extends AbstractController
 {
+    private SlugService $slugService;
+
+    public function __construct(SlugService $slugService)
+    {
+        $this->slugService = $slugService;
+    }
+
     /**
      * @Route("/tricks/new", name = "app_new")
      * Handles the submission of the new figure form.
@@ -36,7 +44,7 @@ class NewController extends AbstractController
             $timeStamp = new \DateTime();
 
             // Generate a slug
-            $slug = $this->generateSlug($figure->getTitle());
+            $slug = $this->slugService->generateSlug($figure->getTitle());
 
             // ID user associated
             $associatedUserId = 1;
@@ -99,28 +107,6 @@ class NewController extends AbstractController
         ]);
     }
 
-    /**
-     * Generate a slug with a title
-     * @param $title
-     * @return string
-     */
-    private function generateSlug($title): string
-    {
-        $title = preg_replace('~[^\pL\d]+~u', '-', $title);
-        $title = iconv('utf-8', 'us-ascii//TRANSLIT', $title);
-        $title = preg_replace('~[^-\w]+~', '', $title);
-        $title = trim($title, '-');
-        $title = preg_replace('~-+~', '-', $title);
-        $title = strtolower($title);
-
-        $id = uniqid('', true);
-
-        if (empty($title)) {
-            return 'n-a';
-        }
-
-        return $title . '-' . $id;
-    }
 
     /**
      * Retrieves the video ID from the given URL.

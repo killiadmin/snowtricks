@@ -2,7 +2,7 @@
 <div class="container-fluid p-0 position-relative">
     <div class="bloc_button-card d-flex flex-row-reverse gap-3 p-5 position-absolute" style="right: 100px;">
         <div class="container bg-light display-6">
-            <a href="#" class="text-decoration-none">
+            <a href="#" id="editButton" class="text-decoration-none">
                 <i class="fa-solid fa-pencil text-black"></i>&nbsp;
             </a>
             <a href="#" id="btnDelete" class="text-decoration-none">
@@ -10,6 +10,7 @@
             </a>
         </div>
     </div>
+    {{ form_start(figureForm) }}
     <div class="jumbotron jumbotron-fluid text-center text-dark d-flex align-items-center"
          style="background-image:
          {% if medias is defined and medias[0] is defined and medias[0].getMedImage is not empty %}
@@ -21,8 +22,11 @@
                  background-position: center;
                  height: 90vh;">
         <div class="container">
-            <h1 class="display-4 mx-auto"
-                style="text-shadow: 1px 1px 0 white, -1px -1px 0 white, 1px -1px 0 white, -1px 1px 0 white;">{{ figure.getTitle() }}</h1>
+            <h1 class="display-4 mx-auto edit-form edit-mode" style="text-shadow: 1px 1px 0 white, -1px -1px 0 white, 1px -1px 0 white, -1px 1px 0 white;">{{ figure.getTitle() }}</h1>
+            <div class="edit-form edit-mode w-50 m-auto" style="display: none;">
+                {{ form_row(figureForm.title, {'label': false}) }}
+            </div>
+
         </div>
     </div>
 </div>
@@ -33,7 +37,7 @@
         {% if medias is not null %}
             {% for media in medias %}
                 {% if media.getMedVideo() is not null %}
-                    <div class="bloc_media card p-0"
+                    <div class="bloc_media card p-0 edit-form edit-mode"
                          style="width: 180px; height: 120px; overflow: hidden;">
                         <iframe width="100%" height="100%" src="https://www.youtube.com/embed/{{ media.getMedVideo() }}"
                                 allowfullscreen></iframe>
@@ -41,12 +45,15 @@
                 {% endif %}
 
                 {% if media.getMedImage() is not null %}
-                    <div class="bloc_media card p-0"
+                    <div class="bloc_media card p-0 edit-form edit-mode"
                          style="width: 180px; height: 120px; overflow: hidden;">
                         <img src="/img/uploads/mini/300x300-{{ media.getMedImage }}" alt="image snowboarding"
                              style="width: 100%; height: 100%; object-fit: cover;">
                     </div>
                 {% endif %}
+                <div class="edit-form edit-mode" style="display: none;">
+                    {{ form_row(figureForm.medias) }}
+                </div>
             {% endfor %}
         {% else %}
             <div class="d-flex flex-column align-items-center">
@@ -59,10 +66,13 @@
 </div>
 <!-- Bloc media ending -->
 <!-- Bloc description begin -->
-<article class="d-flex flex-column align-items-center m-3 border">
-    <p class="m-3 p-3" style="max-width: 1200px;">
+<article class="d-flex flex-column align-items-center m-3 border bg-light">
+    <p class="m-3 p-3 edit-form edit-mode" style="max-width: 1200px;">
         {{ figure.getContentFigure() }}
     </p>
+    <div class="edit-form edit-mode w-75 p-5" style="display: none;">
+        {{ form_row(figureForm.contentFigure, {'label': false}) }}
+    </div>
 </article>
 
 <div class="container">
@@ -78,7 +88,10 @@
         <div class="border p-3 rounded">
             <p class="fw-bold m-0">Category : </p>
             <hr class="m-0">
-            <p class="mb-0 mt-3">{{ figure.getCategory() }}</p>
+            <p class="mb-0 mt-3 edit-form edit-mode">{{ figure.getCategory() }}</p>
+            <div class="edit-form edit-mode" style="display: none;">
+                {{ form_row(figureForm.category, {'label': false}) }}
+            </div>
         </div>
 
         <!-- Date updated -->
@@ -89,6 +102,11 @@
         </div>
     </div>
 </div>
+<div class="m-auto text-center mt-3 edit-form edit-mode" style="display: none">
+    <button id="valdateEditionFigure" class="btn btn-warning">Submit changes</button>
+</div>
+
+    {{ form_end(figureForm) }}
 <!-- Bloc description ending -->
 <!-- Box for add medias -->
 <div id="boxDelete" class="modal d-none">
@@ -100,6 +118,15 @@
         </div>
     </div>
 </div>
+
+<script>
+    document.getElementById("editButton").addEventListener("click", function() {
+        // bascule entre les modes de lecture et d'édition
+        document.querySelectorAll(".read-mode, .edit-mode").forEach(function(element) {
+            element.style.display = (element.style.display === "none") ? "block" : "none";
+        });
+    });
+</script>
 
 <style>
     .modal {
