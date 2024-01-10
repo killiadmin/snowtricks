@@ -5,6 +5,7 @@ namespace App\DataFixtures;
 use App\Entity\Comment;
 use App\Entity\Figure;
 use App\Entity\User;
+use App\Service\SlugService;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Faker\Factory;
@@ -14,12 +15,20 @@ use Symfony\Component\Security\Core\Validator\Constraints\UserPassword;
 class AppFixtures extends Fixture
 {
     private UserPasswordEncoderInterface $encoder;
+    private SlugService $slugService;
 
-    public function __construct(UserPasswordEncoderInterface $encoder)
+    public function __construct(UserPasswordEncoderInterface $encoder, SlugService $slugService)
     {
         $this->encoder = $encoder;
+        $this->slugService = $slugService;
     }
 
+    /**
+     * Load data fixtures into the database.
+     *
+     * @param ObjectManager $manager The object manager
+     * @return void
+     */
     public function load(ObjectManager $manager): void
     {
         require_once 'vendor/autoload.php';
@@ -57,7 +66,7 @@ class AppFixtures extends Fixture
                     ->setVideoFigure($faker->imageUrl())
                     ->setDateCreate($faker->dateTimeBetween('-6 month', 'now'))
                     ->setUserAssociated($user)
-                    ->setSlug($this->generateSlug($title))
+                    ->setSlug($this->slugService->generateSlug($title))
                     ->setDateUpdate($faker->dateTimeBetween('-1 month', 'now'));
 
                 $manager->persist($figure);
@@ -81,21 +90,5 @@ class AppFixtures extends Fixture
         }
 
         $manager->flush();
-    }
-
-    private function generateSlug($text): string
-    {
-        $text = preg_replace('~[^\pL\d]+~u', '-', $text);
-        $text = iconv('utf-8', 'us-ascii//TRANSLIT', $text);
-        $text = preg_replace('~[^-\w]+~', '', $text);
-        $text = trim($text, '-');
-        $text = preg_replace('~-+~', '-', $text);
-        $text = strtolower($text);
-
-        if (empty($text)) {
-            return 'n-a';
-        }
-
-        return $text;
     }
 }

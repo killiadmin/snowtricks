@@ -21,6 +21,11 @@ class HomeController extends AbstractController
 
     /**
      * @Route("/load-more", name="load_more")
+     * Retrieves a list of figures to load for pagination.
+     *
+     * @param FigureRepository $figureRepository The repository for figures.
+     * @param Request $request The request object containing the page number.
+     * @return JsonResponse The JSON response containing the loaded figures.
      */
     public function loadMore(FigureRepository $figureRepository, Request $request): JsonResponse
     {

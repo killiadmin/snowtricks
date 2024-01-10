@@ -16,7 +16,7 @@
          {% if medias is defined and medias[0] is defined and medias[0].getMedImage is not empty %}
                  url({{ '/img/uploads/' ~ medias[0].getMedImage }});
          {% else %}
-                 url({{ '/img/snowboard-7000597_1920.jpg' }});
+                 url({{ '/img/default_snowboard.webp' }});
          {% endif %}
                  background-size: cover;
                  background-position: center;
@@ -52,7 +52,11 @@
                     </div>
                 {% endif %}
                 <div class="edit-form edit-mode" style="display: none;">
-                    {{ form_row(figureForm.medias) }}
+                    {% for mediaForm in figureForm.medias %}
+                        {{ form_row(mediaForm.med_video) }}
+                        {{ form_row(mediaForm.med_image) }}
+                    {% endfor %}
+                    {#{{ form_row(figureForm.medias) }}#}
                 </div>
             {% endfor %}
         {% else %}
@@ -118,15 +122,6 @@
         </div>
     </div>
 </div>
-
-<script>
-    document.getElementById("editButton").addEventListener("click", function() {
-        // bascule entre les modes de lecture et d'édition
-        document.querySelectorAll(".read-mode, .edit-mode").forEach(function(element) {
-            element.style.display = (element.style.display === "none") ? "block" : "none";
-        });
-    });
-</script>
 
 <style>
     .modal {

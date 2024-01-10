@@ -11,6 +11,14 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class MediaType extends AbstractType
 {
+    /**
+     * Builds the form.
+     *
+     * @param FormBuilderInterface $builder The form builder.
+     * @param array $options The form options.
+     *
+     * @return void
+     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
@@ -25,6 +33,7 @@ class MediaType extends AbstractType
                 'label' => 'Pictures',
                 'multiple' => false,
                 'required' => false,
+                'data_class' => null,
                 'attr' => [
                     'class' => 'form-control'
                 ]

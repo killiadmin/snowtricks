@@ -1,9 +1,13 @@
+// Number of pages of the list of figures
 var page = 1;
 
 // Variable to track loading status
 var loading = false;
 
+// Figure card affection bloc
 var blocCards = document.querySelector(".bloc_cards");
+
+// Loading spinner
 var loadSpinner = document.getElementById("load_spinner");
 
 /**
@@ -15,8 +19,8 @@ var loadSpinner = document.getElementById("load_spinner");
  */
 function deleteFigureWithTrash(slug)
 {
-    fetch('/tricks/details/' + slug + '/delete', {
-        method: 'DELETE',
+    fetch("/tricks/details/" + slug + "/delete", {
+        method: "DELETE",
     })
         .then(response => {
             if (!response.ok) {
@@ -32,14 +36,12 @@ function deleteFigureWithTrash(slug)
             }
         })
         .catch(error => {
-            console.error('There was a problem with the fetch operation:', error);
+            console.error("There was a problem with the fetch operation:", error);
         });
 }
 
 /**
  * Loading more data asynchronously when the user scrolls down.
- *
- *
  * @return {void}
  */
 function loadMore()
@@ -76,6 +78,7 @@ function loadMore()
             //Creation of new figure cards
             data.forEach((item) => {
                 setTimeout(node => {
+                    console.log(item);
                     // Created new card
                     var newCard = document.createElement("div");
                     newCard.className = "card";
@@ -131,7 +134,7 @@ function loadMore()
                     trashIcon.innerHTML = '<i class="fa-solid fa-trash-can text-black"></i>'
                     trashIcon.style.cursor = "pointer";
                     trashIcon.addEventListener('click', function (event) {
-                        deleteFigureWithTrash(item.slug)
+                        deleteFigureWithTrash(item.slug);
                     });
 
                     buttonCard.appendChild(pencilIcon);
@@ -151,14 +154,10 @@ function loadMore()
                             loadSpinner.style.display = "none";
                         }
                     }, 3000);
-
                 }, 2000);
             });
             page++;
             loading = false;
-
-
-
         })
         .catch(error => {
             console.error("Error:", error);
@@ -169,7 +168,9 @@ function loadMore()
         });
 }
 
-// On user scroll
+/**
+ * When the user scrolls, the figure loading method applies
+*/
 window.addEventListener("scroll", function() {
     if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 100) {
         loadMore();

@@ -1,19 +1,18 @@
-var boxDelete = document.getElementById("boxDelete");
+/**
+ * Retrieves the slug from the current URL.
+ *
+ * @return {string} The slug extracted from the URL.
+ */
+function getSlug() {
+    // Url current
+    var url = new URL(window.location.href);
 
-document.getElementById("btnDelete").addEventListener("click", function () {
-    boxDelete.classList.remove("d-none");
-    boxDelete.classList.add("d-block");
-});
+    // Split the path in segments
+    var segments = url.pathname.split("/");
 
-document.getElementById("closeBoxDelete").addEventListener("click", function () {
-    boxDelete.classList.remove("d-block");
-    boxDelete.classList.add("d-none");
-});
-
-document.getElementById("deleteFigure").addEventListener("click", function (){
-    var slug = getSlug();
-    deleteFigure(slug);
-});
+    // The slug in the last segment in URL
+    return segments[segments.length - 1];
+}
 
 /**
  * Deletes a figure by making an HTTP DELETE request to the server.
@@ -22,10 +21,9 @@ document.getElementById("deleteFigure").addEventListener("click", function (){
  *
  * @return {void}
  */
- function deleteFigure(slug)
-{
-    fetch('/tricks/details/' + slug + '/delete', {
-        method: 'DELETE',
+function deleteFigure(slug) {
+    fetch("/tricks/details/" + slug + "/delete", {
+        method: "DELETE",
     })
         .then(response => {
             if (!response.ok) {
@@ -40,23 +38,37 @@ document.getElementById("deleteFigure").addEventListener("click", function (){
             }
         })
         .catch(error => {
-            console.error('There was a problem with the fetch operation:', error);
+            console.error("There was a problem with the fetch operation:", error);
         });
 }
 
 /**
- * Retrieves the slug from the current URL.
- *
- * @return {string} The slug extracted from the URL.
+ * Methods for DELETE elements
+ * Declarations EventListener for delete a figures
+ * @type {HTMLElement}
  */
-function getSlug()
-{
-    // Obtenir l'URL courante
-    var url = new URL(window.location.href);
+var boxDelete = document.getElementById("boxDelete");
 
-    // Diviser le chemin en segments
-    var segments = url.pathname.split('/');
+document.getElementById("btnDelete").addEventListener("click", function () {
+    boxDelete.classList.remove("d-none");
+    boxDelete.classList.add("d-block");
+});
 
-    // Le slug est le dernier segment de l'URL
-    return segments[segments.length - 1];
-}
+document.getElementById("closeBoxDelete").addEventListener("click", function () {
+    boxDelete.classList.remove("d-block");
+    boxDelete.classList.add("d-none");
+});
+
+document.getElementById("deleteFigure").addEventListener("click", function () {
+    deleteFigure(getSlug());
+});
+
+/**
+ * Methods for UPDATE elements
+ * Declarations EventListener for update a figures
+ */
+document.getElementById("editButton").addEventListener("click", function() {
+    document.querySelectorAll(".read-mode, .edit-mode").forEach(function(element) {
+        element.style.display = (element.style.display === "none") ? "block" : "none";
+    });
+});

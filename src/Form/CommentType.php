@@ -10,6 +10,15 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class CommentType extends AbstractType
 {
+    /**
+     * Builds a form using the FormBuilderInterface.
+     *
+     * This method adds a field with the name 'content_comment' to the form using the TextType class.
+     *
+     * @param FormBuilderInterface $builder The form builder interface used to build the form
+     * @param array $options An array of options passed to the form builder
+     * @return void
+     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder

@@ -1,14 +1,58 @@
+// Media box to add a video field or a picture field
 var modal = document.getElementById("boxMedia");
-
+//Media element for append
+var medias = document.getElementById("medias");
+// Video counter
 var countVideos = 0;
+// Picture counter
 var countPictures = 0;
 
-document.getElementById("addMedia").addEventListener("click", addComponentMedia);
-document.getElementById(("closeMedia")).addEventListener("click", closeComponentMedia);
+/**
+ * Displays the component media in a modal.
+ *
+ * @return {void}
+ */
+function addComponentMedia()
+{
+    modal.style.display = "block";
+}
 
-var medias = document.getElementById("medias");
-document.getElementById("new_figure_medias").appendChild(medias);
+/**
+ * Closes the component media.
+ *
+ * @return {void}
+ */
+function closeComponentMedia()
+{
+    modal.style.display = "none";
+}
 
+/**
+ * Updates the message display based on the countVideos and countPictures variables.
+ * If there are no videos or pictures associated, it will display a message saying "No media is associated".
+ *
+ * @return {void}
+ */
+function updateMessageDisplay()
+{
+    var messageDiv = document.getElementById("messageEmptyData");
+
+    if(!messageDiv) {
+        messageDiv = document.createElement("div");
+        messageDiv.id = "messageEmptyData";
+        messageDiv.className = "text-center";
+        medias.appendChild(divMessage);
+    }
+
+    if(countVideos === 0 && countPictures === 0){
+        messageDiv.textContent = "No media is associated";
+        messageDiv.style.display = "block";
+    }
+}
+
+/**
+ * If no media is associated with the form, a message is displayed
+ */
 if (countVideos === 0 && countPictures === 0){
     var divMessage = document.createElement("div");
     divMessage.id = "messageEmptyData";
@@ -17,7 +61,16 @@ if (countVideos === 0 && countPictures === 0){
     medias.appendChild(divMessage);
 }
 
-//Method add a bloc image
+/**
+ * Several eventListeners to dynamically add media to the form
+ */
+document.getElementById("addMedia").addEventListener("click", addComponentMedia);
+document.getElementById(("closeMedia")).addEventListener("click", closeComponentMedia);
+document.getElementById("new_figure_medias").appendChild(medias);
+
+/**
+ * Method add  for a bloc image
+ */
 document.getElementById("addImage").addEventListener("click", function() {
     var prototypeMedias = document.getElementById("medias").getAttribute("data-prototype");
     var newIndex = medias.children.length;
@@ -57,7 +110,9 @@ document.getElementById("addImage").addEventListener("click", function() {
     closeComponentMedia();
 });
 
-//Method add a bloc video
+/**
+ * Method add for a bloc video
+ */
 document.addEventListener("DOMContentLoaded", function() {
     document.getElementById("addVideo").addEventListener("click", function() {
         var prototype = medias.getAttribute("data-prototype");
@@ -100,35 +155,9 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 });
 
-// Submit Form for a created a new figure
-
+/**
+ * Submit Form for a created a new figure
+ */
 document.getElementById("createFigureBtn").addEventListener("click", function() {
     document.getElementById("formFigure").submit();
 });
-
-
-//****************************************FUNCTIONS*******************************************************************\\
-
-function addComponentMedia() {
-    modal.style.display = "block";
-}
-
-function closeComponentMedia() {
-    modal.style.display = "none";
-}
-
-function updateMessageDisplay() {
-    var messageDiv = document.getElementById("messageEmptyData");
-
-    if(!messageDiv) {
-        messageDiv = document.createElement("div");
-        messageDiv.id = "messageEmptyData";
-        messageDiv.className = "text-center";
-        medias.appendChild(divMessage);
-    }
-
-    if(countVideos === 0 && countPictures === 0){
-        messageDiv.textContent = "No media is associated";
-        messageDiv.style.display = "block";
-    }
-}

@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Comment;
+use App\Entity\Figure;
 use App\Entity\User;
 use App\Form\CommentType;
 use App\Form\NewFigureType;
@@ -13,6 +14,7 @@ use App\Service\PictureService;
 use App\Service\SlugService;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\NonUniqueResultException;
+use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -40,7 +42,7 @@ class DetailsController extends AbstractController
         $figure = $figureRepository->findOneBySlug($slug);
 
         if (!$figure) {
-            throw $this->createNotFoundException('Figure not found.');
+            throw $this->createNotFoundException('Figure not found');
         }
 
         $medias = $figure->getMedias();
@@ -73,8 +75,6 @@ class DetailsController extends AbstractController
 
             // Implant idUserAssociated
             $associatedUser = $entityManager->getRepository(User::class)->find($associatedUserId);
-
-            /*$comment->setUserAssociated($this->getUser());*/
             $comment->setUserAssociated($associatedUser);
             $comment->setFigureAssociated($figure);
             $comment->setDateCreate(new \DateTime());
@@ -139,10 +139,10 @@ class DetailsController extends AbstractController
     }
 
     /**
+     * @Route("/load-more-comments/{slug}", name="load_more_comments", methods={"GET"})
      * Function allowing comments to be loaded in blocks of 5,
      * comments are filtered by the lug which will be passed through the url
-     * @Route("/load-more-comments/{slug}", name="load_more_comments", methods={"GET"})
-     * @throws \Exception
+     * @throws Exception
      */
     public function loadMoreComments(CommentRepository $commentRepository, Request $request): JsonResponse
     {

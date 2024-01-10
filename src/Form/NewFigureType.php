@@ -14,8 +14,10 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class NewFigureType extends AbstractType
 {
     /**
-     * @param FormBuilderInterface $builder
-     * @param array $options
+     * Builds the form for creating a new Figure.
+     *
+     * @param FormBuilderInterface $builder The form builder.
+     * @param array $options The form options.
      * @return void
      */
     public function buildForm(FormBuilderInterface $builder, array $options): void

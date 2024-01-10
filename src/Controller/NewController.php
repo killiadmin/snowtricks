@@ -107,7 +107,6 @@ class NewController extends AbstractController
         ]);
     }
 
-
     /**
      * Retrieves the video ID from the given URL.
      *
