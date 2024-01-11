@@ -11,7 +11,7 @@ use App\Repository\CommentRepository;
 use App\Repository\FigureRepository;
 use App\Repository\MediaRepository;
 use App\Service\PictureService;
-use App\Service\SlugService;
+use App\Service\UtilsService;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\NonUniqueResultException;
 use Exception;
@@ -26,9 +26,9 @@ class DetailsController extends AbstractController
 {
     private PictureService $pictureService;
 
-    private SlugService $slugService;
+    private UtilsService $slugService;
 
-    public function __construct(PictureService $pictureService, SlugService $slugService) {
+    public function __construct(PictureService $pictureService, UtilsService $slugService) {
         $this->pictureService = $pictureService;
         $this->slugService = $slugService;
     }
@@ -136,6 +136,36 @@ class DetailsController extends AbstractController
         return new JsonResponse([
             'redirect' => $this->generateUrl('app_home')
         ]);
+    }
+
+    /**
+     * @Route("/media/{id}/delete", name="media_delete", methods={"DELETE"})
+     * Deletes a media entry from the database and associated file if applicable.
+     *
+     * @param int $id The ID of the media entry to delete.
+     * @param MediaRepository $mediaRepository The media repository object for retrieving the media entry.
+     * @param EntityManagerInterface $em The entity manager object for deleting the media entry.
+     * @return Response A JSON response indicating the success or failure of the deletion.
+     * @throws NotFoundHttpException If the media entry does not exist.
+     */
+    public function deleteMedia(int $id, MediaRepository $mediaRepository, EntityManagerInterface $em): Response
+    {
+        // Find media by id
+        $media = $mediaRepository->find($id);
+
+        // If the media does not exist, throw an exception
+        if (!$media) {
+            throw $this->createNotFoundException('The media does not exist');
+        }
+
+        if ($media->getMedType() === 'image') {
+            $this->pictureService->delete($media->getMedImage(), 'uploads');
+        }
+
+        $em->remove($media);
+        $em->flush();
+
+        return new JsonResponse(['message' => 'Media successfully deleted']);
     }
 
     /**

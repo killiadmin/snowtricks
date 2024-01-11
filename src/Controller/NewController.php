@@ -5,7 +5,7 @@ namespace App\Controller;
 use App\Entity\Figure;
 use App\Form\NewFigureType;
 use App\Service\PictureService;
-use App\Service\SlugService;
+use App\Service\UtilsService;
 use Proxies\__CG__\App\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -15,11 +15,11 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class NewController extends AbstractController
 {
-    private SlugService $slugService;
+    private UtilsService $utilsService;
 
-    public function __construct(SlugService $slugService)
+    public function __construct(UtilsService $utilsService)
     {
-        $this->slugService = $slugService;
+        $this->utilsService = $utilsService;
     }
 
     /**
@@ -44,7 +44,7 @@ class NewController extends AbstractController
             $timeStamp = new \DateTime();
 
             // Generate a slug
-            $slug = $this->slugService->generateSlug($figure->getTitle());
+            $slug = $this->utilsService->generateSlug($figure->getTitle());
 
             // ID user associated
             $associatedUserId = 1;
@@ -65,7 +65,7 @@ class NewController extends AbstractController
                 if (!empty($media->getMedVideo())) {
                     $media->setMedType('video');
                     $media->setMedFigureAssociated($figure);
-                    $media->setMedVideo($this->getIdsVideos($media->getMedVideo()));
+                    $media->setMedVideo($this->utilsService->getIdsVideos($media->getMedVideo()));
                     $entityManager->persist($media);
                 }
 
@@ -105,26 +105,5 @@ class NewController extends AbstractController
         return $this->render('new/index.html.twig', [
             'form' => $form->createView(),
         ]);
-    }
-
-    /**
-     * Retrieves the video ID from the given URL.
-     *
-     * @param string $url The URL of the video.
-     * @return string|null The video ID if found in the URL, null otherwise.
-     */
-    private function getIdsVideos(string $url): ?string
-    {
-        $parts = parse_url($url);
-
-        if (isset($parts['query'])) {
-            parse_str($parts['query'], $qs);
-
-            if (isset($qs['v'])) {
-                return $qs['v'];
-            }
-        }
-
-        return null;
     }
 }

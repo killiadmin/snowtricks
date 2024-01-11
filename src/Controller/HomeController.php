@@ -36,9 +36,16 @@ class HomeController extends AbstractController
         // Transform data into associative array
         $data = [];
         foreach ($figures as $figure) {
+            $medias = $figure->getMedias();
+            $pictures = [];
+
+            foreach ($medias as $media) {
+                $pictures[] = $media->getMedImage();
+            }
+
             $data[] = [
                 'title' => $figure->getTitle(),
-                'picture' => $figure->getPictureFigure(),
+                'picture' => $pictures,
                 'slug' => $figure->getSlug()
             ];
         }

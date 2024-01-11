@@ -26,7 +26,6 @@
             <div class="edit-form edit-mode w-50 m-auto" style="display: none;">
                 {{ form_row(figureForm.title, {'label': false}) }}
             </div>
-
         </div>
     </div>
 </div>
@@ -38,27 +37,46 @@
             {% for media in medias %}
                 {% if media.getMedVideo() is not null %}
                     <div class="bloc_media card p-0 edit-form edit-mode"
-                         style="width: 180px; height: 120px; overflow: hidden;">
+                         style="width: 180px; height: 120px; position: relative;">
+                        <a href="#" id="btnVideoDelete" class="text-decoration-none" data-media-id="{{ media.id }}">
+                            <i class="fa-solid fa-trash-can text-black"
+                               style="position: absolute; top: -10px; right: -10px;"></i>
+                        </a>
                         <iframe width="100%" height="100%" src="https://www.youtube.com/embed/{{ media.getMedVideo() }}"
-                                allowfullscreen></iframe>
+                                allowfullscreen style="width: 100%; height: 100%;"></iframe>
                     </div>
                 {% endif %}
 
                 {% if media.getMedImage() is not null %}
                     <div class="bloc_media card p-0 edit-form edit-mode"
-                         style="width: 180px; height: 120px; overflow: hidden;">
+                         style="width: 180px; height: 120px; position: relative;">
+                        <a href="#" id="btnImageDelete" class="text-decoration-none" data-media-id="{{ media.id }}">
+                            <i class="fa-solid fa-trash-can text-black"
+                               style="position: absolute; top: -10px; right: -10px;"></i>
+                        </a>
                         <img src="/img/uploads/mini/300x300-{{ media.getMedImage }}" alt="image snowboarding"
                              style="width: 100%; height: 100%; object-fit: cover;">
                     </div>
                 {% endif %}
-                <div class="edit-form edit-mode" style="display: none;">
-                    {% for mediaForm in figureForm.medias %}
-                        {{ form_row(mediaForm.med_video) }}
-                        {{ form_row(mediaForm.med_image) }}
-                    {% endfor %}
-                    {#{{ form_row(figureForm.medias) }}#}
-                </div>
             {% endfor %}
+            <div class="edit-form edit-mode" style="display: none;">
+                <div class="d-flex justify-content-evenly gap-3">
+                    {% for mediaForm in figureForm.medias %}
+                        <div class="d-flex justify-content-evenly">
+                            <div class="bloc_media card p-0"
+                                 style="width: 180px; height: 120px; position: relative;">
+                                {{ form_row(mediaForm.med_video) }}
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-evenly">
+                            <div class="bloc_media card p-0"
+                                 style="width: 180px; height: 120px; position: relative;">
+                                {{ form_row(mediaForm.med_image) }}
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
         {% else %}
             <div class="d-flex flex-column align-items-center">
                 <span>No media is associated</span>
@@ -109,10 +127,9 @@
 <div class="m-auto text-center mt-3 edit-form edit-mode" style="display: none">
     <button id="valdateEditionFigure" class="btn btn-warning">Submit changes</button>
 </div>
-
     {{ form_end(figureForm) }}
 <!-- Bloc description ending -->
-<!-- Box for add medias -->
+<!-- Box for add medias begin -->
 <div id="boxDelete" class="modal d-none">
     <div class="modal-content bg-white w-25 border text-center p-3" style="margin: 15% auto">
         <div class="modal-body">
@@ -122,7 +139,7 @@
         </div>
     </div>
 </div>
-
+<!-- Box for add medias ending -->
 <style>
     .modal {
         position: fixed;

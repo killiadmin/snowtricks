@@ -5,7 +5,7 @@ namespace App\DataFixtures;
 use App\Entity\Comment;
 use App\Entity\Figure;
 use App\Entity\User;
-use App\Service\SlugService;
+use App\Service\UtilsService;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Faker\Factory;
@@ -15,12 +15,12 @@ use Symfony\Component\Security\Core\Validator\Constraints\UserPassword;
 class AppFixtures extends Fixture
 {
     private UserPasswordEncoderInterface $encoder;
-    private SlugService $slugService;
+    private UtilsService $utilsService;
 
-    public function __construct(UserPasswordEncoderInterface $encoder, SlugService $slugService)
+    public function __construct(UserPasswordEncoderInterface $encoder, UtilsService $utilsService)
     {
         $this->encoder = $encoder;
-        $this->slugService = $slugService;
+        $this->utilsService = $utilsService;
     }
 
     /**
@@ -66,7 +66,7 @@ class AppFixtures extends Fixture
                     ->setVideoFigure($faker->imageUrl())
                     ->setDateCreate($faker->dateTimeBetween('-6 month', 'now'))
                     ->setUserAssociated($user)
-                    ->setSlug($this->slugService->generateSlug($title))
+                    ->setSlug($this->utilsService->generateSlug($title))
                     ->setDateUpdate($faker->dateTimeBetween('-1 month', 'now'));
 
                 $manager->persist($figure);

@@ -26,10 +26,11 @@ class FigureRepository extends ServiceEntityRepository
      * Function to return all figures in the database
      * @return Figure[] Returns an array of Figure objects in blocks of 15
      */
-
-    public function selectAllFigures(int $page, int $limit)
+    public function selectAllFigures(int $page, int $limit): array
     {
         $query = $this->createQueryBuilder('f')
+            ->leftJoin('f.medias', 'm')
+            ->addSelect('m')
             ->orderBy('f.id', 'DESC')
             ->setFirstResult(($page - 1) * $limit)
             ->setMaxResults($limit)

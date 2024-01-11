@@ -78,7 +78,6 @@ function loadMore()
             //Creation of new figure cards
             data.forEach((item) => {
                 setTimeout(node => {
-                    console.log(item);
                     // Created new card
                     var newCard = document.createElement("div");
                     newCard.className = "card";
@@ -96,7 +95,11 @@ function loadMore()
 
                     var img = document.createElement("img");
 
-                    img.src = item.picture ?? "/img/figure-0001.jpeg";
+                    let validImage = item.picture.find(p => p !== null && p !== "undefined");
+
+                    img.src = validImage
+                        ? "/img/uploads/mini/300x300-" + validImage
+                        : "/img/figure-0001.jpeg";
 
                     img.className = "card-img-top";
                     img.alt = "figure snowboarding";
@@ -133,7 +136,7 @@ function loadMore()
                     var trashIcon = document.createElement("a");
                     trashIcon.innerHTML = '<i class="fa-solid fa-trash-can text-black"></i>'
                     trashIcon.style.cursor = "pointer";
-                    trashIcon.addEventListener('click', function (event) {
+                    trashIcon.addEventListener("click", function (event) {
                         deleteFigureWithTrash(item.slug);
                     });
 
