@@ -4,7 +4,11 @@
     {{ form_start(form, {'attr': {'id': 'formFigure'}}) }}
     {{ form_row(form._token) }}
     <div class="form-group p-3">
-        {{ form_row(form.title) }}
+        {{ form_label(form.title) }}
+        <div class="text-danger fw-bold rounded">
+            {{ form_errors(form.title) }}
+        </div>
+        {{ form_widget(form.title) }}
     </div>
     <div class="form-group p-3">
         {{ form_row(form.contentFigure) }}

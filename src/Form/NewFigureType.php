@@ -48,8 +48,10 @@ class NewFigureType extends AbstractType
                     'class' => 'form-control'
                 ],
                 'required' => true
-            ])
-            ->add('medias', CollectionType::class, [
+            ]);
+
+        if ($options['display_medias']) {
+            $builder->add('medias', CollectionType::class, [
                 'label' => false,
                 'entry_type' => MediaType::class,
                 'allow_add' => true,
@@ -59,6 +61,7 @@ class NewFigureType extends AbstractType
                 'prototype' => true,
                 'prototype_name' => '__media__',
             ]);
+        }
     }
 
     /**
@@ -69,6 +72,7 @@ class NewFigureType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Figure::class,
+            'display_medias' => true
         ]);
     }
 }

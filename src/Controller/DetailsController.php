@@ -52,7 +52,7 @@ class DetailsController extends AbstractController
         }
 
         // Editing Form Figure
-        $figureForm = $this->createForm(NewFigureType::class, $figure);
+        $figureForm = $this->createForm(NewFigureType::class, $figure, ['display_medias' => false]);
         $figureForm->handleRequest($request);
 
         if ($figureForm->isSubmitted() && $figureForm->isValid()) {
@@ -72,8 +72,6 @@ class DetailsController extends AbstractController
         if ($postComment->isSubmitted() && $postComment->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
             $associatedUserId = 1;
-
-            // Implant idUserAssociated
             $associatedUser = $entityManager->getRepository(User::class)->find($associatedUserId);
             $comment->setUserAssociated($associatedUser);
             $comment->setFigureAssociated($figure);

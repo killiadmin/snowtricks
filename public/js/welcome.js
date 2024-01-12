@@ -94,13 +94,16 @@ function loadMore()
                     imgCard.style.overflow = "hidden";
 
                     var img = document.createElement("img");
+                    let imgValid = "";
 
-                    let validImage = item.picture.find(p => p !== null && p !== "undefined");
+                    for (let picture of item.picture) {
+                        if (picture) {
+                            imgValid = picture;
+                            break;
+                        }
+                    }
 
-                    img.src = validImage
-                        ? "/img/uploads/mini/300x300-" + validImage
-                        : "/img/figure-0001.jpeg";
-
+                    img.src = imgValid ? "/img/uploads/mini/300x300-" + imgValid : "/img/figure-0001.jpeg";
                     img.className = "card-img-top";
                     img.alt = "figure snowboarding";
                     img.style.objectFit = "cover";
@@ -136,12 +139,42 @@ function loadMore()
                     var trashIcon = document.createElement("a");
                     trashIcon.innerHTML = '<i class="fa-solid fa-trash-can text-black"></i>'
                     trashIcon.style.cursor = "pointer";
-                    trashIcon.addEventListener("click", function (event) {
+                    /*trashIcon.addEventListener("click", function (event) {
+                        deleteFigureWithTrash(item.slug);
+                    });*/
+
+                    var validateDelete = document.createElement("a");
+                    validateDelete.innerHTML = '<i class="fa-solid fa-check text-success"></i>';
+                    validateDelete.style.cursor = "pointer";
+                    validateDelete.style.display = "none";
+
+                    var cancelDelete = document.createElement("a");
+                    cancelDelete.innerHTML = '<i class="fa-solid fa-xmark text-danger"></i>';
+                    cancelDelete.style.cursor = "pointer";
+                    cancelDelete.style.display = "none";
+
+                    buttonCard.appendChild(validateDelete);
+                    buttonCard.appendChild(cancelDelete);
+                    buttonCard.appendChild(pencilIcon);
+                    buttonCard.appendChild(trashIcon);
+
+                    trashIcon.addEventListener("click", function () {
+                        this.style.display = "none";
+                        validateDelete.style.display = "inline";
+                        cancelDelete.style.display = "inline";
+                        pencilIcon.style.display = "none";
+                    });
+
+                    validateDelete.addEventListener("click", function () {
                         deleteFigureWithTrash(item.slug);
                     });
 
-                    buttonCard.appendChild(pencilIcon);
-                    buttonCard.appendChild(trashIcon);
+                    cancelDelete.addEventListener("click", function () {
+                        this.style.display = "none";
+                        validateDelete.style.display = "none";
+                        trashIcon.style.display = "inline";
+                        pencilIcon.style.display = "inline";
+                    });
 
                     cardBody.appendChild(titleLink);
                     cardBody.appendChild(buttonCard);

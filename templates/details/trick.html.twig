@@ -22,9 +22,14 @@
                  background-position: center;
                  height: 90vh;">
         <div class="container">
-            <h1 class="display-4 mx-auto edit-form edit-mode" style="text-shadow: 1px 1px 0 white, -1px -1px 0 white, 1px -1px 0 white, -1px 1px 0 white;">{{ figure.getTitle() }}</h1>
+            <h1 class="display-4 mx-auto edit-form edit-mode" style="text-shadow: 1px 1px 0 white, -1px -1px 0 white, 1px -1px 0 white, -1px 1px 0 white;">
+                {{ figure.getTitle() }}
+            </h1>
             <div class="edit-form edit-mode w-50 m-auto" style="display: none;">
-                {{ form_row(figureForm.title, {'label': false}) }}
+                {{ form_widget(figureForm.title, {'label': false}) }}
+            </div>
+            <div class="error-message bg-danger text-white fw-bold rounded w-50 m-autoee">
+                {{ form_errors(figureForm.title) }}
             </div>
         </div>
     </div>
@@ -36,11 +41,17 @@
         {% if medias is not null %}
             {% for media in medias %}
                 {% if media.getMedVideo() is not null %}
-                    <div class="bloc_media card p-0 edit-form edit-mode"
+                    <div class="bloc_media card p-0"
                          style="width: 180px; height: 120px; position: relative;">
-                        <a href="#" id="btnVideoDelete" class="text-decoration-none" data-media-id="{{ media.id }}">
-                            <i class="fa-solid fa-trash-can text-black"
-                               style="position: absolute; top: -10px; right: -10px;"></i>
+                        <a href="#" id="btnVideoDelete" class="text-decoration-none  edit-form edit-mode" data-media-id="{{ media.id }}" style="display:none;">
+                            <div class="bg-light p-1 border" style="position: absolute; top: -10px; right: -10px;">
+                                <i class="fa-solid fa-trash-can text-black"></i>
+                            </div>
+                        </a>
+                        <a href="#" id="btnVideoEdit" class="text-decoration-none edit-form edit-mode" data-media-id="{{ media.id }}" style="display:none;">
+                            <div class="bg-light p-1 border" style="position: absolute; top: -10px; right: 20px;">
+                                <i class="fa-solid fa-pencil text-black"></i>
+                            </div>
                         </a>
                         <iframe width="100%" height="100%" src="https://www.youtube.com/embed/{{ media.getMedVideo() }}"
                                 allowfullscreen style="width: 100%; height: 100%;"></iframe>
@@ -48,18 +59,26 @@
                 {% endif %}
 
                 {% if media.getMedImage() is not null %}
-                    <div class="bloc_media card p-0 edit-form edit-mode"
+                    <div class="bloc_media card p-0"
                          style="width: 180px; height: 120px; position: relative;">
-                        <a href="#" id="btnImageDelete" class="text-decoration-none" data-media-id="{{ media.id }}">
-                            <i class="fa-solid fa-trash-can text-black"
-                               style="position: absolute; top: -10px; right: -10px;"></i>
+                        <a href="#" id="btnImageDelete" class="text-decoration-none edit-form edit-mode"
+                           data-media-id="{{ media.id }}" style="display:none;">
+                            <div class="bg-light p-1 border" style="position: absolute; top: -10px; right: -10px;">
+                                <i class="fa-solid fa-trash-can text-black"></i>
+                            </div>
+                        </a>
+                        <a href="#" id="btnImageEdit" class="text-decoration-none edit-form edit-mode"
+                           data-media-id="{{ media.id }}" style="display:none;">
+                            <div class="bg-light p-1 border" style="position: absolute; top: -10px; right: 20px;">
+                                <i class="fa-solid fa-pencil text-black"></i>
+                            </div>
                         </a>
                         <img src="/img/uploads/mini/300x300-{{ media.getMedImage }}" alt="image snowboarding"
                              style="width: 100%; height: 100%; object-fit: cover;">
                     </div>
                 {% endif %}
             {% endfor %}
-            <div class="edit-form edit-mode" style="display: none;">
+            {#<div class="edit-form edit-mode" style="display: none;">
                 <div class="d-flex justify-content-evenly gap-3">
                     {% for mediaForm in figureForm.medias %}
                         <div class="d-flex justify-content-evenly">
@@ -76,7 +95,7 @@
                         </div>
                     {% endfor %}
                 </div>
-            </div>
+            </div>#}
         {% else %}
             <div class="d-flex flex-column align-items-center">
                 <span>No media is associated</span>
@@ -156,6 +175,11 @@
         margin: 5px;
         padding: 10px;
         cursor: pointer;
+    }
+
+    .error-message ul {
+        list-style-type: none;
+        padding-left: 0;
     }
 </style>
 

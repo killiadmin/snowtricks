@@ -23,13 +23,11 @@ class UtilsService
         $title = preg_replace('~-+~', '-', $title);
         $title = strtolower($title);
 
-        $id = uniqid('', true);
-
         if (empty($title)) {
             return 'n-a';
         }
 
-        return $title . '-' . $id;
+        return $title;
     }
 
     /**

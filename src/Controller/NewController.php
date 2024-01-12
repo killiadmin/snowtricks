@@ -54,6 +54,7 @@ class NewController extends AbstractController
 
             //Check if user exist
             if (!$associatedUser) {
+                $this->addFlash('error', 'User not found ' . $associatedUserId);
                 throw new \RuntimeException('User not found ' . $associatedUserId);
             }
 
@@ -98,6 +99,8 @@ class NewController extends AbstractController
 
             $entityManager->persist($figure);
             $entityManager->flush();
+
+            $this->addFlash('success', 'The figure has been successfully created!');
 
             return $this->redirectToRoute('app_home');
         }
