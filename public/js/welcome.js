@@ -131,17 +131,15 @@ function loadMore()
                     var buttonCard = document.createElement("div");
                     buttonCard.className = "bloc_button-card d-flex gap-3";
 
-                    // Add buttons for each action (edit and delete)
+                    // Add button for each action (edit)
                     var pencilIcon = document.createElement("a");
                     pencilIcon.href = "#";
                     pencilIcon.innerHTML = '<i class="fa-solid fa-pencil text-black"></i>';
+                    pencilIcon.href = "/tricks/editing/" + item.slug;
 
                     var trashIcon = document.createElement("a");
                     trashIcon.innerHTML = '<i class="fa-solid fa-trash-can text-black"></i>'
                     trashIcon.style.cursor = "pointer";
-                    /*trashIcon.addEventListener("click", function (event) {
-                        deleteFigureWithTrash(item.slug);
-                    });*/
 
                     var validateDelete = document.createElement("a");
                     validateDelete.innerHTML = '<i class="fa-solid fa-check text-success"></i>';

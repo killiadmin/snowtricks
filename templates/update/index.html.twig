@@ -1,0 +1,9 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello NewController!{% endblock %}
+
+{% block body %}
+    {% include 'update/updateForm.html.twig' %}
+    <script src="{{ asset('../../js/updateForm.js') }}"></script>
+    <script src="{{ asset('../../js/utilsForm.js') }}"></script>
+{% endblock %}

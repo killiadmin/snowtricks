@@ -28,7 +28,7 @@
             <div class="edit-form edit-mode w-50 m-auto" style="display: none;">
                 {{ form_widget(figureForm.title, {'label': false}) }}
             </div>
-            <div class="error-message bg-danger text-white fw-bold rounded w-50 m-autoee">
+            <div class="error-message bg-danger text-white fw-bold rounded w-50 m-auto">
                 {{ form_errors(figureForm.title) }}
             </div>
         </div>
@@ -43,7 +43,7 @@
                 {% if media.getMedVideo() is not null %}
                     <div class="bloc_media card p-0"
                          style="width: 180px; height: 120px; position: relative;">
-                        <a href="#" id="btnVideoDelete" class="text-decoration-none  edit-form edit-mode" data-media-id="{{ media.id }}" style="display:none;">
+                        <a href="#" class="btnVideoDelete text-decoration-none  edit-form edit-mode" data-media-id="{{ media.id }}" style="display:none;">
                             <div class="bg-light p-1 border" style="position: absolute; top: -10px; right: -10px;">
                                 <i class="fa-solid fa-trash-can text-black"></i>
                             </div>
@@ -61,7 +61,7 @@
                 {% if media.getMedImage() is not null %}
                     <div class="bloc_media card p-0"
                          style="width: 180px; height: 120px; position: relative;">
-                        <a href="#" id="btnImageDelete" class="text-decoration-none edit-form edit-mode"
+                        <a href="#" class="btnImageDelete text-decoration-none edit-form edit-mode"
                            data-media-id="{{ media.id }}" style="display:none;">
                             <div class="bg-light p-1 border" style="position: absolute; top: -10px; right: -10px;">
                                 <i class="fa-solid fa-trash-can text-black"></i>
