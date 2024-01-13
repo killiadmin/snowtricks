@@ -16,16 +16,6 @@
     <div class="form-group p-3">
         {{ form_row(formUpdate.category) }}
     </div>
-    <div class="d-flex p-3 justify-content-center">
-        <input id="addMedia" class="p-3" type="button" value="Add media">
-    </div>
-    {#<div id="medias" class="mt-2 p-3" data-prototype="{{ form_widget(formUpdate.medias.vars.prototype)|e('html_attr') }}">
-        {% for mediaForm in formUpdate.medias %}
-            <div class="media">
-                {{ form_row(mediaForm) }}
-            </div>
-        {% endfor %}
-    </div>#}
     <div class="container d-flex flex-column gap-5 mt-5 mb-5">
         {% if app.request.attributes.get('_route') == 'tricks_editing' %}
             <h2>Videos</h2>
@@ -66,13 +56,23 @@
             </div>
         {% endif %}
     </div>
+    <div class="d-flex p-3 justify-content-center">
+        <input id="addMedia" class="p-3" type="button" value="Add media">
+    </div>
     <!-- Submit form update figure begin -->
     <div class="d-flex flex-row-reverse mt-3 p-3">
-        <button id="" type="submit" class="btn btn-warning">Save changes</button>
+        <button type="submit" class="btn btn-warning">Save changes</button>
     </div>
     <!-- Submit form update figure ending -->
     {{ form_end(formUpdate) }}
     <!-- Form for update figure ending -->
+
+    {{ form_start(formMedia) }}
+        {{ form_row(formMedia) }}
+        <div class="d-flex flex-row-reverse mt-3 p-3">
+            <button type="submit" class="btn btn-secondary">Add new media</button>
+        </div>
+    {{ form_end(formMedia) }}
 </div>
 
 <!-- Box for add medias begin -->
