@@ -1,7 +1,7 @@
 <div class="container mt-5" style="max-width: 850px;">
     <h1 class="text-center">Update your figure</h1>
     <!-- Form for update figure begin -->
-    {{ form_start(formUpdate) }}
+    {{ form_start(formUpdate, { 'attr': {'id': 'editionFormFigure'} }) }}
     {{ form_row(formUpdate._token) }}
     <div class="form-group p-3">
         {{ form_label(formUpdate.title) }}
@@ -59,20 +59,26 @@
     <div class="d-flex p-3 justify-content-center">
         <input id="addMedia" class="p-3" type="button" value="Add media">
     </div>
+    {{ form_end(formUpdate) }}
     <!-- Submit form update figure begin -->
     <div class="d-flex flex-row-reverse mt-3 p-3">
-        <button type="submit" class="btn btn-warning">Save changes</button>
+        <button id="btnEditFigure" type="submit" class="btn btn-warning">Save changes</button>
     </div>
     <!-- Submit form update figure ending -->
-    {{ form_end(formUpdate) }}
     <!-- Form for update figure ending -->
 
-    {{ form_start(formMedia) }}
-        {{ form_row(formMedia) }}
-        <div class="d-flex flex-row-reverse mt-3 p-3">
-            <button type="submit" class="btn btn-secondary">Add new media</button>
-        </div>
+    {{ form_start(formMedia, { 'attr': {'id': 'editionFormMedia'} }) }}
+    <div id="medias" class="mt-2 p-3" data-prototype="{{ form_widget(formMedia.medias.vars.prototype)|e('html_attr') }}">
+        {% for item in formMedia.medias %}
+            <div class="media">
+                {{ form_row(item) }}
+            </div>
+        {% endfor %}
+    </div>
     {{ form_end(formMedia) }}
+    <div class="d-flex flex-row-reverse mt-3 p-3">
+        <button id="btnEditMedia" type="submit" class="btn btn-secondary">Add new media</button>
+    </div>
 </div>
 
 <!-- Box for add medias begin -->

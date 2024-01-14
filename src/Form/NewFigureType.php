@@ -22,33 +22,38 @@ class NewFigureType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $builder
-            ->add('title', TextType::class, [
-                'label' => 'Title',
-                'attr' => [
-                    'class' => 'form-control'
-                ],
-                'required' => true
-            ])
-            ->add('contentFigure', TextareaType::class, [
-                'label' => 'Your content',
-                'attr' => [
-                    'class' => 'form-control'
-                ],
-                'required' => true
-            ])
-            ->add('category', ChoiceType::class, [
-                'label' => 'Category',
-                'choices' => [
-                    'Easy' => 'easy',
-                    'Medium' => 'medium',
-                    'Hard' => 'hard',
-                ],
-                'attr' => [
-                    'class' => 'form-control'
-                ],
-                'required' => true
-            ]);
+        if ($options['display_figure']) {
+            $builder
+                ->add('title', TextType::class, [
+                    'label' => 'Title',
+                    'attr' => [
+                        'class' => 'form-control'
+                    ],
+                    'required' => true,
+                    'mapped' => $options['display_figure'],
+                ])
+                ->add('contentFigure', TextareaType::class, [
+                    'label' => 'Your content',
+                    'attr' => [
+                        'class' => 'form-control'
+                    ],
+                    'required' => true,
+                    'mapped' => $options['display_figure'],
+                ])
+                ->add('category', ChoiceType::class, [
+                    'label' => 'Category',
+                    'choices' => [
+                        'Easy' => 'easy',
+                        'Medium' => 'medium',
+                        'Hard' => 'hard',
+                    ],
+                    'attr' => [
+                        'class' => 'form-control'
+                    ],
+                    'required' => true,
+                    'mapped' => $options['display_figure'],
+                ]);
+        }
 
         if ($options['display_medias']) {
             $builder->add('medias', CollectionType::class, [
@@ -72,7 +77,8 @@ class NewFigureType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Figure::class,
-            'display_medias' => true
+            'display_medias' => true,
+            'display_figure' => true
         ]);
     }
 }

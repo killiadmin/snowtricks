@@ -104,3 +104,14 @@ document.addEventListener("DOMContentLoaded", function() {
         closeComponentMedia();
     });
 });
+
+//Button subtmit form figure
+document.getElementById("btnEditFigure").addEventListener("click", function (){
+    document.getElementById(("editionFormFigure")).submit();
+})
+
+//Button subtmit form media
+
+document.getElementById("btnEditMedia").addEventListener("click", function (){
+    document.getElementById(("editionFormMedia")).submit();
+})
