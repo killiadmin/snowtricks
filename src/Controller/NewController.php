@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Figure;
 use App\Form\NewFigureType;
+use App\Service\ImageUploadService;
 use App\Service\PictureService;
 use App\Service\UtilsService;
 use Proxies\__CG__\App\Entity\User;
@@ -27,10 +28,9 @@ class NewController extends AbstractController
      * Handles the submission of the new figure form.
      *
      * @param Request $request The request object.
-     * @param PictureService $pictureService The picture service.
      * @return Response The response object.
      */
-    public function index(Request $request, PictureService $pictureService): Response
+    public function index(Request $request, ImageUploadService $imageUploadService): Response
     {
         $figure = new Figure();
         $form = $this->createForm(NewFigureType::class, $figure);
@@ -70,31 +70,8 @@ class NewController extends AbstractController
                     $entityManager->persist($media);
                 }
 
-                if (!empty($media->getMedImage())) {
-                    $medImages = $media->getMedImage();
-
-                    // Check if $medImages is an array, otherwise create an array
-                    if (!is_array($medImages)) {
-                        $medImages = [$medImages];
-                    }
-
-                    foreach ($medImages as $med_image) {
-                        if (empty($med_image)) {
-                            throw new \RuntimeException('The image has not been uploaded correctly.');
-                        }
-
-                        $folder = 'uploads';
-
-                        $uploadedImage = new UploadedFile($med_image,'');
-
-                        $fichier = $pictureService->add($uploadedImage, $folder, 300, 300);
-
-                        $media->setMedType('image');
-                        $media->setMedFigureAssociated($figure);
-                        $media->setMedImage($fichier);
-                        $entityManager->persist($media);
-                    }
-                }
+                //Uploads Pictures
+                $imageUploadService->handleUpload($media, $figure);
             }
 
             $entityManager->persist($figure);

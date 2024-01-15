@@ -7,6 +7,7 @@ use App\Entity\Media;
 use App\Form\MediaType;
 use App\Form\NewFigureType;
 use App\Repository\FigureRepository;
+use App\Service\ImageUploadService;
 use App\Service\PictureService;
 use App\Service\UtilsService;
 use Doctrine\ORM\NonUniqueResultException;
@@ -29,7 +30,7 @@ class UpdateController extends AbstractController
      * @Route("/tricks/editing/{slug}", name="tricks_editing")
      * @throws NonUniqueResultException
      */
-    public function index(Request $request, string $slug, FigureRepository $figureRepository, PictureService $pictureService): Response
+    public function index(Request $request, string $slug, FigureRepository $figureRepository, ImageUploadService $imageUploadService): Response
     {
         $figure = $figureRepository->findOneBySlug($slug);
 
@@ -49,6 +50,7 @@ class UpdateController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
 
             foreach ($newMediaFigure->getMedias() as $media) {
+                //Add Videos
                 if (!empty($media->getMedVideo())) {
                     $media->setMedType('video');
                     $media->setMedFigureAssociated($figure);
@@ -57,31 +59,12 @@ class UpdateController extends AbstractController
                     $entityManager->persist($media);
                 }
 
-                if (!empty($media->getMedImage())) {
-                    $medImages = $media->getMedImage();
-                    // Check if $medImages is an array, otherwise create an array
-                    if (!is_array($medImages)) {
-                        $medImages = [$medImages];
-                    }
-
-                    foreach ($medImages as $med_image) {
-                        if (empty($med_image)) {
-                            throw new \RuntimeException('The image has not been uploaded correctly.');
-                        }
-
-                        $folder = 'uploads';
-                        $uploadedImage = new UploadedFile($med_image,'');
-
-                        $fichier = $pictureService->add($uploadedImage, $folder, 300, 300);
-
-                        $media->setMedType('image');
-                        $media->setMedFigureAssociated($figure);
-                        $media->setMedImage($fichier);
-                        $entityManager->persist($media);
-                    }
-                }
+                //Uploads Pictures
+                $imageUploadService->handleUpload($media, $figure);
             }
             $entityManager->flush();
+
+            // return to the figure editing
             return $this->redirectToRoute('tricks_editing', ['slug' => $figure->getSlug()]);
         } else {
             $form->handleRequest($request);
