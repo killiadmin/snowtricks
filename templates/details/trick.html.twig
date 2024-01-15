@@ -13,11 +13,12 @@
     {{ form_start(figureForm) }}
     <div class="jumbotron jumbotron-fluid text-center text-dark d-flex align-items-center"
          style="background-image:
-         {% if medias is defined and medias[0] is defined and medias[0].getMedImage is not empty %}
-                 url({{ '/img/uploads/' ~ medias[0].getMedImage }});
-         {% else %}
-                 url({{ '/img/default_snowboard.webp' }});
-         {% endif %}
+         {% set imageMedias = medias|filter(media => media.medType == 'image' and media.medImage is not empty) %}
+            {% if imageMedias|length > 0 %}
+                url({{ '/img/uploads/' ~ imageMedias|first.medImage }});
+            {% else %}
+                url({{ '/img/default_snowboard.webp' }});
+            {% endif %}
                  background-size: cover;
                  background-position: center;
                  height: 90vh;">

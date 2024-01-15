@@ -1,7 +1,16 @@
+import { componentEmptyMediaVideo } from "./utilsForm.js";
+import { componentEmptyMediaPicture} from "./utilsForm.js";
+
 // Media box to add a video field or a picture field
 var modal = document.getElementById("boxMedia");
-//Media element for append
+// Media element for append
 var medias = document.getElementById("medias");
+// Button for submit a form edition
+var btnEditFigure = document.getElementById("btnEditFigure");
+//Button for edit media
+var btnEditMedia = document.getElementById("btnEditMedia");
+//Counter medias
+var countMedia = 0;
 
 /**
  * Displays the component media in a modal.
@@ -59,11 +68,21 @@ document.getElementById("addImage").addEventListener("click", function() {
 
     btnDelete.addEventListener("click", function(){
         this.previousElementSibling.parentElement.remove();
-        updateMessageDisplay();
+        countMedia--;
+
+        if (countMedia === 0) {
+            btnEditFigure.style.display = "block";
+            btnEditMedia.style.display = "none";
+        }
     });
 
-    document.getElementById("messageEmptyData").style.display = "none";
+    if (document.getElementById("emptyMediaPicture")){
+        document.getElementById("emptyMediaPicture").remove();
+    }
 
+    countMedia++;
+    btnEditFigure.style.display = "none";
+    btnEditMedia.style.display = "block";
     closeComponentMedia();
 });
 
@@ -97,21 +116,51 @@ document.addEventListener("DOMContentLoaded", function() {
         medVideo.parentNode.append(btnDelete);
 
         btnDelete.addEventListener("click", function(){
+            countMedia--;
+
+            if (countMedia === 0) {
+                btnEditFigure.style.display = "block";
+                btnEditMedia.style.display = "none";
+            }
+
             this.previousElementSibling.parentElement.remove();
-            updateMessageDisplay();
         });
 
+        if (document.getElementById("emptyMediaVideo")){
+            document.getElementById("emptyMediaVideo").remove();
+        }
+
+        countMedia++;
+        btnEditFigure.style.display = "none";
+        btnEditMedia.style.display = "block";
         closeComponentMedia();
     });
 });
 
-//Button subtmit form figure
-document.getElementById("btnEditFigure").addEventListener("click", function (){
+/**
+ * Button subtmit form figure
+ */
+btnEditFigure.addEventListener("click", function (){
     document.getElementById(("editionFormFigure")).submit();
 })
 
-//Button subtmit form media
-
+/**
+ * Button subtmit form media
+ */
 document.getElementById("btnEditMedia").addEventListener("click", function (){
     document.getElementById(("editionFormMedia")).submit();
 })
+
+/**
+ * Added a component to indicate to the user if there are no associate videos
+ */
+if (document.getElementById("listMediaVideo").children.length === 0){
+    componentEmptyMediaVideo();
+}
+
+/**
+ * Added a component to indicate to the user if there are no associate picture
+ */
+if (document.getElementById("listMediaPicture").children.length === 0){
+    componentEmptyMediaPicture();
+}
