@@ -33,6 +33,21 @@ function closeComponentMedia()
 }
 
 /**
+ * Creates an empty message content.
+ *
+ * @returns {HTMLElement} The empty message element.
+ */
+function messageEmptyContent(idElement, messageError)
+{
+    var ulElement = document.createElement("ul");
+    ulElement.id = idElement;
+    ulElement.className = "alert alert-danger";
+    ulElement.style.listStyle = "none";
+    ulElement.innerHTML = "<li>" + messageError + "</li>";
+    return ulElement;
+}
+
+/**
  * Several eventListeners to dynamically add media to the form
  */
 document.getElementById("addMedia").addEventListener("click", addComponentMedia);
@@ -138,16 +153,33 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 
 /**
- * Button subtmit form figure
+ * Button submit form figure
  */
-btnEditFigure.addEventListener("click", function (){
+btnEditFigure.addEventListener("click", function () {
+    let newFigureTitle = document.getElementById("new_figure_title");
+    let newFigureContentFigure = document.getElementById("new_figure_contentFigure");
+
+    if (newFigureTitle.value.trim() === "") {
+        if (!document.getElementById("flagTitleForm")){
+            newFigureTitle.parentNode.appendChild(messageEmptyContent("flagTitleForm", "Title is required"));
+        }
+        return;
+    }
+
+    if (newFigureContentFigure.value.trim() === ""){
+        if (!document.getElementById("flagTitleForm")){
+            newFigureContentFigure.parentNode.appendChild(messageEmptyContent("flagContentFigure","Content is required"));
+        }
+        return;
+    }
+
     document.getElementById(("editionFormFigure")).submit();
 })
 
 /**
- * Button subtmit form media
+ * Button submit form media
  */
-document.getElementById("btnEditMedia").addEventListener("click", function (){
+btnEditMedia.addEventListener("click", function (){
     document.getElementById(("editionFormMedia")).submit();
 })
 

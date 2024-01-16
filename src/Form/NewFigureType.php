@@ -10,6 +10,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 class NewFigureType extends AbstractType
 {
@@ -25,6 +26,7 @@ class NewFigureType extends AbstractType
         if ($options['display_figure']) {
             $builder
                 ->add('title', TextType::class, [
+                    'constraints' => new NotBlank(['message' => 'User name cannot be empty']),
                     'label' => 'Title',
                     'attr' => [
                         'class' => 'form-control'
@@ -33,6 +35,7 @@ class NewFigureType extends AbstractType
                     'mapped' => $options['display_figure'],
                 ])
                 ->add('contentFigure', TextareaType::class, [
+                    'constraints' => new NotBlank(['message' => 'Figure description cannot be empty']),
                     'label' => 'Your content',
                     'attr' => [
                         'class' => 'form-control'

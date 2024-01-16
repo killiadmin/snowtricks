@@ -1,0 +1,7 @@
+.error-message ul {
+    background-color: lightcoral;
+    list-style-type: none;
+    padding: 10px;
+    border-radius: 10px;
+    max-width: 50%;
+}

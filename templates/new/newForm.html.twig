@@ -5,13 +5,17 @@
     {{ form_row(form._token) }}
     <div class="form-group p-3">
         {{ form_label(form.title) }}
-        <div class="text-danger fw-bold rounded">
+        <div class="error-message text-white fw-bold">
             {{ form_errors(form.title) }}
         </div>
         {{ form_widget(form.title) }}
     </div>
     <div class="form-group p-3">
-        {{ form_row(form.contentFigure) }}
+        {{ form_label(form.contentFigure) }}
+        <div class="error-message text-white fw-bold">
+            {{ form_errors(form.contentFigure) }}
+        </div>
+        {{ form_widget(form.contentFigure) }}
     </div>
     <div class="form-group p-3">
         {{ form_row(form.category) }}
