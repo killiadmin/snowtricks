@@ -176,7 +176,7 @@ class DetailsController extends AbstractController
     {
         //Get current page and limit from query
         $page = $request->query->get('page', 1);
-        $limit = 5;
+        $limit = 10;
         $offset = ($page - 1) * $limit;
         $slug = '';
 

@@ -37,10 +37,13 @@ function componentEmptyMediaVideo()
     var divEmptyVideo = document.createElement("div");
     divEmptyVideo.id = "emptyMediaVideo";
     divEmptyVideo.className = "d-flex justify-content-center w-100";
+
     var pEmptyVideo = document.createElement("p");
     pEmptyVideo.innerText = "No video media available  ";
     pEmptyVideo.innerHTML += '<i class="fa-solid fa-person-snowboarding fa-rotate-90 fa-2xl"></i>';
+
     divEmptyVideo.appendChild(pEmptyVideo);
+
     document.getElementById("listMediaVideo").appendChild(divEmptyVideo);
 }
 
@@ -56,11 +59,60 @@ function componentEmptyMediaPicture()
     var divEmptyVideo = document.createElement("div");
     divEmptyVideo.id = "emptyMediaPicture";
     divEmptyVideo.className = "d-flex justify-content-center w-100";
+
     var pEmptyVideo = document.createElement("p");
     pEmptyVideo.innerText = "No picture media available  ";
     pEmptyVideo.innerHTML += '<i class="fa-solid fa-person-snowboarding fa-rotate-180 fa-2xl"></i>';
+
     divEmptyVideo.appendChild(pEmptyVideo);
+
     document.getElementById("listMediaPicture").appendChild(divEmptyVideo);
+}
+
+/**
+ * Creates a delete button.
+ *
+ * @returns {HTMLButtonElement} The delete button.
+ */
+function createBtnDelete()
+{
+    let btnDelete = document.createElement("button");
+    btnDelete.type = "button";
+    btnDelete.className = "btn btn-danger";
+    btnDelete.innerText = "X";
+    btnDelete.style.float = "right";
+
+    return btnDelete
+}
+
+/**
+ * Process media based on the given media type.
+ *
+ * @param {string} mediaType - The type of media (video or picture).
+ * @return {object} - The processed media element.
+ */
+function processMedia(mediaType)
+{
+    var medias = document.getElementById("medias");
+    var prototype = medias.getAttribute("data-prototype");
+    var newIndex = medias.children.length;
+    var newForm = prototype.replace(/__media__/g, newIndex);
+
+    var tempDiv = document.createElement("div");
+    tempDiv.innerHTML = newForm;
+
+    var mediaElement;
+
+    if (mediaType === "video") {
+        mediaElement = tempDiv.querySelector(".form-control");
+        mediaElement.parentNode.className = "d-flex align-items-center justify-content-between gap-3 mb-3";
+
+    } else if (mediaType === "picture") {
+        mediaElement = tempDiv.querySelector('input[type="file"]').parentNode;
+        mediaElement.className = "d-flex align-items-center justify-content-between gap-3 mb-3";
+    }
+
+    return mediaElement
 }
 
 /*
@@ -89,3 +141,5 @@ document.querySelectorAll(".btnVideoDelete").forEach((button) => {
 
 export { componentEmptyMediaVideo };
 export { componentEmptyMediaPicture};
+export { createBtnDelete };
+export { processMedia };

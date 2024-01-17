@@ -112,3 +112,8 @@ function loadMoreComments()
  * When you click, we load the comments
  */
 loadMoreButton.addEventListener("click", loadMoreComments);
+
+/**
+ * When loading, we display the first available comments
+ */
+document.addEventListener("DOMContentLoaded", loadMoreComments);

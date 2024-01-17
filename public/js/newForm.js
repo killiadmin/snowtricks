@@ -1,3 +1,5 @@
+import {createBtnDelete, processMedia} from "./utilsForm";
+
 // Media box to add a video field or a picture field
 var modal = document.getElementById("boxMedia");
 //Media element for append
@@ -37,14 +39,14 @@ function updateMessageDisplay()
 {
     var messageDiv = document.getElementById("messageEmptyData");
 
-    if(!messageDiv) {
+    if (!messageDiv) {
         messageDiv = document.createElement("div");
         messageDiv.id = "messageEmptyData";
         messageDiv.className = "text-center";
         medias.appendChild(divMessage);
     }
 
-    if(countVideos === 0 && countPictures === 0){
+    if (countVideos === 0 && countPictures === 0) {
         messageDiv.textContent = "No media is associated";
         messageDiv.style.display = "block";
     }
@@ -53,7 +55,7 @@ function updateMessageDisplay()
 /**
  * If no media is associated with the form, a message is displayed
  */
-if (countVideos === 0 && countPictures === 0){
+if (countVideos === 0 && countPictures === 0) {
     var divMessage = document.createElement("div");
     divMessage.id = "messageEmptyData";
     divMessage.className = "text-center";
@@ -69,19 +71,10 @@ document.getElementById(("closeMedia")).addEventListener("click", closeComponent
 document.getElementById("new_figure_medias").appendChild(medias);
 
 /**
- * Method add  for a bloc image
+ * Method add for a bloc image
  */
 document.getElementById("addImage").addEventListener("click", function() {
-    var prototypeMedias = document.getElementById("medias").getAttribute("data-prototype");
-    var newIndex = medias.children.length;
-    var newForm = prototypeMedias.replace(/__media__/g, newIndex);
-
-    var tempDiv = document.createElement("div");
-    tempDiv.innerHTML = newForm;
-
-    var medImageDiv = tempDiv.querySelector('input[type="file"]').parentNode;
-
-    medImageDiv.className = "d-flex align-items-center justify-content-between gap-3 mb-3";
+    var medImageDiv = processMedia("picture");
 
     countPictures++
 
@@ -89,14 +82,9 @@ document.getElementById("addImage").addEventListener("click", function() {
     labelElemPicture.className = "w-25";
     labelElemPicture.textContent += " " + countPictures;
 
-    document.getElementById("medias").appendChild(medImageDiv);
+    medias.appendChild(medImageDiv);
 
-    var btnDelete = document.createElement("button");
-    btnDelete.type = "button";
-    btnDelete.className = "btn btn-danger";
-    btnDelete.innerText = "X";
-    btnDelete.style.float = "right";
-
+    var btnDelete = createBtnDelete();
     medImageDiv.append(btnDelete);
 
     btnDelete.addEventListener("click", function(){
@@ -115,32 +103,16 @@ document.getElementById("addImage").addEventListener("click", function() {
  */
 document.addEventListener("DOMContentLoaded", function() {
     document.getElementById("addVideo").addEventListener("click", function() {
-        var prototype = medias.getAttribute("data-prototype");
-        var newIndex = medias.children.length;
-        var newForm = prototype.replace(/__media__/g, newIndex);
-
-        var tempDiv = document.createElement("div");
-        tempDiv.innerHTML = newForm;
-
-        var medVideo = tempDiv.querySelector(".form-control");
-
-        medVideo.parentNode.className = "d-flex align-items-center justify-content-between gap-3 mb-3";
-
+        var medVideo = processMedia("video");
         medias.appendChild(medVideo.parentNode);
 
         countVideos++;
 
         var labelElemVideo = medVideo.parentNode.querySelector("label");
         labelElemVideo.className = "w-25";
-
         labelElemVideo.textContent += " " + countVideos;
 
-        var btnDelete = document.createElement("button");
-        btnDelete.type = "button";
-        btnDelete.className = "btn btn-danger";
-        btnDelete.innerText = "X";
-        btnDelete.style.float = "right";
-
+        var btnDelete = createBtnDelete();
         medVideo.parentNode.append(btnDelete);
 
         btnDelete.addEventListener("click", function(){
@@ -164,4 +136,3 @@ if (document.getElementById("createFigureBtn")){
         document.getElementById("formFigure").submit();
     });
 }
-

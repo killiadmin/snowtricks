@@ -1,5 +1,7 @@
 import { componentEmptyMediaVideo } from "./utilsForm.js";
 import { componentEmptyMediaPicture} from "./utilsForm.js";
+import { createBtnDelete } from "./utilsForm.js";
+import { processMedia } from "./utilsForm.js";
 
 // Media box to add a video field or a picture field
 var modal = document.getElementById("boxMedia");
@@ -57,28 +59,14 @@ document.getElementById(("closeMedia")).addEventListener("click", closeComponent
  * Method add  for a bloc image
  */
 document.getElementById("addImage").addEventListener("click", function() {
-    var prototypeMedias = document.getElementById("medias").getAttribute("data-prototype");
-    var newIndex = medias.children.length;
-    var newForm = prototypeMedias.replace(/__media__/g, newIndex);
-
-    var tempDiv = document.createElement("div");
-    tempDiv.innerHTML = newForm;
-
-    var medImageDiv = tempDiv.querySelector('input[type="file"]').parentNode;
-
-    medImageDiv.className = "d-flex align-items-center justify-content-between gap-3 mb-3";
+    var medImageDiv = processMedia("picture");
 
     var labelElemPicture = medImageDiv.querySelector("label");
-    labelElemPicture.className = "w-25";;
+    labelElemPicture.className = "w-25";
 
-    document.getElementById("medias").appendChild(medImageDiv);
+    medias.appendChild(medImageDiv);
 
-    var btnDelete = document.createElement("button");
-    btnDelete.type = "button";
-    btnDelete.className = "btn btn-danger";
-    btnDelete.innerText = "X";
-    btnDelete.style.float = "right";
-
+    var btnDelete = createBtnDelete();
     medImageDiv.append(btnDelete);
 
     btnDelete.addEventListener("click", function(){
@@ -106,28 +94,13 @@ document.getElementById("addImage").addEventListener("click", function() {
  */
 document.addEventListener("DOMContentLoaded", function() {
     document.getElementById("addVideo").addEventListener("click", function() {
-        var prototype = medias.getAttribute("data-prototype");
-        var newIndex = medias.children.length;
-        var newForm = prototype.replace(/__media__/g, newIndex);
-
-        var tempDiv = document.createElement("div");
-        tempDiv.innerHTML = newForm;
-
-        var medVideo = tempDiv.querySelector(".form-control");
-
-        medVideo.parentNode.className = "d-flex align-items-center justify-content-between gap-3 mb-3";
-
+        var medVideo = processMedia("video");
         medias.appendChild(medVideo.parentNode);
 
         var labelElemVideo = medVideo.parentNode.querySelector("label");
         labelElemVideo.className = "w-25";
 
-        var btnDelete = document.createElement("button");
-        btnDelete.type = "button";
-        btnDelete.className = "btn btn-danger";
-        btnDelete.innerText = "X";
-        btnDelete.style.float = "right";
-
+        var btnDelete = createBtnDelete();
         medVideo.parentNode.append(btnDelete);
 
         btnDelete.addEventListener("click", function(){
