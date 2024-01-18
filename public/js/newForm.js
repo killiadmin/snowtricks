@@ -1,4 +1,7 @@
-import {createBtnDelete, processMedia} from "./utilsForm";
+import { createBtnDelete } from "./utilsForm.js";
+import { processMedia } from "./utilsForm.js";
+import { closeComponentMedia } from "./utilsForm.js";
+import { openComponentMedia } from "./utilsForm.js";
 
 // Media box to add a video field or a picture field
 var modal = document.getElementById("boxMedia");
@@ -8,26 +11,6 @@ var medias = document.getElementById("medias");
 var countVideos = 0;
 // Picture counter
 var countPictures = 0;
-
-/**
- * Displays the component media in a modal.
- *
- * @return {void}
- */
-function addComponentMedia()
-{
-    modal.style.display = "block";
-}
-
-/**
- * Closes the component media.
- *
- * @return {void}
- */
-function closeComponentMedia()
-{
-    modal.style.display = "none";
-}
 
 /**
  * Updates the message display based on the countVideos and countPictures variables.
@@ -66,8 +49,14 @@ if (countVideos === 0 && countPictures === 0) {
 /**
  * Several eventListeners to dynamically add media to the form
  */
-document.getElementById("addMedia").addEventListener("click", addComponentMedia);
-document.getElementById(("closeMedia")).addEventListener("click", closeComponentMedia);
+document.getElementById("addMedia").addEventListener("click",function () {
+    openComponentMedia(modal)
+});
+
+document.getElementById(("closeMedia")).addEventListener("click", function (){
+    closeComponentMedia(modal);
+});
+
 document.getElementById("new_figure_medias").appendChild(medias);
 
 /**
@@ -95,7 +84,7 @@ document.getElementById("addImage").addEventListener("click", function() {
 
     document.getElementById("messageEmptyData").style.display = "none";
 
-    closeComponentMedia();
+    closeComponentMedia(modal);
 });
 
 /**
@@ -122,15 +111,13 @@ document.addEventListener("DOMContentLoaded", function() {
         });
 
         document.getElementById("messageEmptyData").style.display = "none";
-
-        closeComponentMedia();
+        closeComponentMedia(modal);
     });
 });
 
 /**
  * Submit Form for a created a new figure
  */
-
 if (document.getElementById("createFigureBtn")){
     document.getElementById("createFigureBtn").addEventListener("click", function() {
         document.getElementById("formFigure").submit();

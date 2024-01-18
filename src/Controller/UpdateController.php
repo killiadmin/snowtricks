@@ -21,6 +21,7 @@ class UpdateController extends AbstractController
     {
         $this->utilsService = $utilsService;
     }
+
     /**
      * @Route("/tricks/editing/{slug}", name="tricks_editing")
      * @throws NonUniqueResultException

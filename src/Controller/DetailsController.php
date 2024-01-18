@@ -10,6 +10,7 @@ use App\Form\NewFigureType;
 use App\Repository\CommentRepository;
 use App\Repository\FigureRepository;
 use App\Repository\MediaRepository;
+use App\Service\ImageUploadService;
 use App\Service\PictureService;
 use App\Service\UtilsService;
 use Doctrine\ORM\EntityManagerInterface;
@@ -25,19 +26,18 @@ use Symfony\Component\Routing\Annotation\Route;
 class DetailsController extends AbstractController
 {
     private PictureService $pictureService;
+    private UtilsService $utilsService;
 
-    private UtilsService $slugService;
-
-    public function __construct(PictureService $pictureService, UtilsService $slugService) {
+    public function __construct(PictureService $pictureService, UtilsService $utilsService) {
         $this->pictureService = $pictureService;
-        $this->slugService = $slugService;
+        $this->utilsService = $utilsService;
     }
 
     /**
      * @Route("/tricks/details/{slug}", name="app_details", methods={"GET","POST"})
      * @throws NonUniqueResultException
      */
-    public function index(Request $request, string $slug, FigureRepository $figureRepository, EntityManagerInterface $manager): Response
+    public function index(Request $request, string $slug, FigureRepository $figureRepository, EntityManagerInterface $manager, ImageUploadService $imageUploadService): Response
     {
         $figure = $figureRepository->findOneBySlug($slug);
 
@@ -53,15 +53,44 @@ class DetailsController extends AbstractController
 
         // Editing Form Figure
         $figureForm = $this->createForm(NewFigureType::class, $figure, ['display_medias' => false]);
-        $figureForm->handleRequest($request);
 
-        if ($figureForm->isSubmitted() && $figureForm->isValid()) {
-            $title = $figureForm->get('title')->getData();
-            $figure->setSlug($this->slugService->generateSlug($title));
+        // Editing Form Media
+        $newInstanceMedia = new Figure();
+        $mediaFormEditing = $this->createForm(NewFigureType::class, $newInstanceMedia, ['display_figure' => false]);
+        $mediaFormEditing->handleRequest($request);
+        if ($mediaFormEditing->isSubmitted() && $mediaFormEditing->isValid()) {
+            $newMediaFigure = $mediaFormEditing->getData();
+            $entityManager = $this->getDoctrine()->getManager();
 
-            $manager->flush();
+            foreach ($newMediaFigure->getMedias() as $media) {
+                //Add Videos
+                if (!empty($media->getMedVideo())) {
+                    $media->setMedType('video');
+                    $media->setMedFigureAssociated($figure);
+                    $media->setMedVideo($this->utilsService->getIdsVideos($media->getMedVideo()));
+                    $figure->addMedia($media);
+                    $entityManager->persist($media);
+                }
 
+                //Uploads Pictures
+                $imageUploadService->handleUpload($media, $figure);
+            }
+            $entityManager->flush();
+
+            // return to the figure editing
             return $this->redirectToRoute('app_details', ['slug' => $figure->getSlug()]);
+        } else {
+            // If we do not change media then we change the data of a figure
+            $figureForm->handleRequest($request);
+
+            if ($figureForm->isSubmitted() && $figureForm->isValid()) {
+                $title = $figureForm->get('title')->getData();
+                $figure->setSlug($this->utilsService->generateSlug($title));
+
+                $manager->flush();
+
+                return $this->redirectToRoute('app_details', ['slug' => $figure->getSlug()]);
+            }
         }
 
         // Section Comments
@@ -89,8 +118,9 @@ class DetailsController extends AbstractController
             'slug' => $slug,
             'figure' => $figure,
             'medias' => $medias,
-            'formComment' => $postComment->createView(),
             'figureForm' => $figureForm->createView(),
+            'mediaFormEditing' => $mediaFormEditing->createView(),
+            'formComment' => $postComment->createView(),
         ]);
     }
 
@@ -105,9 +135,10 @@ class DetailsController extends AbstractController
      *
      * @return Response
      * @throws NotFoundHttpException|NonUniqueResultException If the figure is not found
+     * @throws Exception
      *
      */
-    public function deleteFigure(string $slug, FigureRepository $figureRepository, EntityManagerInterface $em): Response
+    public function deleteFigure(string $slug, FigureRepository $figureRepository, EntityManagerInterface $em, CommentRepository $commentRepository): Response
     {
         // Find figure by slug
         $figure = $figureRepository->findOneBySlug($slug);
@@ -118,6 +149,14 @@ class DetailsController extends AbstractController
         }
 
         $medias = $figure->getMedias();
+
+        // Deleting all comments associated with this figure
+        $comments = $commentRepository->selectCommentsAssociated($slug);
+        if (!empty($comments)) {
+            foreach ($comments as $comment) {
+                $em->remove($comment);
+            }
+        }
 
         foreach ($medias as $media) {
             if ($media->getMedType() === 'image') {
@@ -130,6 +169,8 @@ class DetailsController extends AbstractController
         // Delete figure
         $em->remove($figure);
         $em->flush();
+
+        $this->addFlash('success', 'The figure has been deleted !');
 
         return new JsonResponse([
             'redirect' => $this->generateUrl('app_home')

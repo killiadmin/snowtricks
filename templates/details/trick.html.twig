@@ -1,184 +1,168 @@
 <!-- Bloc title begin -->
-<div class="container-fluid p-0 position-relative">
-    <div class="bloc_button-card d-flex flex-row-reverse gap-3 p-5 position-absolute" style="right: 100px;">
-        <div class="container bg-light display-6">
-            <a href="#" id="editButton" class="text-decoration-none">
-                <i class="fa-solid fa-pencil text-black"></i>&nbsp;
-            </a>
-            <a href="#" id="btnDelete" class="text-decoration-none">
-                &nbsp;<i class="fa-solid fa-trash-can text-black"></i>
-            </a>
-        </div>
-    </div>
-    {{ form_start(figureForm) }}
-    <div class="jumbotron jumbotron-fluid text-center text-dark d-flex align-items-center"
-         style="background-image:
-         {% set imageMedias = medias|filter(media => media.medType == 'image' and media.medImage is not empty) %}
-            {% if imageMedias|length > 0 %}
-                url({{ '/img/uploads/' ~ imageMedias|first.medImage }});
-            {% else %}
-                url({{ '/img/default_snowboard.webp' }});
-            {% endif %}
-                 background-size: cover;
-                 background-position: center;
-                 height: 90vh;">
-        <div class="container">
-            <h1 class="display-4 mx-auto edit-form edit-mode" style="text-shadow: 1px 1px 0 white, -1px -1px 0 white, 1px -1px 0 white, -1px 1px 0 white;">
-                {{ figure.getTitle() }}
-            </h1>
-            <div class="edit-form edit-mode w-50 m-auto" style="display: none;">
-                {{ form_widget(figureForm.title, {'label': false}) }}
-            </div>
-            <div class="error-message bg-danger text-white fw-bold rounded w-50 m-auto">
-                {{ form_errors(figureForm.title) }}
+    <div class="container-fluid p-0 position-relative">
+        <div class="bloc_button-card d-flex flex-row-reverse gap-3 p-5 position-absolute" style="right: 100px;">
+            <div class="container bg-light display-6">
+                <a href="#" id="editButton" class="text-decoration-none">
+                    <i class="fa-solid fa-pencil text-black"></i>&nbsp;
+                </a>
+                <a href="#" id="btnDelete" class="text-decoration-none">
+                    &nbsp;<i class="fa-solid fa-trash-can text-black"></i>
+                </a>
             </div>
         </div>
+        {{ form_start(figureForm) }}
+        <div class="jumbotron jumbotron-fluid text-center text-dark d-flex align-items-center"
+             style="background-image:
+             {% if medias is not null %}
+                 {% set imageMedias = medias|filter(media => media.medType == 'image' and media.medImage is not empty) %}
+                 {% if imageMedias|length > 0 %}
+                         url({{ '/img/uploads/' ~ imageMedias|first.medImage }});
+                 {% else %}
+                         url({{ '/img/default_snowboard.webp' }});
+                 {% endif %}
+             {% else %}
+                     url({{ '/img/default_snowboard.webp' }});
+             {% endif %}
+                     background-size: cover;
+                     background-position: center;
+                     height: 90vh;">
+            <div class="container">
+                <h1 class="display-4 mx-auto edit-form edit-mode" style="text-shadow: 1px 1px 0 white, -1px -1px 0 white, 1px -1px 0 white, -1px 1px 0 white;">
+                    {{ figure.getTitle() }}
+                </h1>
+                <div class="edit-form edit-mode w-50 m-auto" style="display: none;">
+                    {{ form_widget(figureForm.title, {'label': false}) }}
+                </div>
+                <div class="error-message bg-danger text-white fw-bold rounded w-50 m-auto">
+                    {{ form_errors(figureForm.title) }}
+                </div>
+            </div>
+        </div>
     </div>
-</div>
 <!-- Bloc title ending -->
 <!-- Bloc media begin -->
-<div class="container mt-3 mb-3 p-3" style="max-width: 1400px;">
-    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-6 g-3 d-flex justify-content-around gap-3">
-        {% if medias is not null %}
-            {% for media in medias %}
-                {% if media.getMedVideo() is not null %}
-                    <div class="bloc_media card p-0"
-                         style="width: 180px; height: 120px; position: relative;">
-                        <a href="#" class="btnVideoDelete text-decoration-none  edit-form edit-mode" data-media-id="{{ media.id }}" style="display:none;">
-                            <div class="bg-light p-1 border" style="position: absolute; top: -10px; right: -10px;">
-                                <i class="fa-solid fa-trash-can text-black"></i>
-                            </div>
-                        </a>
-                        <a href="#" id="btnVideoEdit" class="text-decoration-none edit-form edit-mode" data-media-id="{{ media.id }}" style="display:none;">
-                            <div class="bg-light p-1 border" style="position: absolute; top: -10px; right: 20px;">
-                                <i class="fa-solid fa-pencil text-black"></i>
-                            </div>
-                        </a>
-                        <iframe width="100%" height="100%" src="https://www.youtube.com/embed/{{ media.getMedVideo() }}"
-                                allowfullscreen style="width: 100%; height: 100%;"></iframe>
-                    </div>
-                {% endif %}
+    <div class="container mt-3 mb-3 p-3" style="max-width: 1400px;">
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-6 g-3 d-flex justify-content-around gap-3">
+            {% if medias is not null %}
+                {% for media in medias %}
+                    {% if media.getMedVideo() is not null %}
+                        <div class="bloc_media card p-0"
+                             style="width: 180px; height: 120px; position: relative;">
+                            <a href="#" class="btnVideoDelete text-decoration-none  edit-form edit-mode" data-media-id="{{ media.id }}" style="display:none;">
+                                <div class="bg-light p-1 border" style="position: absolute; top: -10px; right: -10px;">
+                                    <i class="fa-solid fa-trash-can text-black"></i>
+                                </div>
+                            </a>
+                            <iframe width="100%" height="100%" src="https://www.youtube.com/embed/{{ media.getMedVideo() }}"
+                                    allowfullscreen style="width: 100%; height: 100%;"></iframe>
+                        </div>
+                    {% endif %}
 
-                {% if media.getMedImage() is not null %}
-                    <div class="bloc_media card p-0"
-                         style="width: 180px; height: 120px; position: relative;">
-                        <a href="#" class="btnImageDelete text-decoration-none edit-form edit-mode"
-                           data-media-id="{{ media.id }}" style="display:none;">
-                            <div class="bg-light p-1 border" style="position: absolute; top: -10px; right: -10px;">
-                                <i class="fa-solid fa-trash-can text-black"></i>
-                            </div>
-                        </a>
-                        <a href="#" id="btnImageEdit" class="text-decoration-none edit-form edit-mode"
-                           data-media-id="{{ media.id }}" style="display:none;">
-                            <div class="bg-light p-1 border" style="position: absolute; top: -10px; right: 20px;">
-                                <i class="fa-solid fa-pencil text-black"></i>
-                            </div>
-                        </a>
-                        <img src="/img/uploads/mini/300x300-{{ media.getMedImage }}" alt="image snowboarding"
-                             style="width: 100%; height: 100%; object-fit: cover;">
-                    </div>
-                {% endif %}
-            {% endfor %}
-            {#<div class="edit-form edit-mode" style="display: none;">
-                <div class="d-flex justify-content-evenly gap-3">
-                    {% for mediaForm in figureForm.medias %}
-                        <div class="d-flex justify-content-evenly">
-                            <div class="bloc_media card p-0"
-                                 style="width: 180px; height: 120px; position: relative;">
-                                {{ form_row(mediaForm.med_video) }}
-                            </div>
+                    {% if media.getMedImage() is not null %}
+                        <div class="bloc_media card p-0"
+                             style="width: 180px; height: 120px; position: relative;">
+                            <a href="#" class="btnImageDelete text-decoration-none edit-form edit-mode"
+                               data-media-id="{{ media.id }}" style="display:none;">
+                                <div class="bg-light p-1 border" style="position: absolute; top: -10px; right: -10px;">
+                                    <i class="fa-solid fa-trash-can text-black"></i>
+                                </div>
+                            </a>
+                            <img src="/img/uploads/mini/300x300-{{ media.getMedImage }}" alt="image snowboarding"
+                                 style="width: 100%; height: 100%; object-fit: cover;">
                         </div>
-                        <div class="d-flex justify-content-evenly">
-                            <div class="bloc_media card p-0"
-                                 style="width: 180px; height: 120px; position: relative;">
-                                {{ form_row(mediaForm.med_image) }}
-                            </div>
-                        </div>
-                    {% endfor %}
+                    {% endif %}
+                {% endfor %}
+            {% else %}
+                <div class="d-flex flex-column align-items-center">
+                    <span>No media is associated</span>
+                    &nbsp;
+                    <i class="fa-solid fa-video-slash"></i>
                 </div>
-            </div>#}
-        {% else %}
-            <div class="d-flex flex-column align-items-center">
-                <span>No media is associated</span>
-                &nbsp;
-                <i class="fa-solid fa-video-slash"></i>
-            </div>
-        {% endif %}
+            {% endif %}
+        </div>
+        <div class="d-flex p-3 mt-3 justify-content-center">
+            <input id="addMedia" class="p-3 edit-form edit-mode" type="button" value="Add media" style="display: none">
+        </div>
     </div>
-</div>
 <!-- Bloc media ending -->
 <!-- Bloc description begin -->
-<article class="d-flex flex-column align-items-center m-3 border bg-light">
-    <p class="m-3 p-3 edit-form edit-mode" style="max-width: 1200px;">
-        {{ figure.getContentFigure() }}
-    </p>
-    <div class="edit-form edit-mode w-75 p-5" style="display: none;">
-        {{ form_row(figureForm.contentFigure, {'label': false}) }}
-    </div>
-</article>
+    <div id="blocEditingFigure">
+        <article class="d-flex flex-column align-items-center m-3 border bg-light">
+            <p class="m-3 p-3 edit-form edit-mode" style="max-width: 1200px;">
+                {{ figure.getContentFigure() }}
+            </p>
+            <div class="edit-form edit-mode w-75 p-5" style="display: none;">
+                {{ form_row(figureForm.contentFigure, {'label': false}) }}
+            </div>
+        </article>
 
-<div class="container">
-    <div class="d-flex justify-content-evenly">
-        <!-- Date created -->
-        <div class="border p-3 rounded">
-            <p class="fw-bold m-0">Creathe the : </p>
-            <hr class="m-0">
-            <p class="mb-0 mt-3">{{ figure.getDateCreate()|date('Y-m-d') }}</p>
-        </div>
+        <div class="container">
+            <div class="d-flex justify-content-evenly">
+                <!-- Date created -->
+                <div class="border p-3 rounded">
+                    <p class="fw-bold m-0">Creathe the : </p>
+                    <hr class="m-0">
+                    <p class="mb-0 mt-3">{{ figure.getDateCreate()|date('Y-m-d') }}</p>
+                </div>
 
-        <!-- Category -->
-        <div class="border p-3 rounded">
-            <p class="fw-bold m-0">Category : </p>
-            <hr class="m-0">
-            <p class="mb-0 mt-3 edit-form edit-mode">{{ figure.getCategory() }}</p>
-            <div class="edit-form edit-mode" style="display: none;">
-                {{ form_row(figureForm.category, {'label': false}) }}
+                <!-- Category -->
+                <div class="border p-3 rounded">
+                    <p class="fw-bold m-0">Category : </p>
+                    <hr class="m-0">
+                    <p class="mb-0 mt-3 edit-form edit-mode">{{ figure.getCategory() }}</p>
+                    <div class="edit-form edit-mode" style="display: none;">
+                        {{ form_row(figureForm.category, {'label': false}) }}
+                    </div>
+                </div>
+
+                <!-- Date updated -->
+                <div class="border p-3 rounded">
+                    <p class="fw-bold m-0">Last modified on : </p>
+                    <hr class="m-0">
+                    <p class="mb-0 mt-3">{{ figure.getDateUpdate()|date('Y-m-d') }}</p>
+                </div>
             </div>
         </div>
-
-        <!-- Date updated -->
-        <div class="border p-3 rounded">
-            <p class="fw-bold m-0">Last modified on : </p>
-            <hr class="m-0">
-            <p class="mb-0 mt-3">{{ figure.getDateUpdate()|date('Y-m-d') }}</p>
+        <div class="m-auto text-center mt-3 edit-form edit-mode" style="display: none">
+            <button class="btn btn-warning">Submit changes</button>
         </div>
     </div>
-</div>
-<div class="m-auto text-center mt-3 edit-form edit-mode" style="display: none">
-    <button id="valdateEditionFigure" class="btn btn-warning">Submit changes</button>
-</div>
-    {{ form_end(figureForm) }}
+        {{ form_end(figureForm) }}
+        <!-- Form for update media begin -->
+            {{ form_start(mediaFormEditing, { 'attr': {'id': 'editionFormMediaTrick'} }) }}
+            <div id="medias" class="mt-2 p-3" data-prototype="{{ form_widget(mediaFormEditing.medias.vars.prototype)|e('html_attr') }}">
+                {% for item in mediaFormEditing.medias %}
+                    <div class="media">
+                        {{ form_row(item) }}
+                    </div>
+                {% endfor %}
+            </div>
+            {{ form_end(mediaFormEditing) }}
+            <div class="d-flex flex-row-reverse mt-3 p-3">
+                <button id="btnEditMediaTrick" type="submit" class="btn btn-warning d-none">Add your medias</button>
+            </div>
+        <!-- Form for update media ending -->
 <!-- Bloc description ending -->
 <!-- Box for add medias begin -->
-<div id="boxDelete" class="modal d-none">
-    <div class="modal-content bg-white w-25 border text-center p-3" style="margin: 15% auto">
-        <div class="modal-body">
-            <p>Do you want to delete this figure ? </p>
-            <button id="closeBoxDelete" class="btnDelete">Leave</button>
-            <button id="deleteFigure" class="btnDelete bg-success text-white">Confirm</button>
+    <div id="boxDelete" class="modal d-none">
+        <div class="modal-content bg-white w-25 border text-center p-3" style="margin: 15% auto">
+            <div class="modal-body">
+                <p>Do you want to delete this figure ? </p>
+                <button id="closeBoxDelete" class="btnDelete">Leave</button>
+                <button id="deleteFigure" class="btnDelete bg-success text-white">Confirm</button>
+            </div>
         </div>
     </div>
-</div>
+    <div id="boxMedia" class="modal d-none">
+        <div class="modal-content">
+            <div class="modal-body">
+                <p>Choose an option:</p>
+                <button id="addImage" class="btnMedia">Add a picture</button>
+                <button id="addVideo" class="btnMedia">Add a video</button>
+            </div>
+            <div class="modal-footer">
+                <button id="closeMedia" class="btnMedia">Leave</button>
+            </div>
+        </div>
+    </div>
 <!-- Box for add medias ending -->
-<style>
-    .modal {
-        position: fixed;
-        z-index: 1;
-        left: 0;
-        top: 0;
-        width: 100%;
-        height: 100%;
-        overflow: auto;
-        background-color: rgba(0, 0, 0, 0.5);
-    }
-
-    .btnDelete {
-        margin: 5px;
-        padding: 10px;
-        cursor: pointer;
-    }
-
-    .error-message ul {
-        padding-left: 0;
-    }
-</style>

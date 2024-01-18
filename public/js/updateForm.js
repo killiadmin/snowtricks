@@ -2,6 +2,8 @@ import { componentEmptyMediaVideo } from "./utilsForm.js";
 import { componentEmptyMediaPicture} from "./utilsForm.js";
 import { createBtnDelete } from "./utilsForm.js";
 import { processMedia } from "./utilsForm.js";
+import { openComponentMedia } from "./utilsForm.js";
+import { closeComponentMedia } from "./utilsForm.js";
 
 // Media box to add a video field or a picture field
 var modal = document.getElementById("boxMedia");
@@ -13,26 +15,6 @@ var btnEditFigure = document.getElementById("btnEditFigure");
 var btnEditMedia = document.getElementById("btnEditMedia");
 //Counter medias
 var countMedia = 0;
-
-/**
- * Displays the component media in a modal.
- *
- * @return {void}
- */
-function addComponentMedia()
-{
-    modal.style.display = "block";
-}
-
-/**
- * Closes the component media.
- *
- * @return {void}
- */
-function closeComponentMedia()
-{
-    modal.style.display = "none";
-}
 
 /**
  * Creates an empty message content.
@@ -52,8 +34,12 @@ function messageEmptyContent(idElement, messageError)
 /**
  * Several eventListeners to dynamically add media to the form
  */
-document.getElementById("addMedia").addEventListener("click", addComponentMedia);
-document.getElementById(("closeMedia")).addEventListener("click", closeComponentMedia);
+document.getElementById("addMedia").addEventListener("click", function (){
+    openComponentMedia(modal);
+});
+document.getElementById(("closeMedia")).addEventListener("click", function (){
+    closeComponentMedia(modal);
+});
 
 /**
  * Method add  for a bloc image
@@ -74,8 +60,8 @@ document.getElementById("addImage").addEventListener("click", function() {
         countMedia--;
 
         if (countMedia === 0) {
-            btnEditFigure.style.display = "block";
-            btnEditMedia.style.display = "none";
+            openComponentMedia(btnEditFigure);
+            closeComponentMedia(btnEditMedia);
         }
     });
 
@@ -84,9 +70,9 @@ document.getElementById("addImage").addEventListener("click", function() {
     }
 
     countMedia++;
-    btnEditFigure.style.display = "none";
-    btnEditMedia.style.display = "block";
-    closeComponentMedia();
+    openComponentMedia(btnEditMedia);
+    closeComponentMedia(btnEditFigure);
+    closeComponentMedia(modal);
 });
 
 /**
@@ -107,8 +93,8 @@ document.addEventListener("DOMContentLoaded", function() {
             countMedia--;
 
             if (countMedia === 0) {
-                btnEditFigure.style.display = "block";
-                btnEditMedia.style.display = "none";
+                openComponentMedia(btnEditFigure);
+                closeComponentMedia(btnEditMedia);
             }
 
             this.previousElementSibling.parentElement.remove();
@@ -119,9 +105,9 @@ document.addEventListener("DOMContentLoaded", function() {
         }
 
         countMedia++;
-        btnEditFigure.style.display = "none";
-        btnEditMedia.style.display = "block";
-        closeComponentMedia();
+        openComponentMedia(btnEditMedia);
+        closeComponentMedia(btnEditFigure);
+        closeComponentMedia(modal);
     });
 });
 

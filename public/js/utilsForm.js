@@ -115,13 +115,39 @@ function processMedia(mediaType)
     return mediaElement
 }
 
+/**
+ * Opens component media by removing the "d-none" class and adding the "d-block" class to the element.
+ *
+ * @param {HTMLElement} element - The element to open the component media.
+ *
+ * @return {void}
+ */
+function openComponentMedia (element)
+{
+    element.classList.remove("d-none");
+    element.classList.add("d-block");
+}
+
+/**
+ * Hides a component media element by adding the "d-none" class and removing the "d-block" class.
+ *
+ * @param {HTMLElement} element - The component media element to be hidden.
+ *
+ * @return {void}
+ */
+function closeComponentMedia (element)
+{
+    element.classList.remove("d-block");
+    element.classList.add("d-none");
+}
+
 /*
  * We call the click method to delete an picture type media and if it is the last one we flag a message
  */
 document.querySelectorAll(".btnImageDelete").forEach((button) => {
     button.addEventListener("click", function(event) {
         deleteMedia(event);
-        if (document.getElementById("listMediaPicture").children.length === 1){
+        if (document.getElementById("listMediaPicture") && document.getElementById("listMediaPicture").children.length === 1){
             componentEmptyMediaPicture();
         }
     });
@@ -133,7 +159,7 @@ document.querySelectorAll(".btnImageDelete").forEach((button) => {
 document.querySelectorAll(".btnVideoDelete").forEach((button) => {
     button.addEventListener("click", function(event) {
         deleteMedia(event);
-        if (document.getElementById("listMediaVideo").children.length === 1){
+        if (document.getElementById("listMediaVideo") && document.getElementById("listMediaVideo").children.length === 1){
             componentEmptyMediaVideo();
         }
     });
@@ -143,3 +169,5 @@ export { componentEmptyMediaVideo };
 export { componentEmptyMediaPicture};
 export { createBtnDelete };
 export { processMedia };
+export { closeComponentMedia };
+export { openComponentMedia };
