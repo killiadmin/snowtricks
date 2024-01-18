@@ -4,5 +4,6 @@
 
 {% block body %}
     {% include 'new/newForm.html.twig' %}
-    <script src="{{ asset('../../js/newForm.js') }}"></script>
+    <script type="module" src="{{ asset('../../js/newForm.js') }}"></script>
+    <script type="module" src="{{ asset('../../js/utilsForm.js') }}"></script>
 {% endblock %}

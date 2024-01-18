@@ -21,6 +21,11 @@ class HomeController extends AbstractController
 
     /**
      * @Route("/load-more", name="load_more")
+     * Retrieves a list of figures to load for pagination.
+     *
+     * @param FigureRepository $figureRepository The repository for figures.
+     * @param Request $request The request object containing the page number.
+     * @return JsonResponse The JSON response containing the loaded figures.
      */
     public function loadMore(FigureRepository $figureRepository, Request $request): JsonResponse
     {
@@ -31,9 +36,16 @@ class HomeController extends AbstractController
         // Transform data into associative array
         $data = [];
         foreach ($figures as $figure) {
+            $medias = $figure->getMedias();
+            $pictures = [];
+
+            foreach ($medias as $media) {
+                $pictures[] = $media->getMedImage();
+            }
+
             $data[] = [
                 'title' => $figure->getTitle(),
-                'picture' => $figure->getPictureFigure(),
+                'picture' => $pictures,
                 'slug' => $figure->getSlug()
             ];
         }

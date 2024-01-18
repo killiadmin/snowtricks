@@ -1,0 +1,9 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Improve your trick{% endblock %}
+
+{% block body %}
+    {% include 'update/updateForm.html.twig' %}
+    <script type="module" src="{{ asset('js/updateForm.js') }}"></script>
+    <script type="module" src="{{ asset('js/utilsForm.js') }}"></script>
+{% endblock %}

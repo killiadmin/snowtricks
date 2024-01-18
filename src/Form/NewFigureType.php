@@ -10,44 +10,56 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 class NewFigureType extends AbstractType
 {
     /**
-     * @param FormBuilderInterface $builder
-     * @param array $options
+     * Builds the form for creating a new Figure.
+     *
+     * @param FormBuilderInterface $builder The form builder.
+     * @param array $options The form options.
      * @return void
      */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $builder
-            ->add('title', TextType::class, [
-                'label' => 'Title',
-                'attr' => [
-                    'class' => 'form-control'
-                ],
-                'required' => true
-            ])
-            ->add('contentFigure', TextareaType::class, [
-                'label' => 'Your content',
-                'attr' => [
-                    'class' => 'form-control'
-                ],
-                'required' => true
-            ])
-            ->add('category', ChoiceType::class, [
-                'label' => 'Category',
-                'choices' => [
-                    'Easy' => 'easy',
-                    'Medium' => 'medium',
-                    'Hard' => 'hard',
-                ],
-                'attr' => [
-                    'class' => 'form-control'
-                ],
-                'required' => true
-            ])
-            ->add('medias', CollectionType::class, [
+        if ($options['display_figure']) {
+            $builder
+                ->add('title', TextType::class, [
+                    'constraints' => new NotBlank(['message' => 'User name cannot be empty']),
+                    'label' => 'Title',
+                    'attr' => [
+                        'class' => 'form-control'
+                    ],
+                    'required' => true,
+                    'mapped' => $options['display_figure'],
+                ])
+                ->add('contentFigure', TextareaType::class, [
+                    'constraints' => new NotBlank(['message' => 'Figure description cannot be empty']),
+                    'label' => 'Your content',
+                    'attr' => [
+                        'class' => 'form-control'
+                    ],
+                    'required' => true,
+                    'mapped' => $options['display_figure'],
+                ])
+                ->add('category', ChoiceType::class, [
+                    'label' => 'Category',
+                    'choices' => [
+                        'Easy' => 'easy',
+                        'Medium' => 'medium',
+                        'Hard' => 'hard',
+                    ],
+                    'attr' => [
+                        'class' => 'form-control'
+                    ],
+                    'required' => true,
+                    'mapped' => $options['display_figure'],
+                ]);
+        }
+
+        if ($options['display_medias']) {
+            $builder->add('medias', CollectionType::class, [
                 'label' => false,
                 'entry_type' => MediaType::class,
                 'allow_add' => true,
@@ -57,6 +69,7 @@ class NewFigureType extends AbstractType
                 'prototype' => true,
                 'prototype_name' => '__media__',
             ]);
+        }
     }
 
     /**
@@ -67,6 +80,8 @@ class NewFigureType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Figure::class,
+            'display_medias' => true,
+            'display_figure' => true
         ]);
     }
 }

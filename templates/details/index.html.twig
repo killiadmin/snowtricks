@@ -5,6 +5,7 @@
 {% block body %}
     {% include 'details/trick.html.twig' %}
     {% include 'details/comments.html.twig' %}
-    <script src="{{ asset('js/comment.js') }}"></script>
-    <script src="{{ asset('js/trick.js') }}"></script>
+    <script type="module" src="{{ asset('js/comment.js') }}"></script>
+    <script type="module" src="{{ asset('js/trick.js') }}"></script>
+    <script type="module" src="{{ asset('js/utilsForm.js') }}"></script>
 {% endblock %}

@@ -1,7 +1,17 @@
 <div class="container-fluid p-0 position-relative">
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success text-center w-100 position-absolute">
+            {{ message }}
+        </div>
+    {% endfor %}
+    {% for message in app.flashes('error') %}
+        <div class="alert alert-danger text-center w-100 position-absolute">
+            {{ message }}
+        </div>
+    {% endfor %}
     <div class="jumbotron jumbotron-fluid text-center text-dark d-flex align-items-center" style="background-image: url(/img/snowboard-7000597_1920.jpg); background-size: cover; background-position: center; height: 90vh;">
         <div class="container">
-            <h1 class="display-4 mx-auto" style="text-shadow: 1px 1px 0 white, -1px -1px 0 white, 1px -1px 0 white, -1px 1px 0 white;">Passez au niveau supérieur avec Snowtricks</h1>
+            <h1 class="display-4 mx-auto" style="text-shadow: 1px 1px 0 white, -1px -1px 0 white, 1px -1px 0 white, -1px 1px 0 white;">Take it to the next level with Snowtricks</h1>
         </div>
     </div>
     <div class="position-absolute bottom-0 end-0">

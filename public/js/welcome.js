@@ -1,9 +1,13 @@
+// Number of pages of the list of figures
 var page = 1;
 
 // Variable to track loading status
 var loading = false;
 
+// Figure card affection bloc
 var blocCards = document.querySelector(".bloc_cards");
+
+// Loading spinner
 var loadSpinner = document.getElementById("load_spinner");
 
 /**
@@ -15,8 +19,8 @@ var loadSpinner = document.getElementById("load_spinner");
  */
 function deleteFigureWithTrash(slug)
 {
-    fetch('/tricks/details/' + slug + '/delete', {
-        method: 'DELETE',
+    fetch("/tricks/details/" + slug + "/delete", {
+        method: "DELETE",
     })
         .then(response => {
             if (!response.ok) {
@@ -32,14 +36,12 @@ function deleteFigureWithTrash(slug)
             }
         })
         .catch(error => {
-            console.error('There was a problem with the fetch operation:', error);
+            console.error("There was a problem with the fetch operation:", error);
         });
 }
 
 /**
  * Loading more data asynchronously when the user scrolls down.
- *
- *
  * @return {void}
  */
 function loadMore()
@@ -92,9 +94,16 @@ function loadMore()
                     imgCard.style.overflow = "hidden";
 
                     var img = document.createElement("img");
+                    let imgValid = "";
 
-                    img.src = item.picture ?? "/img/figure-0001.jpeg";
+                    for (let picture of item.picture) {
+                        if (picture) {
+                            imgValid = picture;
+                            break;
+                        }
+                    }
 
+                    img.src = imgValid ? "/img/uploads/mini/300x300-" + imgValid : "/img/figure-0001.jpeg";
                     img.className = "card-img-top";
                     img.alt = "figure snowboarding";
                     img.style.objectFit = "cover";
@@ -122,20 +131,48 @@ function loadMore()
                     var buttonCard = document.createElement("div");
                     buttonCard.className = "bloc_button-card d-flex gap-3";
 
-                    // Add buttons for each action (edit and delete)
+                    // Add button for each action (edit)
                     var pencilIcon = document.createElement("a");
                     pencilIcon.href = "#";
                     pencilIcon.innerHTML = '<i class="fa-solid fa-pencil text-black"></i>';
+                    pencilIcon.href = "/tricks/editing/" + item.slug;
 
                     var trashIcon = document.createElement("a");
                     trashIcon.innerHTML = '<i class="fa-solid fa-trash-can text-black"></i>'
                     trashIcon.style.cursor = "pointer";
-                    trashIcon.addEventListener('click', function (event) {
-                        deleteFigureWithTrash(item.slug)
-                    });
 
+                    var validateDelete = document.createElement("a");
+                    validateDelete.innerHTML = '<i class="fa-solid fa-check text-success"></i>';
+                    validateDelete.style.cursor = "pointer";
+                    validateDelete.style.display = "none";
+
+                    var cancelDelete = document.createElement("a");
+                    cancelDelete.innerHTML = '<i class="fa-solid fa-xmark text-danger"></i>';
+                    cancelDelete.style.cursor = "pointer";
+                    cancelDelete.style.display = "none";
+
+                    buttonCard.appendChild(validateDelete);
+                    buttonCard.appendChild(cancelDelete);
                     buttonCard.appendChild(pencilIcon);
                     buttonCard.appendChild(trashIcon);
+
+                    trashIcon.addEventListener("click", function () {
+                        this.style.display = "none";
+                        validateDelete.style.display = "inline";
+                        cancelDelete.style.display = "inline";
+                        pencilIcon.style.display = "none";
+                    });
+
+                    validateDelete.addEventListener("click", function () {
+                        deleteFigureWithTrash(item.slug);
+                    });
+
+                    cancelDelete.addEventListener("click", function () {
+                        this.style.display = "none";
+                        validateDelete.style.display = "none";
+                        trashIcon.style.display = "inline";
+                        pencilIcon.style.display = "inline";
+                    });
 
                     cardBody.appendChild(titleLink);
                     cardBody.appendChild(buttonCard);
@@ -151,14 +188,10 @@ function loadMore()
                             loadSpinner.style.display = "none";
                         }
                     }, 3000);
-
                 }, 2000);
             });
             page++;
             loading = false;
-
-
-
         })
         .catch(error => {
             console.error("Error:", error);
@@ -169,7 +202,9 @@ function loadMore()
         });
 }
 
-// On user scroll
+/**
+ * When the user scrolls, the figure loading method applies
+*/
 window.addEventListener("scroll", function() {
     if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 100) {
         loadMore();

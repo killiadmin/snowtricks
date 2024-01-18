@@ -1,5 +1,11 @@
+// Number of pages of the list of comments
 var page = 1;
+// Status of loading comments
 var loading = false;
+// Load comments button
+var loadMoreButton = document.getElementById("loadComment");
+// Counter comments
+var countComment = 0;
 
 /**
  * Loads more comments for a given slug and page number.
@@ -20,9 +26,6 @@ function loadMoreComments()
     fetch(`/load-more-comments/${slug}?page=${page}`)
         .then(response => response.json())
         .then(data => {
-            if (data.comments.length === 0) {
-                loadMoreButton.style.display = "none";
-            }
             // Loop through the comments and create HTML elements for each
             data.comments.forEach(comment => {
                 // Create new comment container
@@ -35,7 +38,7 @@ function loadMoreComments()
 
                 // Create profile image
                 var profileImage = document.createElement("img");
-                profileImage.src = "/img/photo-avatar-profil.png";
+                profileImage.src = "/img/default_avatar_profil.png";
                 profileImage.alt = "Photo de profil";
                 profileImage.className = "img-fluid rounded-circle";
                 profileImage.style.width = "50px";
@@ -79,9 +82,22 @@ function loadMoreComments()
 
                 // Add the new comment to the container
                 document.querySelector("#listCommments").appendChild(commentContainer);
+                countComment++
             });
 
             loading = false;
+
+            if (countComment === 0 && data.comments.length === 0) {
+                loadMoreButton.style.display = "none";
+                var flagEmptyComment = document.getElementById("flagEmptyComment");
+                flagEmptyComment.classList.remove("d-none");
+                flagEmptyComment.classList.add("d-block");
+            }
+
+            if (data.comments.length === 0) {
+                loadMoreButton.style.display = "none";
+            }
+
             page++;
         })
         .catch(error => {
@@ -92,5 +108,12 @@ function loadMoreComments()
         });
 }
 
-var loadMoreButton = document.getElementById("loadComment");
+/**
+ * When you click, we load the comments
+ */
 loadMoreButton.addEventListener("click", loadMoreComments);
+
+/**
+ * When loading, we display the first available comments
+ */
+document.addEventListener("DOMContentLoaded", loadMoreComments);
