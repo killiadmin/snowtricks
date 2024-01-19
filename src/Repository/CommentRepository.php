@@ -7,6 +7,7 @@ use App\Entity\Figure;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
+use Exception;
 
 /**
  * @extends ServiceEntityRepository<Comment>
@@ -25,7 +26,7 @@ class CommentRepository extends ServiceEntityRepository
 
     /**
      * @return Figure[] Returns an array of Figure objects in blocks of 15
-     * @throws \Exception
+     * @throws Exception
      */
 
     public function selectCommentsAssociated($figureSlug, $limit = 10, $offset = 0): array

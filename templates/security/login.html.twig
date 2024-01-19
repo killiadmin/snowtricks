@@ -16,12 +16,17 @@
             {% endif %}
 
             <h1 class="h3 mb-5 font-weight-normal text-center">Login</h1>
-            <div class="container mt-5 p-5" style="border: solid 1px;">
-                <div class="text-center mb-3">
+            <div class="container mt-5 p-5 border">
+                {#<div class="text-center mb-3">
                     <label for="inputEmail">Email</label>
                 </div>
                 <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control"
-                       autocomplete="email" required autofocus>
+                       autocomplete="email" required autofocus>#}
+                <div class="text-center mb-3">
+                    <label for="inputPseudo">Pseudo</label>
+                </div>
+                <input type="text" value="{{ last_username }}" name="pseudo" id="inputPseudo" class="form-control"
+                       autocomplete="pseudo" required autofocus>
                 <div class="text-center m-3">
                     <label for="inputPassword">Password</label>
                 </div>

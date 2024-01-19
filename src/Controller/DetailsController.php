@@ -10,6 +10,7 @@ use App\Form\NewFigureType;
 use App\Repository\CommentRepository;
 use App\Repository\FigureRepository;
 use App\Repository\MediaRepository;
+use App\Repository\UserRepository;
 use App\Service\ImageUploadService;
 use App\Service\PictureService;
 use App\Service\UtilsService;
@@ -22,22 +23,32 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Security;
 
 class DetailsController extends AbstractController
 {
     private PictureService $pictureService;
     private UtilsService $utilsService;
+    private Security $security;
 
-    public function __construct(PictureService $pictureService, UtilsService $utilsService) {
+    public function __construct(PictureService $pictureService, UtilsService $utilsService, Security $security) {
         $this->pictureService = $pictureService;
         $this->utilsService = $utilsService;
+        $this->security = $security;
     }
 
     /**
      * @Route("/tricks/details/{slug}", name="app_details", methods={"GET","POST"})
+     * @param Request $request
+     * @param string $slug
+     * @param FigureRepository $figureRepository
+     * @param EntityManagerInterface $manager
+     * @param ImageUploadService $imageUploadService
+     * @param UserRepository $userRepository
+     * @return Response
      * @throws NonUniqueResultException
      */
-    public function index(Request $request, string $slug, FigureRepository $figureRepository, EntityManagerInterface $manager, ImageUploadService $imageUploadService): Response
+    public function index(Request $request, string $slug, FigureRepository $figureRepository, EntityManagerInterface $manager, ImageUploadService $imageUploadService, UserRepository $userRepository): Response
     {
         $figure = $figureRepository->findOneBySlug($slug);
 
@@ -100,9 +111,20 @@ class DetailsController extends AbstractController
 
         if ($postComment->isSubmitted() && $postComment->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
-            $associatedUserId = 1;
-            $associatedUser = $entityManager->getRepository(User::class)->find($associatedUserId);
-            $comment->setUserAssociated($associatedUser);
+
+            // User associated
+            $user = $this->security->getUser();
+            if ($user) {
+                $userMail = $user->getUserIdentifier();
+                //Find this User by mail
+                $associatedUser = $userRepository->findUserByEmail($userMail);
+                // Implant idUserAssociated
+                $comment->setUserAssociated($associatedUser);
+            } else {
+                $this->addFlash('error', 'You are not allowed to post a comment');
+                return $this->redirectToRoute('app_login');
+            }
+
             $comment->setFigureAssociated($figure);
             $comment->setDateCreate(new \DateTime());
 
@@ -237,7 +259,8 @@ class DetailsController extends AbstractController
             $data[] = [
                 'content' => $comment->getContentComment(),
                 'date' => $comment->getDateCreate()->format('Y-m-d'),
-                'user' => $comment->getUserAssociated()->getPseudo()
+                'user' => $comment->getUserAssociated()->getPseudo(),
+                'avatar' => $comment->getUserAssociated()->getPictureIdentifier()
             ];
         }
 
