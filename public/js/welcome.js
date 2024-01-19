@@ -1,3 +1,7 @@
+window.onload = function() {
+    return isAuthenticated;
+}
+
 // Number of pages of the list of figures
 var page = 1;
 
@@ -141,6 +145,11 @@ function loadMore()
                     trashIcon.innerHTML = '<i class="fa-solid fa-trash-can text-black"></i>'
                     trashIcon.style.cursor = "pointer";
 
+                    if (!isAuthenticated){
+                        pencilIcon.className = "d-none";
+                        trashIcon.className = "d-none";
+                    }
+
                     var validateDelete = document.createElement("a");
                     validateDelete.innerHTML = '<i class="fa-solid fa-check text-success"></i>';
                     validateDelete.style.cursor = "pointer";
@@ -164,7 +173,11 @@ function loadMore()
                     });
 
                     validateDelete.addEventListener("click", function () {
-                        deleteFigureWithTrash(item.slug);
+                        if (isAuthenticated){
+                            deleteFigureWithTrash(item.slug);
+                        } else {
+                            window.location.href = "/login";
+                        }
                     });
 
                     cancelDelete.addEventListener("click", function () {

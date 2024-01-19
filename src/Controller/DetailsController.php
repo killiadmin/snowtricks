@@ -53,7 +53,8 @@ class DetailsController extends AbstractController
         $figure = $figureRepository->findOneBySlug($slug);
 
         if (!$figure) {
-            throw $this->createNotFoundException('Figure not found');
+            $this->addFlash('error', 'This figure does not exist');
+            return $this->redirectToRoute('app_home');
         }
 
         $medias = $figure->getMedias();
@@ -110,6 +111,11 @@ class DetailsController extends AbstractController
         $postComment->handleRequest($request);
 
         if ($postComment->isSubmitted() && $postComment->isValid()) {
+            if (!$this->isGranted('IS_AUTHENTICATED_FULLY')) {
+                // If the user is not authenticated
+                throw $this->createAccessDeniedException('You must be logged in to access this page.');
+            }
+
             $entityManager = $this->getDoctrine()->getManager();
 
             // User associated
@@ -154,14 +160,18 @@ class DetailsController extends AbstractController
      * @param string $slug The slug of the figure to be deleted
      * @param FigureRepository $figureRepository The repository for fetching the figure
      * @param EntityManagerInterface $em The entity manager for managing the deletion
-     *
+     * @param CommentRepository $commentRepository
      * @return Response
-     * @throws NotFoundHttpException|NonUniqueResultException If the figure is not found
+     * @throws NonUniqueResultException If the figure is not found
      * @throws Exception
-     *
      */
     public function deleteFigure(string $slug, FigureRepository $figureRepository, EntityManagerInterface $em, CommentRepository $commentRepository): Response
     {
+        if (!$this->isGranted('IS_AUTHENTICATED_FULLY')) {
+            // If the user is not authenticated
+            throw $this->createAccessDeniedException('You must be logged in to access this page.');
+        }
+
         // Find figure by slug
         $figure = $figureRepository->findOneBySlug($slug);
 
@@ -188,8 +198,13 @@ class DetailsController extends AbstractController
             $em->remove($media);
         }
 
+        // First, flush to perform the deletions of comments and medias
+        $em->flush();
+
         // Delete figure
         $em->remove($figure);
+
+        // Flush again to perform the deletion of figure
         $em->flush();
 
         $this->addFlash('success', 'The figure has been deleted !');
@@ -211,6 +226,11 @@ class DetailsController extends AbstractController
      */
     public function deleteMedia(int $id, MediaRepository $mediaRepository, EntityManagerInterface $em): Response
     {
+        if (!$this->isGranted('IS_AUTHENTICATED_FULLY')) {
+            // If the user is not authenticated
+            throw $this->createAccessDeniedException('You must be logged in to access this page.');
+        }
+
         // Find media by id
         $media = $mediaRepository->find($id);
 

@@ -35,6 +35,11 @@ class NewController extends AbstractController
      */
     public function index(Request $request, UserRepository $userRepository, ImageUploadService $imageUploadService): Response
     {
+        if (!$this->isGranted('IS_AUTHENTICATED_FULLY')) {
+            // If the user is not authenticated
+            throw $this->createAccessDeniedException('You must be logged in to access this page.');
+        }
+
         $figure = new Figure();
         $form = $this->createForm(NewFigureType::class, $figure);
         $form->handleRequest($request);

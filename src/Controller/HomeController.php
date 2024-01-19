@@ -16,7 +16,12 @@ class HomeController extends AbstractController
      */
     public function index(): Response
     {
-        return $this->render('home/index.html.twig');
+        $isAuthenticated = $this->isGranted('IS_AUTHENTICATED_FULLY');
+
+        return $this->render('home/index.html.twig',
+            [
+                'is_authenticated' => $isAuthenticated
+            ]);
     }
 
     /**
