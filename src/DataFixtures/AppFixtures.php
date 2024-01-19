@@ -46,7 +46,7 @@ class AppFixtures extends Fixture
                 ->setFirstnameIdentifier($faker->firstName())
                 ->setPseudo($faker->userName())
                 ->setActivated($faker->boolean())
-                ->setPictureIdentifier($faker->imageUrl());
+                ->setPictureIdentifier('default_avatar.webp');
 
             $password = $this->encoder->encodePassword($user, 'password');
             $user->setPassword($password);

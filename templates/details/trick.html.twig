@@ -1,14 +1,16 @@
 <!-- Bloc title begin -->
     <div class="container-fluid p-0 position-relative">
         <div class="bloc_button-card d-flex flex-row-reverse gap-3 p-5 position-absolute" style="right: 100px;">
-            <div class="container bg-light display-6">
-                <a href="#" id="editButton" class="text-decoration-none">
-                    <i class="fa-solid fa-pencil text-black"></i>&nbsp;
-                </a>
-                <a href="#" id="btnDelete" class="text-decoration-none">
-                    &nbsp;<i class="fa-solid fa-trash-can text-black"></i>
-                </a>
-            </div>
+            {% if app.user %}
+                <div class="container bg-light display-6">
+                    <a href="#" id="editButton" class="text-decoration-none">
+                        <i class="fa-solid fa-pencil text-black"></i>&nbsp;
+                    </a>
+                    <a href="#" id="btnDelete" class="text-decoration-none">
+                        &nbsp;<i class="fa-solid fa-trash-can text-black"></i>
+                    </a>
+                </div>
+            {% endif %}
         </div>
         {{ form_start(figureForm) }}
         <div class="jumbotron jumbotron-fluid text-center text-dark d-flex align-items-center"

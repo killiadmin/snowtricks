@@ -4,5 +4,14 @@
 
 {% block body %}
     {% include 'home/welcome.html.twig' %}
+    {% if is_authenticated %}
+        <script>
+            var isAuthenticated = true;
+        </script>
+    {% else %}
+        <script>
+            var isAuthenticated = false;
+        </script>
+    {% endif %}
     <script src="{{ asset('js/welcome.js') }}"></script>
 {% endblock %}

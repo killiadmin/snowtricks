@@ -28,6 +28,11 @@ class UpdateController extends AbstractController
      */
     public function index(Request $request, string $slug, FigureRepository $figureRepository, ImageUploadService $imageUploadService): Response
     {
+        if (!$this->isGranted('IS_AUTHENTICATED_FULLY')) {
+            // If the user is not authenticated
+            throw $this->createAccessDeniedException('You must be logged in to access this page.');
+        }
+
         $figure = $figureRepository->findOneBySlug($slug);
 
         //We retrieve the formFigure to retrieve the Media collection

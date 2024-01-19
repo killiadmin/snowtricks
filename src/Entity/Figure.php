@@ -59,7 +59,7 @@ class Figure
     private $user_associated;
 
     /**
-     * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="figure_associated")
+     * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="figure_associated", cascade={"remove"})
      */
     private $comments;
 
