@@ -38,7 +38,7 @@ function loadMoreComments()
 
                 // Create profile image
                 var profileImage = document.createElement("img");
-                profileImage.src = "/img/default_avatar_profil.png";
+                profileImage.src = "/img/avatar/" + comment.avatar;
                 profileImage.alt = "Photo de profil";
                 profileImage.className = "img-fluid rounded-circle";
                 profileImage.style.width = "50px";

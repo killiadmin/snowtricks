@@ -4,23 +4,25 @@ namespace App\Controller;
 
 use App\Entity\Figure;
 use App\Form\NewFigureType;
+use App\Repository\UserRepository;
 use App\Service\ImageUploadService;
-use App\Service\PictureService;
 use App\Service\UtilsService;
-use Proxies\__CG__\App\Entity\User;
+use Doctrine\ORM\NonUniqueResultException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Security;
 
 class NewController extends AbstractController
 {
     private UtilsService $utilsService;
+    private Security $security;
 
-    public function __construct(UtilsService $utilsService)
+    public function __construct(UtilsService $utilsService, Security  $security)
     {
         $this->utilsService = $utilsService;
+        $this->security = $security;
     }
 
     /**
@@ -29,8 +31,9 @@ class NewController extends AbstractController
      *
      * @param Request $request The request object.
      * @return Response The response object.
+     * @throws NonUniqueResultException
      */
-    public function index(Request $request, ImageUploadService $imageUploadService): Response
+    public function index(Request $request, UserRepository $userRepository, ImageUploadService $imageUploadService): Response
     {
         $figure = new Figure();
         $form = $this->createForm(NewFigureType::class, $figure);
@@ -46,21 +49,21 @@ class NewController extends AbstractController
             // Generate a slug
             $slug = $this->utilsService->generateSlug($figure->getTitle());
 
-            // ID user associated
-            $associatedUserId = 1;
-
-            // Implant idUserAssociated
-            $associatedUser = $entityManager->getRepository(User::class)->find($associatedUserId);
-
-            //Check if user exist
-            if (!$associatedUser) {
-                $this->addFlash('error', 'User not found ' . $associatedUserId);
-                throw new \RuntimeException('User not found ' . $associatedUserId);
+            // User associated
+            $user = $this->security->getUser();
+            if ($user) {
+                $userMail = $user->getUserIdentifier();
+                //Find this User by mail
+                $associatedUser = $userRepository->findUserByEmail($userMail);
+                // Implant idUserAssociated
+                $figure->setUserAssociated($associatedUser);
+            } else {
+                $this->addFlash('error', 'You are not allowed to post a trick');
+                return $this->redirectToRoute('app_login');
             }
 
             $figure->setDateCreate($timeStamp);
             $figure->setSlug($slug);
-            $figure->setUserAssociated($associatedUser);
 
             foreach ($figure->getMedias() as $media) {
                 if (!empty($media->getMedVideo())) {
