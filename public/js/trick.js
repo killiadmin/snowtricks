@@ -65,9 +65,11 @@ function deleteFigure(slug)
  * Declarations EventListener for delete a figures
  * @type {HTMLElement}
  */
-document.getElementById("btnDelete").addEventListener("click", function () {
-    openComponentMedia(document.getElementById("boxDelete"));
-});
+if (document.getElementById("btnDelete")){
+    document.getElementById("btnDelete").addEventListener("click", function () {
+        openComponentMedia(document.getElementById("boxDelete"));
+    });
+}
 
 document.getElementById("closeBoxDelete").addEventListener("click", function () {
     closeComponentMedia(document.getElementById("boxDelete"));
@@ -81,11 +83,13 @@ document.getElementById("deleteFigure").addEventListener("click", function () {
  * Methods for UPDATE elements
  * Declarations EventListener for update a figures
  */
-document.getElementById("editButton").addEventListener("click", function() {
-    document.querySelectorAll(".read-mode, .edit-mode").forEach(function(element) {
-        element.style.display = (element.style.display === "none") ? "block" : "none";
+if (document.getElementById("editButton")){
+    document.getElementById("editButton").addEventListener("click", function() {
+        document.querySelectorAll(".read-mode, .edit-mode").forEach(function(element) {
+            element.style.display = (element.style.display === "none") ? "block" : "none";
+        });
     });
-});
+}
 
 document.getElementById("closeMedia").addEventListener("click", function () {
     closeComponentMedia(modal);
