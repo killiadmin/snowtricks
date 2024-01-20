@@ -38,7 +38,13 @@ function loadMoreComments()
 
                 // Create profile image
                 var profileImage = document.createElement("img");
-                profileImage.src = "/img/avatar/" + comment.avatar;
+
+                if (comment && comment.avatar){
+                    profileImage.src = "/img/avatar/mini/300x300-" + comment.avatar;
+                } else {
+                    profileImage.src = "/img/avatar/mini/300x300-default_avatar.webp";
+                }
+
                 profileImage.alt = "Photo de profil";
                 profileImage.className = "img-fluid rounded-circle";
                 profileImage.style.width = "50px";
@@ -72,7 +78,12 @@ function loadMoreComments()
 
                 // Create user element
                 var userElement = document.createElement("p");
-                userElement.innerHTML = `<strong>${comment.user}</strong>&nbsp;`;
+
+                if (comment.lastname && comment.firstname){
+                    userElement.innerHTML = "<strong>" + comment.firstname + " " + comment.lastname + "</strong>&nbsp;";
+                } else{
+                    userElement.innerHTML = "<strong>" + comment.user + "</strong>&nbsp;";
+                }
 
                 infoContainer.appendChild(dateElement);
                 infoContainer.appendChild(userElement);

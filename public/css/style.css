@@ -40,3 +40,22 @@ Dialog for add media (Picture or Video)
     border-radius: 10px;
     max-width: 50%;
 }
+
+/**
+Avatar (profil)
+ */
+
+.avatar-container {
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+}
+
+.avatar-image {
+    width: auto;
+    height: auto;
+    max-height: 100%;
+}

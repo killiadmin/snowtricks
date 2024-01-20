@@ -39,6 +39,21 @@
                         <li class="nav-item">
                             <a class="navbar-brand" href="{{ path('app_logout') }}">Logout</a>
                         </li>
+                        <li class="nav-item">
+                            <p class="navbar-brand">|</p>
+                        </li>
+                        <li class="nav-item">
+                            <a class="navbar-brand" href="{{ path('app_profil') }}"
+                               title="Welcome {{ app.user.firstnameIdentifier }} {{ app.user.nameIdentifier }} ! ">
+                                {% if app.user.pictureIdentifier %}
+                                    <img src="/img/avatar/mini/300x300-{{ app.user.pictureIdentifier }}" alt="avatar"
+                                         width="40px" class="rounded-circle">
+                                {% else %}
+                                    <img src="/img/avatar/mini/300x300-default_avatar.webp" alt="avatar"
+                                         width="40px" class="rounded-circle">
+                                {% endif %}
+                            </a>
+                        </li>
                     {% endif %}
                 </ul>
             </div>
