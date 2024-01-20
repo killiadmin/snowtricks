@@ -3,41 +3,45 @@
         <hr>
         <h3 class="d-flex justify-content-center">Leave a comment</h3>
         <!--Leave a comment begin -->
-        <div class="p-3 mx-auto d-flex justify-content-center" style="max-width: 1000px;">
-            <div class="form-group w-100">
-                <div class="col-md-8 w-100">
-                    {{ form_start(formComment, { 'attr': { 'id': 'formCommentAnchor', 'class': 'd-flex align-items-center gap-1' } }) }}
-                    <div class="mr-auto w-100">
-                        {{ form_row(formComment.content_comment) }}
+            <div class="p-3 mx-auto d-flex justify-content-center" style="max-width: 1000px;">
+                <div class="form-group w-100">
+                    <div class="col-md-8 w-100">
+                        {{ form_start(formComment, { 'attr': { 'id': 'formCommentAnchor', 'class': 'd-flex align-items-center gap-1' } }) }}
+                        <div class="mr-auto w-100">
+                                {{ form_label(formComment.content_comment) }}
+                                <div class="text-white fw-bold rounded error-message">
+                                    {{ form_errors(formComment.content_comment) }}
+                                </div>
+                                {{ form_widget(formComment.content_comment) }}
+                        </div>
+                        <button type="submit" class="btn btn-secondary">
+                            Send
+                        </button>
+                        {{ form_end(formComment) }}
                     </div>
-                    <button type="submit" class="btn btn-secondary">
-                        Send
-                    </button>
-                    {{ form_end(formComment) }}
                 </div>
             </div>
-        </div>
         <!--Leave a comment ending -->
     {% endif %}
     <hr>
     <!--List Comments begin -->
-    <div id="listCommments" class="container mt-3 d-flex flex-column align-items-center">
-        <div id="flagEmptyComment" class="p-3 mt-5 mb-5 text-center d-none">
-            <p>
-                No comment published
-            </p><br/>
-            <i class="fa-regular fa-face-frown fa-2xl"></i>
-        </div>
-    </div>
-    <!--List Comments ending -->
-    <!-- Loadmore comment begin -->
-    <div id="loadComment" class="container p-5" style="display: flex; width: 20%; height: 11rem; cursor: pointer">
-        <div class="card-body d-flex align-items-center" style="border: outset;">
-            <div class="bloc_button-card m-auto">
-                Load more&nbsp;
-                <i class="fa-solid fa-arrow-pointer"></i>
+        <div id="listCommments" class="container mt-3 d-flex flex-column align-items-center">
+            <div id="flagEmptyComment" class="p-3 mt-5 mb-5 text-center d-none">
+                <p>
+                    No comment published
+                </p><br/>
+                <i class="fa-regular fa-face-frown fa-2xl"></i>
             </div>
         </div>
-    </div>
+    <!--List Comments ending -->
+    <!-- Loadmore comment begin -->
+        <div id="loadComment" class="container p-5" style="display: flex; width: 20%; height: 11rem; cursor: pointer">
+            <div class="card-body d-flex align-items-center" style="border: outset;">
+                <div class="bloc_button-card m-auto">
+                    Load more&nbsp;
+                    <i class="fa-solid fa-arrow-pointer"></i>
+                </div>
+            </div>
+        </div>
     <!-- Loadmore comment ending -->
 </section>
