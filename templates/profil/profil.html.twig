@@ -1,0 +1,32 @@
+<div class="container d-flex flex-column justify-content-center p-5 mt-5 w-50">
+    {{ form_start(profilForm, { 'attr': { 'id': 'editingFormProfil'} }) }}
+    <h1 class="h3 mb-5 font-weight-normal text-center">
+        Your profil
+    </h1>
+    <div class="d-flex justify-content-center">
+        <div class="avatar-container">
+            {% if app.user.pictureIdentifier %}
+                <img src="/img/avatar/{{ app.user.pictureIdentifier }}" alt="avatar" class="avatar-image">
+            {% else %}
+                <img src="/img/avatar/default_avatar.webp" alt="avatar" class="avatar-image">
+            {% endif %}
+        </div>
+    </div>
+    <div class="container mt-5 p-5 border">
+        <div class="text-center mb-3">
+            {{ form_row(profilForm.firstnameIdentifier) }}
+        </div>
+        <div class="text-center mb-3">
+            {{ form_row(profilForm.nameIdentifier) }}
+        </div>
+        <div class="text-center mb-3">
+            {{ form_row(profilForm.pictureIdentifier) }}
+        </div>
+        {{ form_end(profilForm) }}
+        <div class="d-flex flex-column">
+            <div class="d-flex justify-content-center m-3">
+                <button id="validateProfil" class="btn btn-secondary">Submit changes</button>
+            </div>
+        </div>
+    </div>
+</div>

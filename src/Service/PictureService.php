@@ -132,7 +132,7 @@ class PictureService
      */
     public function delete(string $file, ?string $folder = '', ?int $width = 300, ?int $height = 300): bool
     {
-        if($file !== 'default.webp'){
+        if($file !== 'default_avatar.webp'){
             $success = false;
             $path = $this->params->get('images_directory') . $folder;
 

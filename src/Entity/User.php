@@ -60,9 +60,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $activated;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $pictureIdentifier;
+    private ?string $pictureIdentifier = null;
 
     /**
      * @ORM\OneToMany(targetEntity=Figure::class, mappedBy="user_associated", orphanRemoval=true)

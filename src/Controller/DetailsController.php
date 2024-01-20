@@ -4,7 +4,6 @@ namespace App\Controller;
 
 use App\Entity\Comment;
 use App\Entity\Figure;
-use App\Entity\User;
 use App\Form\CommentType;
 use App\Form\NewFigureType;
 use App\Repository\CommentRepository;
@@ -275,12 +274,21 @@ class DetailsController extends AbstractController
 
         //Transform data into array
         $data = [];
+
         foreach ($comments as $comment) {
+            $avatar = 'default_avatar.webp';
+            $avatarPath = "/img/avatar/mini/300x300-" . $comment->getUserAssociated()->getPictureIdentifier();
+            if (file_exists($_SERVER['DOCUMENT_ROOT'].$avatarPath)) {
+                $avatar = $comment->getUserAssociated()->getPictureIdentifier();
+            }
+
             $data[] = [
                 'content' => $comment->getContentComment(),
                 'date' => $comment->getDateCreate()->format('Y-m-d'),
                 'user' => $comment->getUserAssociated()->getPseudo(),
-                'avatar' => $comment->getUserAssociated()->getPictureIdentifier()
+                'avatar' => $avatar,
+                'lastname' => $comment->getUserAssociated()->getNameIdentifier(),
+                'firstname' => $comment->getUserAssociated()->getFirstnameIdentifier()
             ];
         }
 

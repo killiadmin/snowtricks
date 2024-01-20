@@ -34,11 +34,11 @@ class ImageUploadService
                 $folder = 'uploads';
                 $uploadedImage = new UploadedFile($med_image, '');
 
-                $fichier = $this->pictureService->add($uploadedImage, $folder, 300, 300);
+                $file = $this->pictureService->add($uploadedImage, $folder, 300, 300);
 
                 $media->setMedType('image');
                 $media->setMedFigureAssociated($figure);
-                $media->setMedImage($fichier);
+                $media->setMedImage($file);
                 $this->entityManager->persist($media);
             }
         }
