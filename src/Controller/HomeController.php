@@ -35,7 +35,7 @@ class HomeController extends AbstractController
     public function loadMore(FigureRepository $figureRepository, Request $request): JsonResponse
     {
         $page = $request->query->get('page', 1);
-        $limit = 15;
+        $limit = 5;
         $figures = $figureRepository->selectAllFigures($page, $limit);
 
         // Transform data into associative array

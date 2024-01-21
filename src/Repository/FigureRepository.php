@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Figure;
+use App\Entity\Media;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\Persistence\ManagerRegistry;
@@ -28,15 +29,28 @@ class FigureRepository extends ServiceEntityRepository
      */
     public function selectAllFigures(int $page, int $limit): array
     {
-        $query = $this->createQueryBuilder('f')
-            ->leftJoin('f.medias', 'm')
-            ->addSelect('m')
+        $figures = $this->createQueryBuilder('f')
             ->orderBy('f.id', 'DESC')
             ->setFirstResult(($page - 1) * $limit)
             ->setMaxResults($limit)
-            ->getQuery();
+            ->getQuery()
+            ->getResult();
 
-        return $query->getResult();
+        $mediaRepository = $this->getEntityManager()->getRepository(Media::class);
+
+        foreach ($figures as $figure) {
+            $medias = $mediaRepository->createQueryBuilder('m')
+                ->where('m.med_figure_associated = :figureEntity')
+                ->setParameter('figureEntity', $figure)
+                ->getQuery()
+                ->getResult();
+
+            foreach ($medias as $media) {
+                $figure->addMedia($media);
+            }
+        }
+
+        return $figures;
     }
 
     /**
