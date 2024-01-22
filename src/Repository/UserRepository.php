@@ -71,6 +71,22 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
             ->getOneOrNullResult();
     }
 
+    /**
+     * Finds a user by their pseudo.
+     *
+     * @param string $pseudo The pseudo of the user to find.
+     * @return User|null The User entity if found, null otherwise.
+     * @throws NonUniqueResultException
+     */
+    public function findUserByPseudo(string $pseudo): ?User
+    {
+        return $this->createQueryBuilder('u')
+            ->where('u.pseudo = :pseudo')
+            ->setParameter('pseudo', $pseudo)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
 //    /**
 //     * @return User[] Returns an array of User objects
 //     */
