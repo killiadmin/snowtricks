@@ -19,8 +19,8 @@ services:
   mailer:
     image: schickling/mailcatcher
     ports:
-      - "50612:1025"
-      - "50613:1080"
+      - "1025:1025"
+      - "1080:1080"
 
 volumes:
 ###> doctrine/doctrine-bundle ###
