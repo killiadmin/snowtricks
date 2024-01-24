@@ -2,27 +2,28 @@ version: '3'
 
 services:
   database:
-    image: 'mysql:latest'
+    image: 'mysql:8'
     environment:
       MYSQL_ROOT_PASSWORD: password
       MYSQL_DATABASE: main
     ports:
-      # To allow the host machine to access the ports below, modify the lines below.
-      # For example, to allow the host to connect to port 3306 on the container, you would change
-      # "3306" to "3306:3306". Where the first port is exposed to the host and the second is the container port.
-      # See https://docs.docker.com/compose/compose-file/compose-file-v3/#ports for more information.
-      - '3306'
-      # You may use a bind-mounted host directory instead, so that it is harder to accidentally remove the volume and lose all your data!
-      # - ./docker/db/data:/var/lib/postgresql/data:rw
-      # Mailer_PORT = 1025
-      # MAILER_WEB_PORT = 1080
-  mailer:
-    image: schickling/mailcatcher
-    ports:
-      - "1025:1025"
-      - "1080:1080"
+      - "2006:3306"
+    volumes:
+      - ../database/Snowtricks:/var/lib/mysql
 
-volumes:
-###> doctrine/doctrine-bundle ###
-  database_data:
-###< doctrine/doctrine-bundle ###
+  mailer:
+    container_name: mailer
+    image: maildev/maildev:latest
+    command: bin/maildev --hide-extensions STARTTLS
+    platform: linux/amd64
+    restart: unless-stopped
+    ports:
+      - "2125:1025"
+      - "2180:1080"
+    environment:
+      - MAILDEV_SMTP_PORT=1025
+      - MAILDEV_WEB_PORT=1080
+      - MAILDEV_INCOMING_USER=maildev_user
+      - MAILDEV_INCOMING_PASS=maildev_pass
+      - MAILDEV_WEB_USER=maildev_user
+      - MAILDEV_WEB_PASS=maildev_pass
