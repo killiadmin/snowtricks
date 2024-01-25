@@ -58,17 +58,55 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
     }
 
     /**
+     * Finds a single User entity by a specific field.
+     *
+     * @param string $attribute The name of the field to search by.
+     * @param string $value The value to search for in the specified field.
+     *
+     * @return User|null The found User entity or null if no User entity was found.
+     * @throws NonUniqueResultException
+     */
+    public function findOneBySomeField(string $attribute, string $value): ?User
+    {
+        return $this->createQueryBuilder('u')
+            ->where("u.$attribute = :$attribute")
+            ->setParameter($attribute, $value)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
+    /**
      * @param string $email The email address to search for
      * @return User|null The user with the specified email address or null if not found
      * @throws NonUniqueResultException
      */
     public function findUserByEmail(string $email): ?User
     {
-        return $this->createQueryBuilder('u')
-            ->where('u.email = :email')
-            ->setParameter('email', $email)
-            ->getQuery()
-            ->getOneOrNullResult();
+        return $this->findOneBySomeField('email', $email);
+    }
+
+    /**
+     * Finds a user by their pseudo.
+     *
+     * @param string $pseudo The pseudo of the user to find.
+     * @return User|null The User entity if found, null otherwise.
+     * @throws NonUniqueResultException
+     */
+    public function findUserByPseudo(string $pseudo): ?User
+    {
+        return $this->findOneBySomeField('pseudo', $pseudo);
+    }
+
+    /**
+     *
+     * @param string $token The reset token to search for.
+     *
+     * @return User|null The User entity if a match is found, otherwise null.
+     * @throws NonUniqueResultException
+     */
+    public function findOneByResetToken(string $token): ?User
+    {
+        return $this->findOneBySomeField('resetToken', $token);
     }
 
 //    /**
@@ -83,16 +121,6 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
 //            ->setMaxResults(10)
 //            ->getQuery()
 //            ->getResult()
-//        ;
-//    }
-
-//    public function findOneBySomeField($value): ?User
-//    {
-//        return $this->createQueryBuilder('u')
-//            ->andWhere('u.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
 //        ;
 //    }
 }

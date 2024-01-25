@@ -162,7 +162,6 @@ document.addEventListener("DOMContentLoaded", function () {
             });
 
             blocEditingFigure.style.display = "none";
-            console.log(countMedia);
 
             countMedia++;
             closeComponentMedia(modal);

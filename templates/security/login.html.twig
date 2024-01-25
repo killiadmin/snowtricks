@@ -3,6 +3,16 @@
 {% block title %}Log in!{% endblock %}
 
 {% block body %}
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success text-center w-100 position-absolute">
+            {{ message }}
+        </div>
+    {% endfor %}
+    {% for message in app.flashes('error') %}
+        <div class="alert alert-danger text-center w-100 position-absolute">
+            {{ message }}
+        </div>
+    {% endfor %}
     <div class="container d-flex justify-content-center p-5 mt-5">
         <form method="post">
             {% if error %}
@@ -33,7 +43,7 @@
                 >
                 <div class="d-flex flex-column">
                     <div class="d-flex justify-content-center m-3">
-                        <a href="#">
+                        <a href="{{ path('forgotten_password') }}">
                             Forgot Password ?
                         </a>
                     </div>

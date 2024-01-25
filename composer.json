@@ -6,6 +6,7 @@
     "require": {
         "php": ">=7.2.5",
         "ext-ctype": "*",
+        "ext-gd": "*",
         "ext-iconv": "*",
         "doctrine/annotations": "^2.0",
         "doctrine/doctrine-bundle": "^2.10",
@@ -42,8 +43,7 @@
         "symfony/yaml": "5.4.*",
         "twig/extra-bundle": "^2.12|^3.0",
         "twig/string-extra": "^3.8",
-        "twig/twig": "^2.12|^3.0",
-      "ext-gd": "*"
+        "twig/twig": "^2.12|^3.0"
     },
     "require-dev": {
         "doctrine/doctrine-fixtures-bundle": "^3.4",
