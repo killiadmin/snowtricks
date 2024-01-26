@@ -49,7 +49,7 @@ class SendMailService
                 ->from($from)
                 ->to($to)
                 ->subject($subject)
-                ->html($this->twig->render("security/$template.html.twig", $context));
+                ->html($this->twig->render($template, $context));
 
             // Send the mail
             $this->mailer->send($email);

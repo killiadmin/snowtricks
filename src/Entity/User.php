@@ -13,6 +13,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
  * @UniqueEntity(fields={"email"}, message="There is already an account with this email")
+ * @UniqueEntity(fields={"pseudo"}, message="There is already an account with this pseudo")
  */
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
@@ -50,7 +51,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $firstnameIdentifier;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, unique=true)
      */
     private $pseudo;
 
@@ -78,6 +79,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\Column (type="string", length=100)
      */
     private $resetToken;
+
+    /**
+     * @ORM\Column (type="string", length=100)
+     */
+    private $newToken;
 
     public function __construct()
     {
@@ -242,6 +248,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setResetToken(?string $resetToken): self
     {
         $this->resetToken = $resetToken;
+
+        return $this;
+    }
+
+    public function getNewToken(): ?string
+    {
+        return $this->newToken;
+    }
+
+    public function setNewToken(?string $newToken): self
+    {
+        $this->newToken = $newToken;
 
         return $this;
     }

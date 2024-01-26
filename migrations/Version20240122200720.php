@@ -21,11 +21,13 @@ final class Version20240122200720 extends AbstractMigration
     {
         // this up() migration is auto-generated, please modify it to your needs
         $this->addSql('ALTER TABLE user ADD reset_token VARCHAR(255) DEFAULT NULL');
+        $this->addSql('ALTER TABLE user ADD new_token VARCHAR(255) DEFAULT NULL');
     }
 
     public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
         $this->addSql('ALTER TABLE user ADD reset_token VARCHAR(255) DEFAULT NULL');
+        $this->addSql('ALTER TABLE user ADD new_token VARCHAR(255) DEFAULT NULL');
     }
 }

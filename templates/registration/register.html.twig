@@ -7,19 +7,24 @@
         {{ form_start(registrationForm) }}
         <h1 class="h3 mb-5 font-weight-normal text-center">Register</h1>
 
-
         <div class="container mt-5 p-5 border">
             <div class="text-center mb-3">
-                {{ form_row(registrationForm.pseudo) }}
+                {{ form_label(registrationForm.pseudo) }}
+                <div class="error-message_register text-white fw-bold">
+                    {{ form_errors(registrationForm.pseudo) }}
+                </div>
+                {{ form_widget(registrationForm.pseudo) }}
             </div>
 
             <div class="text-center mb-3">
-                {{ form_row(registrationForm.email) }}
+                {{ form_label(registrationForm.email) }}
+                <div class="error-message_register text-white fw-bold">
+                    {{ form_errors(registrationForm.email) }}
+                </div>
+                {{ form_widget(registrationForm.email) }}
             </div>
             <div class="text-center mb-3">
-                {{ form_row(registrationForm.plainPassword, {
-                    label: 'Password'
-                }) }}
+                {{ form_row(registrationForm.plainPassword) }}
             </div>
 
             <div class="d-flex flex-column">

@@ -22,16 +22,16 @@ class SecurityController extends AbstractController
 {
     /**
      * @Route("/login", name="app_login")
+     * Authenticates the user and renders the login page.
+     *
+     * @param AuthenticationUtils $authenticationUtils The authentication utils for retrieving authentication errors.
+     * @return Response The response object.
      */
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
-        // if ($this->getUser()) {
-        //     return $this->redirectToRoute('target_path');
-        // }
-
-        // get the login error if there is one
+        // Get the login error if there is one
         $error = $authenticationUtils->getLastAuthenticationError();
-        // last username entered by the user
+        // Last username entered by the user
         $lastUsername = $authenticationUtils->getLastUsername();
 
         return $this->render('security/login.html.twig', ['last_username' => $lastUsername, 'error' => $error]);
@@ -39,6 +39,9 @@ class SecurityController extends AbstractController
 
     /**
      * @Route("/logout", name="app_logout")
+     * Logs out the user.
+     *
+     * @return void
      */
     public function logout(): void
     {
@@ -85,7 +88,7 @@ class SecurityController extends AbstractController
                     'noreply@snowtricks.fr',
                     $user->getEmail(),
                     'Password reset',
-                    'reset_password_email',
+                    'security/reset_password_email.html.twig',
                     $context
                 );
 
