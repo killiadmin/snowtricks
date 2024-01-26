@@ -59,3 +59,14 @@ Avatar (profil)
     height: auto;
     max-height: 100%;
 }
+
+/**
+Form register
+ */
+
+.error-message_register ul {
+    background-color: lightcoral;
+    list-style-type: none;
+    padding: 10px;
+    border-radius: 10px;
+}

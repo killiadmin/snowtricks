@@ -109,6 +109,17 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         return $this->findOneBySomeField('resetToken', $token);
     }
 
+    /**
+     * @param string $token The new token to search for.
+     *
+     * @return User|null The User entity matching the given new token, or null if no matching entity is found.
+     * @throws NonUniqueResultException
+     */
+    public function findOneByNewToken(string $token): ?User
+    {
+        return $this->findOneBySomeField('newToken', $token);
+    }
+
 //    /**
 //     * @return User[] Returns an array of User objects
 //     */
