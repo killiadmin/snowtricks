@@ -18,8 +18,9 @@
     <body>
         {% include 'layouts/nav.html.twig' %}
         {% block body %}{% endblock %}
+        {% include 'layouts/nav-mobile.html.twig' %}
         {% include 'layouts/footer.html.twig' %}
-
+        <script src="{{ asset('js/navbar.js') }}"></script>
         <script src="https://kit.fontawesome.com/18e2e0bb4c.js" crossorigin="anonymous"></script>
     </body>
 </html>

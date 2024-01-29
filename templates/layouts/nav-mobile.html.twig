@@ -1,0 +1,49 @@
+<!-- Navbar mobile start -->
+<nav class="d-lg-block d-xl-none bg-body-secondary" style="position: fixed; bottom: 0;
+      left: 0; right: 0; width: 100%; z-index: 9999; height: 120px">
+    <div class="d-flex">
+        <div class="container d-flex align-items-center justify-content-center fs-6 border"
+             style="height: 120px; width: 100%;">
+            <a class="navbar-brand" href="{{ path('app_home') }}">
+                <i class="fa-solid fa-house fa-2xl"></i>
+            </a>
+        </div>
+        <div class="container d-flex align-items-center justify-content-center fs-6 border"
+             style="height: 120px; width: 100%;">
+            {% if app.user %}
+                <a id="listBookmark" class="navbar-brand d-block">
+                    <i class="fa-solid fa-bookmark fa-2xl"></i>
+                </a>
+                <a class="navbar-brand bootMarkItem d-none" href="{{ path('app_new') }}">
+                    <i class="fa-solid fa-person-snowboarding fa-2xl"></i>
+                </a>
+            {% else %}
+                <a class="navbar-brand" href="{{ path('app_login') }}">
+                    <i class="fa-solid fa-arrow-right-to-bracket fa-2xl"></i>
+                </a>
+            {% endif %}
+        </div>
+        <div class="container d-flex align-items-center justify-content-center fs-6 border"
+             style="height: 120px; width: 100%;">
+            {% if app.user %}
+                <a id="logoutBtnNav" class="navbar-brand d-block" href="{{ path('app_logout') }}">
+                    <i class="fa-solid fa-right-from-bracket fa-2xl"></i>
+                </a>
+                <a class="navbar-brand bootMarkItem d-none" href="{{ path('app_profil') }}">
+                    {% if app.user.pictureIdentifier %}
+                        <img src="/img/avatar/mini/300x300-{{ app.user.pictureIdentifier }}" alt="avatar"
+                             width="40px" class="rounded-circle">
+                    {% else %}
+                        <img src="/img/avatar/mini/300x300-default_avatar.webp" alt="avatar"
+                             width="40px" class="rounded-circle">
+                    {% endif %}
+                </a>
+            {% else %}
+                <a class="navbar-brand" href="{{ path('app_register') }}">
+                    <i class="fa-solid fa-user-plus fa-2xl"></i>
+                </a>
+            {% endif %}
+        </div>
+    </div>
+</nav>
+<!-- Navbar mobile end -->
