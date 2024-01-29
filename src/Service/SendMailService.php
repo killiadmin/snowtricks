@@ -4,9 +4,7 @@ namespace App\Service;
 
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
-use Symfony\Component\Mailer\Mailer;
 use Symfony\Component\Mailer\MailerInterface;
-use Symfony\Component\Mailer\Transport;
 use Twig\Environment;
 
 class SendMailService
@@ -18,10 +16,6 @@ class SendMailService
     {
         $this->mailer = $mailer;
         $this->twig = $twig;
-
-        $transport = Transport::fromDsn('smtp://maildev_user:maildev_pass@127.0.0.1:2125');
-        $mailer = new Mailer($transport);
-        $this->mailer = $mailer;
     }
 
     /**
