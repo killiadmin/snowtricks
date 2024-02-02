@@ -262,7 +262,7 @@ class DetailsController extends AbstractController
         $offset = ($page - 1) * $limit;
         $slug = '';
 
-        $path = parse_url($_SERVER['REQUEST_URI'])['path'];
+        $path = $request->getPathInfo();
         $segments = explode('/', $path);
 
         if (isset($segments[2])) {
@@ -277,8 +277,8 @@ class DetailsController extends AbstractController
 
         foreach ($comments as $comment) {
             $avatar = 'default_avatar.webp';
-            $avatarPath = "/img/avatar/mini/300x300-" . $comment->getUserAssociated()->getPictureIdentifier();
-            if (file_exists($_SERVER['DOCUMENT_ROOT'].$avatarPath)) {
+            $avatarPath = "/public/img/avatar/mini/300x300-" . $comment->getUserAssociated()->getPictureIdentifier();
+            if (file_exists($this->getParameter('kernel.project_dir').$avatarPath)) {
                 $avatar = $comment->getUserAssociated()->getPictureIdentifier();
             }
 
