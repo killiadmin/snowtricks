@@ -2,6 +2,7 @@ import { createBtnDelete } from "./utilsForm.js";
 import { processMedia } from "./utilsForm.js";
 import { openComponentMedia } from "./utilsForm.js";
 import { closeComponentMedia } from "./utilsForm.js";
+import { btnSeeMedias } from "./utilsForm.js";
 
 // Media box to add a video field or a picture field
 var modal = document.getElementById("boxMedia");
@@ -166,6 +167,26 @@ document.addEventListener("DOMContentLoaded", function () {
             countMedia++;
             closeComponentMedia(modal);
             openComponentMedia(btnEditMediaTrick);
+        });
+    }
+
+    if (document.getElementById("seeMediasMobile")){
+        var seeMediasMobile = document.getElementById("seeMediasMobile");
+        var hideMediasMobile =  document.getElementById("hideMediasMobile");
+
+        seeMediasMobile.appendChild(btnSeeMedias("See medias"));
+        hideMediasMobile.appendChild(btnSeeMedias("Hide medias"));
+
+        seeMediasMobile.addEventListener("click", function () {
+            document.getElementById("blocAllMedias").classList.remove("d-none");
+            hideMediasMobile.classList.remove("d-none");
+            seeMediasMobile.classList.add("d-none");
+        });
+
+        hideMediasMobile.addEventListener("click", function () {
+            document.getElementById("blocAllMedias").classList.add("d-none");
+            hideMediasMobile.classList.add("d-none");
+            seeMediasMobile.classList.remove("d-none");
         });
     }
 });

@@ -141,6 +141,24 @@ function closeComponentMedia (element)
     element.classList.add("d-none");
 }
 
+/**
+ * Creates a button that allows users to see medias.
+ *
+ * @returns {HTMLDivElement} - The div element containing the button.
+ */
+function btnSeeMedias (textBtn)
+{
+    let button = document.createElement("button");
+    button.className = "btn btn-secondary";
+    button.textContent = textBtn;
+
+    let div = document.createElement("div");
+    div.className = "d-flex justify-content-center d-lg-none mt-3";
+    div.appendChild(button);
+
+    return div;
+}
+
 /*
  * We call the click method to delete an picture type media and if it is the last one we flag a message
  */
@@ -171,3 +189,4 @@ export { createBtnDelete };
 export { processMedia };
 export { closeComponentMedia };
 export { openComponentMedia };
+export { btnSeeMedias }

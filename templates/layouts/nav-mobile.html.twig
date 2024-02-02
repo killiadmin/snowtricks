@@ -1,15 +1,15 @@
 <!-- Navbar mobile start -->
 <nav class="d-lg-block d-xl-none bg-body-secondary" style="position: fixed; bottom: 0;
-      left: 0; right: 0; width: 100%; z-index: 9999; height: 120px">
+      left: 0; right: 0; width: 100%; z-index: 9999; height: 70px">
     <div class="d-flex">
         <div class="container d-flex align-items-center justify-content-center fs-6 border"
-             style="height: 120px; width: 100%;">
+             style="height: 70px; width: 100%;">
             <a class="navbar-brand" href="{{ path('app_home') }}">
                 <i class="fa-solid fa-house fa-2xl"></i>
             </a>
         </div>
         <div class="container d-flex align-items-center justify-content-center fs-6 border"
-             style="height: 120px; width: 100%;">
+             style="height: 70px; width: 100%;">
             {% if app.user %}
                 <a id="listBookmark" class="navbar-brand d-block">
                     <i class="fa-solid fa-bookmark fa-2xl"></i>
@@ -24,7 +24,7 @@
             {% endif %}
         </div>
         <div class="container d-flex align-items-center justify-content-center fs-6 border"
-             style="height: 120px; width: 100%;">
+             style="height: 70px; width: 100%;">
             {% if app.user %}
                 <a id="logoutBtnNav" class="navbar-brand d-block" href="{{ path('app_logout') }}">
                     <i class="fa-solid fa-right-from-bracket fa-2xl"></i>

@@ -16,7 +16,7 @@
     <div class="form-group p-3">
         {{ form_row(formUpdate.category) }}
     </div>
-    <div class="container d-flex flex-column gap-5 mt-5 mb-5 border p-4">
+    <div id="blocAllMediasUpdate" class="container d-none d-lg-flex flex-column gap-5 mt-5 mb-5 border p-4">
         {% if app.request.attributes.get('_route') == 'tricks_editing' %}
             <h2>Videos</h2>
             <div id="listMediaVideo" class="container d-flex gap-3">
@@ -60,6 +60,10 @@
         </div>
     </div>
     {{ form_end(formUpdate) }}
+    <!-- Btn media Mobile Update begin -->
+    <div id="seeMediasMobileUpdate"></div>
+    <div id="hideMediasMobileUpdate" class="d-none"></div>
+    <!-- Btn media Mobile Update ending -->
     <!-- Submit form update figure begin -->
     <div class="d-flex flex-row-reverse mt-3 p-3">
         <button id="btnEditFigure" type="submit" class="btn btn-warning">Save changes</button>

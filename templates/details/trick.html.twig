@@ -43,7 +43,7 @@
     </div>
 <!-- Bloc title ending -->
 <!-- Bloc media begin -->
-    <div class="container mt-3 mb-3 p-3" style="max-width: 1400px;">
+    <div id="blocAllMedias" class="container mt-3 mb-3 p-3 d-none d-lg-block" style="max-width: 1400px;">
         <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-6 g-3 d-flex justify-content-around gap-3">
             {% if medias is not null %}
                 {% for media in medias %}
@@ -87,6 +87,10 @@
         </div>
     </div>
 <!-- Bloc media ending -->
+<!-- Btn media Mobile begin -->
+    <div id="seeMediasMobile"></div>
+    <div id="hideMediasMobile" class="d-none"></div>
+<!-- Btn media Mobile ending -->
 <!-- Bloc description begin -->
     <div id="blocEditingFigure">
         <article class="d-flex flex-column align-items-center m-3 border bg-light">

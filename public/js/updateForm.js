@@ -1,3 +1,4 @@
+import { btnSeeMedias } from "./utilsForm.js";
 import { componentEmptyMediaVideo } from "./utilsForm.js";
 import { componentEmptyMediaPicture} from "./utilsForm.js";
 import { createBtnDelete } from "./utilsForm.js";
@@ -109,6 +110,26 @@ document.addEventListener("DOMContentLoaded", function() {
         closeComponentMedia(btnEditFigure);
         closeComponentMedia(modal);
     });
+
+    if (document.getElementById("seeMediasMobileUpdate")){
+        var seeMediasMobile = document.getElementById("seeMediasMobileUpdate");
+        var hideMediasMobile =  document.getElementById("hideMediasMobileUpdate");
+
+        seeMediasMobile.appendChild(btnSeeMedias("See medias"));
+        hideMediasMobile.appendChild(btnSeeMedias("Hide medias"));
+
+        seeMediasMobile.addEventListener("click", function () {
+            document.getElementById("blocAllMediasUpdate").classList.remove("d-none");
+            hideMediasMobile.classList.remove("d-none");
+            seeMediasMobile.classList.add("d-none");
+        });
+
+        hideMediasMobile.addEventListener("click", function () {
+            document.getElementById("blocAllMediasUpdate").classList.add("d-none");
+            hideMediasMobile.classList.add("d-none");
+            seeMediasMobile.classList.remove("d-none");
+        });
+    }
 });
 
 /**
