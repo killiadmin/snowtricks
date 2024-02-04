@@ -17,7 +17,7 @@ class FigureUnitTest extends TestCase
         $this->assertTrue($figure->getTitle() === 'title');
         $this->assertTrue($figure->getContentFigure() === 'content');
         $this->assertTrue($figure->getCategory() === 'category');
-        $this->assertTrue($figure->getPictureFigure() === 'picture_figure');
+        $this->assertTrue($figure->getPictureFigure() === (array)'picture_figure');
     }
 
     public function testIsFalse(): void
