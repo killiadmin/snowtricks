@@ -44,7 +44,6 @@ Dialog for add media (Picture or Video)
 /**
 Avatar (profil)
  */
-
 .avatar-container {
     width: 300px;
     height: 300px;
@@ -63,10 +62,45 @@ Avatar (profil)
 /**
 Form register
  */
-
 .error-message_register ul {
     background-color: lightcoral;
     list-style-type: none;
     padding: 10px;
     border-radius: 10px;
+}
+
+/**
+Form type profil and forgot pwd (mobile)
+ */
+
+.blocFormMobile {
+    width: 50%;
+}
+
+@media screen and (max-width: 768px) {
+    .blocFormMobile {
+        width: 100%;
+    }
+}
+
+/**
+Loading Load more (mobile)
+ */
+
+.blocLoadMore {
+    padding: 3rem;
+}
+
+.blocLoadMore > :first-child {
+    border: outset;
+}
+
+@media screen and (max-width: 768px) {
+    .blocLoadMore {
+        padding: 0;
+    }
+
+    .blocLoadMore > :first-child {
+        border: none;
+    }
 }
