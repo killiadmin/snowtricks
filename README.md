@@ -26,24 +26,44 @@ cd P6_ProjectSnowtrick_KF
 git clone https://github.com/killiadmin/snowtricks.git
 ```
 
+### Setup the database
+
+```bash
+mkdir database
+```
+
 ### Launch the development environment
 
 ```bash
-composer install
+cd snowtricks
 -
-npm install
---
-npm run build
----
 docker compose up -d
+--
+composer install or composer update (if composer exist)
+---
+npm install
 ----
+nqpm run build
+-----
 symfony serve -d
 ```
 
-### Add tests datas
+### Launch the migrations
+
+```bash
+symfony d:m:m
+```
+
+### Add fakes datas
 
 ```bash
 symfony console doctrine:fixtures:load
+```
+
+### Open Maildev for catch mails
+
+```bash
+symfony open:local:webmail
 ```
 
 ### Launch unit tests
