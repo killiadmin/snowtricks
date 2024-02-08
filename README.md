@@ -12,12 +12,14 @@ Snowtricks is a community site presenting tricks and various techniques around s
     * NodeJs
     * Npm
 
-### Create your directory for installing project
+### Create your directory for installing project, follow the steps
 
 ```bash
 mkdir P6_ProjectSnowtrick_KF
--
+
 cd P6_ProjectSnowtrick_KF
+
+mkdir database
 ```
 
 ### Clone the project Snowtricks
@@ -26,25 +28,29 @@ cd P6_ProjectSnowtrick_KF
 git clone https://github.com/killiadmin/snowtricks.git
 ```
 
-### Setup the database
-
-```bash
-mkdir database
-```
-
 ### Launch the development environment
 
 ```bash
 cd snowtricks
--
-docker compose up -d
---
-composer install or composer update (if composer exist)
+```
 ---
+```bash
+docker compose up -d
+```
+---
+```bash
+composer update 
+```
+---
+```bash
 npm install
-----
-nqpm run build
------
+```
+---
+```bash
+npm run build
+```
+---
+```bash
 symfony serve -d
 ```
 
