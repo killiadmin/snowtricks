@@ -2,7 +2,7 @@
 
 Snowtricks is a community site presenting tricks and various techniques around snowboarding 
 
-### Required
+## Required
 
     * PHP 7.4
     * Composer   
@@ -12,7 +12,7 @@ Snowtricks is a community site presenting tricks and various techniques around s
     * NodeJs
     * Npm
 
-### Create your directory for installing project, follow the steps
+## Create your directory for installing project, follow the steps
 
 ```bash
 mkdir P6_ProjectSnowtrick_KF
@@ -22,57 +22,85 @@ cd P6_ProjectSnowtrick_KF
 mkdir database
 ```
 
-### Clone the project Snowtricks
+## Clone the project Snowtricks
 
 ```bash
 git clone https://github.com/killiadmin/snowtricks.git
 ```
-
-### Launch the development environment
+---
+## Launch the development environment
 
 ```bash
 cd snowtricks
 ```
----
+
 ```bash
 docker compose up -d
 ```
----
+
 ```bash
 composer update 
 ```
----
+
 ```bash
 npm install
 ```
----
+
 ```bash
 npm run build
 ```
----
+
 ```bash
 symfony serve -d
 ```
+---
 
-### Launch the migrations
+## Launch the migrations
 
 ```bash
-symfony d:m:m
+symfony console d:m:m
 ```
+---
 
-### Add fakes datas
+## Add fakes datas
 
 ```bash
 symfony console doctrine:fixtures:load
 ```
 
-### Open Maildev for catch mails
+#### Logins admin account : 
+
+User :
+```bash
+killiadmin
+```
+
+Password :
+```bash
+azerty
+```
+---
+
+## Open Maildev for catch mails
 
 ```bash
 symfony open:local:webmail
 ```
 
-### Launch unit tests
+#### Logins in the container :
+
+User : 
+```bash
+maildev_user
+```
+
+Password :
+```bash
+maildev_pass
+```
+---
+
+## Launch unit tests
 
 ```bash
 php bin/phpunit --testdox
