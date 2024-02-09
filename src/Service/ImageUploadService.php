@@ -2,6 +2,7 @@
 
 namespace App\Service;
 
+use App\Entity\Figure;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Entity\Media;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -17,7 +18,7 @@ class ImageUploadService
         $this->entityManager = $entityManager;
     }
 
-    public function handleUpload(Media $media, $figure): void
+    public function handleUpload(Media $media, Figure $figure): void
     {
         if (!empty($media->getMedImage())) {
             $medImages = $media->getMedImage();

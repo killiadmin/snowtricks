@@ -29,7 +29,7 @@ class CommentRepository extends ServiceEntityRepository
      * @throws Exception
      */
 
-    public function selectCommentsAssociated($figureSlug, $limit = 10, $offset = 0): array
+    public function selectCommentsAssociated(string $figureSlug, int $limit = 10, int $offset = 0): array
     {
         $queryBuilder = $this->createQueryBuilder('c')
             ->select('c', 'u')
