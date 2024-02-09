@@ -68,15 +68,17 @@ function loadMore()
                 loadSpinner.style.display = "flex";
             }
 
-            if (data.length > 0){
-                if(flagEmptyData) {
+            console.log(data.length);
+
+            if (data.length > 0) {
+                if (flagEmptyData) {
                     flagEmptyData.remove();
                 }
-            } else {
-                if(flagEmptyData) {
+            } else if (data.length === 0) {
+                if (flagEmptyData) {
                     flagEmptyData.style.display = "block";
-                    loadSpinner.style.display = "none";
                 }
+                loadSpinner.style.display = "none";
             }
 
             //Creation of new figure cards
