@@ -83,11 +83,7 @@ class RegistrationController extends AbstractController
 
             $this->addFlash('success', 'Registration successful! Please check your email to activate your account.');
 
-            return $userAuthenticator->authenticateUser(
-                $user,
-                $authenticator,
-                $request
-            );
+            return $this->redirectToRoute('app_home');
         }
 
         return $this->render('registration/register.html.twig', [
