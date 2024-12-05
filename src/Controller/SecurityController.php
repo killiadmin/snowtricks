@@ -85,7 +85,7 @@ class SecurityController extends AbstractController
                 //Send mail
                 $context = compact('url', 'user');
                 $mail->sendMail(
-                    'noreply@snowtricks.fr',
+                    $_SERVER['MAILER_FROM'],
                     $user->getEmail(),
                     'Password reset',
                     'security/reset_password_email.html.twig',

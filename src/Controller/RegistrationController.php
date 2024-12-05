@@ -74,7 +74,7 @@ class RegistrationController extends AbstractController
             //Send mail
             $context = compact('url', 'user');
             $mail->sendMail(
-                'noreply@snowtricks.fr',
+                $_SERVER['MAILER_FROM'],
                 $user->getEmail(),
                 'Activated your account',
                 'registration/register_email.html.twig',
